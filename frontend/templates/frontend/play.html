@@ -9,8 +9,192 @@
         <title>Jurassicrysis</title>
     </head>
     <body>
-        <h1 style="color: red;">Play Jurassicrysis</h1> 
-        <div id = 'root'></div>
+        <div id='main div' style="border: 3px solid red;
+         background-color: royalblue;
+         position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;">
+
+         <!-- <div id = 'root'></div>-->
+            <div id="opp_hand" style='border: 1px solid white;
+            position: absolute;
+            top: 0%;
+            left: 35%;
+            width: 30vw;
+            height: 5vh;
+            
+            '>
+
+            </div>
+            <div id='opp_eggs' style="border: 1px solid white;
+                position: absolute;
+                height: 18vh; width: 30vw;
+                top: 7%;
+                left: 35%;
+                display: grid;
+                grid-template-columns: auto auto auto auto auto;">
+
+                <div style="border: 1px solid white; text-align: center;">1</div>
+                <div style="border: 1px solid white; text-align: center;">2</div>
+                <div style="border: 1px solid white; text-align: center;">3</div>
+                <div style="border: 1px solid white; text-align: center;">4</div>
+                <div style="border: 1px solid white; text-align: center;">5</div>
+                <div style="border: 1px solid white; text-align: center;">6</div>
+                <div style="border: 1px solid white; text-align: center;">7</div>
+                <div style="border: 1px solid white; text-align: center;">8</div>
+                <div style="border: 1px solid white; text-align: center;">9</div>
+                <div style="border: 1px solid white; text-align: center;">10</div>
+
+
+            </div>
+
+            <div id="opp_event" style="border: 1px solid white;
+                height: 20vh; width: 8vw; 
+                position: absolute;
+                top: 28%; left: 5%;">
+
+                    <div id="opp_dino" style="border: 1px solid white;
+                    height: 18vh; width: 6vw; 
+                    margin: 5px;">
+                    </div>
+
+            </div>
+
+            <div id ='opp_board' style="border: 1px solid white;
+                height: 20vh; width: 70vw;
+                position: absolute;
+                top: 28%; left: 15%;
+                display: flex;
+                justify-content: center;">
+
+                    <div id="opp_dino" style="border: 1px solid white;
+                    height: 18vh; width: 6vw;
+                    margin: 5px;">
+                    </div>
+
+                    <div id="opp_dino" style="border: 1px solid white;
+                    height: 18vh; width: 6vw; 
+                    margin: 5px;">
+                    </div>
+
+                    <div id="opp_dino" style="border: 1px solid white;
+                    height: 18vh; width: 6vw;
+                    margin: 5px;">
+                    </div>
+
+                    <div id="opp_dino" style="border: 1px solid white;
+                    height: 18vh; width: 6vw;
+                    margin: 5px;">
+                    </div>
+
+                    <div id="opp_dino" style="border: 1px solid white;
+                    height: 18vh; width: 6vw;
+                    margin: 5px;">
+                    </div>
+
+                    <div id="opp_dino" style="border: 1px solid white;
+                    height: 18vh; width: 6vw;
+                    margin: 5px;">
+                    </div>
+
+                    <div id="opp_dino" style="border: 1px solid white;
+                    height: 18vh; width: 6vw;
+                    margin: 5px;">
+                    </div>
+
+                    <div id="opp_dino" style="border: 1px solid white;
+                    height: 18vh; width: 6vw;
+                    margin: 5px;">
+                    </div>
+
+            </div>
+
+            <div id="opp_deck" style="border: 1px solid white;
+                height: 20vh; width: 8vw; 
+                position: absolute;
+                top: 28%; right: 5%;">
+
+                <div id="opp_dino" style="border: 1px solid white;
+                height: 18vh; width: 6vw; 
+                margin: 5px;">
+                </div>
+
+            </div>
+
+            <div id='middle line'
+                    style="border-top: 1px solid white; position: absolute; top: 50%; width: 100%;">
+            </div>
+
+            <div id="ply_event" style="border: 1px solid white;
+                height: 20vh; width: 8vw; 
+                position: absolute;
+                top: 52%; left: 5%;">
+
+                    <div id="opp_dino" style="border: 1px solid white;
+                    height: 18vh; width: 6vw; 
+                    margin: 5px;">
+                    </div>
+
+            </div>
+
+            <div id ='ply_board' style="border: 1px solid white;
+                height: 20vh; width: 70vw;
+                position: absolute;
+                top: 52%;
+                left: 15%;
+                display: flex;
+                justify-content: center;">
+
+                    <div id="opp_dino" style="border: 1px solid white;
+                    height: 18vh; width: 6vw;
+                    margin: 5px;">
+                    </div>
+
+                    <div id="opp_dino" style="border: 1px solid white;
+                    height: 18vh; width: 6vw;
+                    margin: 5px;">
+                    </div>
+
+                    <div id="opp_dino" style="border: 1px solid white;
+                    height: 18vh; width: 6vw;
+                    margin: 5px;">
+                    </div>
+
+            </div>
+
+            
+
+            <div id="ply_deck" style="border: 1px solid white;
+                height: 20vh; width: 8vw; 
+                position: absolute;
+                top: 52%; right: 5%;">
+
+                    <div id="opp_dino" style="border: 1px solid white;
+                    height: 18vh; width: 6vw; 
+                    margin: 5px;">
+                    </div>
+
+            </div>
+
+            <div id='ply_eggs' style="border: 1px solid white;">
+
+            </div>
+
+            <div id='ply_hand' style="border: 1px solid white;
+                height: 23vh; width: 50vw;
+                position: absolute;
+                bottom: 2%;
+                left:25%;">
+
+            </div>
+
+                
+        </div>
+
+        
+        
         <script src="{% static 'frontend/play/main.js' %}"></script>
         
     </body>
