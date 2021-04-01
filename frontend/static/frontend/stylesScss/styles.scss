@@ -11,8 +11,6 @@ a:visited, a:link, a:hover, a:active {
 
 }
 
-
-
 @keyframes opacityblack{
     0% {
         background-color: rgba(0, 0, 0, 0);
@@ -38,6 +36,10 @@ a:visited, a:link, a:hover, a:active {
     margin: auto;
 }
 
+.marginright {
+    margin-right: 10px;
+}
+
 .center {
     text-align: center;
 }
@@ -52,11 +54,6 @@ a:visited, a:link, a:hover, a:active {
     border: 2px solid wheat;
     min-height: 40px;
     max-height: 50px;
-}
-
-.centerImage {
-    position: relative;
-    left: 45%;
 }
 
 .bgrBlack {
@@ -95,7 +92,7 @@ li:hover {
   color: #27262c;
   animation: spring 300ms ease-out;
   text-shadow: 0 -1px 0 #ef816c;
-	font-weight: bold;
+    font-weight: bold;
 }
 li:active {
   transform: translateY(4px);

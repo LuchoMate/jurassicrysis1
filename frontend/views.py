@@ -18,6 +18,21 @@ def play(request):
 def shop(request):
     return render(request, "frontend/shop.html")
 
+@login_required
+def mycollection(request):
+    return render(request, "frontend/mycollection.html")
+
+@login_required
+def deckmanager(request):
+    return render(request, "frontend/deckmanager.html")
+
+@login_required
+def trader(request):
+    return render(request, "frontend/trader.html")
+
+def leaderboards(request):
+    return render(request, "frontend/leaderboards.html")
+
 def register(request):
     if request.method == "POST":
         username = request.POST["username"]

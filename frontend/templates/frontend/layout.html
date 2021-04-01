@@ -20,31 +20,66 @@
           <img src="https://picsum.photos/200" alt="" class="profileimg">
           {{user.username}}
         </a>
+
+        <span class="w3-right marginright">&#128178; {{user.dinocoins}}</span>
         {% else %}
         <span>Not logged in.</span>
         {% endif %}
 
-        <span class="centerImage" id="topDocument">Jurassicrysis</span> 
-
         <ul>
-          <a href="{% url 'play' %}" class="w3-hide-small" ><li>Play</li></a>
-          <a href="{% url 'index' %}" class="w3-hide-small"><li>Home</li></a>
-          <a href="{% url 'shop' %}" class="w3-hide-small"><li>Shop</li></a>
-          <a href="#" class="w3-hide-small"><li>Social</li></a>
+          <a href="{% url 'play' %}" class="w3-hide-small w3-mobile" ><li>Play</li></a>
+          <a href="{% url 'index' %}" class="w3-hide-small w3-mobile"><li>Home</li></a>
+          <a href="{% url 'shop' %}" class="w3-hide-small w3-mobile"><li>Shop</li></a>
+          
+          <div class="w3-dropdown-click w3-black w3-mobile">
+            <a href="#" class="w3-hide-small" onclick="cardFunction()"><li>Collection <i class="fa fa-caret-down"></i></li></a>
+            <div id="cardDrop" class="w3-dropdown-content w3-bar-block w3-card w3-black">
+          
+              <a href="{% url 'mycollection' %}" class="w3-bar-item w3-button w3-mobile">My Collection</a>
+              <a href="{% url 'deckmanager' %}" class="w3-bar-item w3-button w3-mobile">Deck Manager</a>
+              <div class="dropdown-divider"></div>
+              <a href="#" class="w3-bar-item w3-button w3-mobile">Database</a>
+            </div>
+          </div>
+
+          <div class="w3-dropdown-click w3-black w3-mobile">
+            <a href="#" class="w3-hide-small" onclick="socialFunction()"><li>Social <i class="fa fa-caret-down"></i></li></a>
+            <div id="socialDrop" class="w3-dropdown-content w3-bar-block w3-card w3-black">
+          
+              <a href="{% url 'trader' %}" class="w3-bar-item w3-button w3-mobile">Trade Cards</a>
+              <a href="{% url 'leaderboards' %}" class="w3-bar-item w3-button w3-mobile">Leaderboards</a>
+              <div class="dropdown-divider"></div>
+              <a href="https://twitter.com/jurassicrysiso1" class="w3-bar-item w3-button w3-mobile">Twitter</a>
+              <a href="https://www.instagram.com/jurassicrysisofficial/" class="w3-bar-item w3-button w3-mobile">Instagram</a>
+            </div>
+          </div>
+
+          
           {% if user.is_authenticated %}
-            <a href="{% url 'logout' %}" class="w3-hide-small"><li>Logout</li></a>
+            <a href="{% url 'logout' %}" class="w3-hide-small w3-mobile"><li>Logout</li></a>
           {% else %}
-            <a href="{% url 'login' %}" class="w3-hide-small"><li>Login</li></a>
+            <a href="{% url 'login' %}" class="w3-hide-small w3-mobile"><li>Login</li></a>
           {% endif %}
 
           <a href="javascript:void(0)" class="w3-bar-item w3-button w3-right w3-hide-large w3-hide-medium" onclick="myFunction()">&#9776;</a>
 
         </ul>
 
-        <div id="demo1" class="w3-bar-block w3-black w3-hide w3-hide-large w3-hide-medium center">
+        <div id="responsiveButton" class="w3-bar-block w3-black w3-hide w3-hide-large w3-hide-medium center">
           <a href="{% url 'play' %}"  ><li>Play</li></a>
           <a href="{% url 'index' %}" ><li>Home</li></a>
           <a href="{% url 'shop' %}" ><li>Shop</li></a>
+          <div class="w3-dropdown-click w3-black">
+            <a href="#" onclick="cardFunction()"><li>Collection <i class="fa fa-caret-down"></i></li></a>
+            <div id="cardDrop" class="w3-dropdown-content w3-bar-block w3-card w3-black">
+          
+              <a href="{% url 'mycollection' %}" class="w3-bar-item w3-button ">My Collection</a>
+              <a href="{% url 'deckmanager' %}" class="w3-bar-item w3-button ">Deck Manager</a>
+              <a href="#" class="w3-bar-item w3-button ">Link 3</a>
+            </div>
+          </div>
+
+          <a href="#"><li>Social</li></a>
           {% if user.is_authenticated %}
             <a href="{% url 'logout' %}" ><li>Logout</li></a>
           {% else %}
@@ -57,13 +92,33 @@
 
         <script>
           function myFunction() {
-            var x = document.getElementById("demo1");
+            var x = document.getElementById("responsiveButton");
             if (x.className.indexOf("w3-show") == -1) {
               x.className += " w3-show";
             } else { 
               x.className = x.className.replace(" w3-show", "");
             }
           }
+
+          function cardFunction() {
+            var x = document.getElementById("cardDrop");
+            if (x.className.indexOf("w3-show") == -1) {
+              x.className += " w3-show";
+            } else { 
+              x.className = x.className.replace(" w3-show", "");
+              }
+            }
+
+            function socialFunction() {
+            var x = document.getElementById("socialDrop");
+            if (x.className.indexOf("w3-show") == -1) {
+              x.className += " w3-show";
+            } else { 
+              x.className = x.className.replace(" w3-show", "");
+              }
+            }
+
+
         </script>
 
         <div class="w3-container">  
