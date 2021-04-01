@@ -6,19 +6,70 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="{% static 'frontend/styles.css' %}">
         <title>JurassiCrysis</title>
     </head>
-    <body>
-        Layout header
+    <body class="bgrImage">
+
+      <div class="bgrBlack">
+
         {% if user.is_authenticated %}
-            Logged in as {{user.username}}
-            <a href="{% url 'logout' %}">Logout</a>
-            <h6>Dinocoins: {{user.dinocoins}} --- Member since: {{user.member_since}}</h6>
+        <a href="#">
+          <img src="https://picsum.photos/200" alt="" class="profileimg">
+          {{user.username}}
+        </a>
         {% else %}
-            <a href="{% url 'login' %}">Login</a>
+        <span>Not logged in.</span>
         {% endif %}
-        {% block body %}
-        {% endblock %}
+
+        <span class="centerImage" id="topDocument">Jurassicrysis</span> 
+
+        <ul>
+          <a href="{% url 'play' %}" class="w3-hide-small" ><li>Play</li></a>
+          <a href="{% url 'index' %}" class="w3-hide-small"><li>Home</li></a>
+          <a href="{% url 'shop' %}" class="w3-hide-small"><li>Shop</li></a>
+          <a href="#" class="w3-hide-small"><li>Social</li></a>
+          {% if user.is_authenticated %}
+            <a href="{% url 'logout' %}" class="w3-hide-small"><li>Logout</li></a>
+          {% else %}
+            <a href="{% url 'login' %}" class="w3-hide-small"><li>Login</li></a>
+          {% endif %}
+
+          <a href="javascript:void(0)" class="w3-bar-item w3-button w3-right w3-hide-large w3-hide-medium" onclick="myFunction()">&#9776;</a>
+
+        </ul>
+
+        <div id="demo1" class="w3-bar-block w3-black w3-hide w3-hide-large w3-hide-medium center">
+          <a href="{% url 'play' %}"  ><li>Play</li></a>
+          <a href="{% url 'index' %}" ><li>Home</li></a>
+          <a href="{% url 'shop' %}" ><li>Shop</li></a>
+          {% if user.is_authenticated %}
+            <a href="{% url 'logout' %}" ><li>Logout</li></a>
+          {% else %}
+            <a href="{% url 'login' %}" ><li>Login</li></a>
+          {% endif %}
+
+        </div>
+
+      </div>
+
+        <script>
+          function myFunction() {
+            var x = document.getElementById("demo1");
+            if (x.className.indexOf("w3-show") == -1) {
+              x.className += " w3-show";
+            } else { 
+              x.className = x.className.replace(" w3-show", "");
+            }
+          }
+        </script>
+
+        <div class="w3-container">  
+          {% block body %}
+          {% endblock %}
+        </div>
     </body>
 
 </html>

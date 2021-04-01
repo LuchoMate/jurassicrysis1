@@ -1,8 +1,10 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.utils import timezone
-from django.core.validators import MaxValueValidator
+from django.core.validators import MaxValueValidator, MinValueValidator
 
+
+#User model
 class Player(AbstractUser):
     member_since = models.DateField(auto_now_add=timezone.now())
     victories = models.PositiveSmallIntegerField(default = 0)
@@ -10,6 +12,8 @@ class Player(AbstractUser):
     dinocoins = models.PositiveIntegerField(default = 5000)
     level = models.PositiveSmallIntegerField(default = 1)
 
+
+#Card model
 class Card(models.Model):
 
     type_choices = [
@@ -47,24 +51,27 @@ class Card(models.Model):
         return f"{self.name} -- {self.card_type}"
 
 
-#individual cards collected by players
+#Individual cards collected by players
 class Collection(models.Model):
-    Owner = models.ForeignKey(Player, on_delete=models.CASCADE, null=True)
+    Owner = models.ForeignKey(Player, on_delete=models.CASCADE, null=True
+        ,related_name='player_cards')
     Card_collected = models.ForeignKey(Card, on_delete=models.CASCADE, null=True)
-    quantity = models.PositiveSmallIntegerField(default = 1)
-    on_deck = models.PositiveSmallIntegerField(default = 0,
-     validators=[MaxValueValidator(2, 'Maximum 2 per deck')])
-
-    
+    quantity = models.PositiveSmallIntegerField(default = 1,
+        validators=[MinValueValidator(1, 'Cannot have 0 cards on db')])
+    on_deck = models.PositiveSmallIntegerField(default=0, 
+        validators=[MaxValueValidator(2, 'Maximum 2 per deck')])
+       
     class Meta:
+        ordering = ('Owner',)
         constraints = [
-            models.UniqueConstraint(fields=['Owner', 'Card_collected'], name='individual_card')
+            models.UniqueConstraint(fields=['Owner', 'Card_collected'], name='individual_card'),
+            models.CheckConstraint(name='cannot_have_more_than_quantity',
+                check=models.Q(on_deck__lte=models.F('quantity')))
         ]
-
-    
-
+ 
     def __str__(self):
-        return f"{self.Owner} owns {self.quantity} of {self.Card_collected}"
+        return f"{self.Owner} owns {self.quantity} of {self.Card_collected} // on deck ---> {self.on_deck}"
+
 
 
 

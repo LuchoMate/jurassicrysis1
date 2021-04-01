@@ -14,6 +14,10 @@ def index(request):
 def play(request):
     return render(request, "frontend/play.html")
 
+@login_required
+def shop(request):
+    return render(request, "frontend/shop.html")
+
 def register(request):
     if request.method == "POST":
         username = request.POST["username"]
