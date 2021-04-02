@@ -1,8 +1,51 @@
+@import url('https://fonts.googleapis.com/css2?family=Chewy&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Pangolin&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Megrim&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Freckle+Face&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Mouse+Memoirs&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nosifer&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Caesar+Dressing&display=swap');
+
+.chewyfont {
+    font-family: 'Chewy', cursive;
+}
+
+.pangolinfont {
+    font-family: 'Pangolin', cursive;
+}
+
+.megrimfont {
+    font-family: 'Megrim', cursive;
+}
+
+.frecklefont {
+    font-family: 'Freckle Face', cursive;
+}
+
+.memoirsfont {
+    font-family: 'Mouse Memoirs', sans-serif;
+}
+
+.nosiferfont {
+    font-family: 'Nosifer', cursive;
+}
+
+.caesarfont {
+    font-family: 'Caesar Dressing', cursive;
+}
 
 $navbar-color: #ebebeb;
 
 .navbarcolor {
     color: $navbar-color;
+}
+
+.bannerdiv {
+    display: flex; 
+    flex-wrap: nowrap; 
+    flex-direction: row; 
+    justify-content: space-between;
+    align-items: center;
 }
 
 a:visited, a:link, a:hover, a:active {
@@ -79,6 +122,8 @@ ul{
 }
 li {
 	padding: 1rem 2rem 1.15rem;
+    font-family: 'Mouse Memoirs', sans-serif;
+    font-size: x-large;
     text-transform: uppercase;
     cursor: pointer;
     color: $navbar-color;
