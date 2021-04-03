@@ -9,6 +9,7 @@
         <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="{% static 'frontend/styles.css' %}">
+        
         <title>JurassiCrysis</title>
     </head>
     <body class="bgrImage" data-barba="wrapper">
@@ -37,7 +38,7 @@
         </div>
 
         <ul>
-          <a href="{% url 'play' %}" class="w3-hide-small w3-mobile" ><li>Play</li></a>
+          <a href="{% url 'play' %}" class="w3-hide-small w3-mobile stopBarba" ><li>Play</li></a>
           <a href="{% url 'index' %}" class="w3-hide-small w3-mobile"><li>Home</li></a>
           <a href="{% url 'shop' %}" class="w3-hide-small w3-mobile"><li>Shop</li></a>
           
@@ -66,7 +67,7 @@
 
           
           {% if user.is_authenticated %}
-            <a href="{% url 'logout' %}" class="w3-hide-small w3-mobile"><li>Logout</li></a>
+            <a href="{% url 'logout' %}" class="w3-hide-small w3-mobile stopBarba"><li>Logout</li></a>
           {% else %}
             <a href="{% url 'login' %}" class="w3-hide-small w3-mobile"><li>Login</li></a>
           {% endif %}
@@ -75,7 +76,7 @@
 
         </ul>
 
-        <div id="responsiveButton" class="w3-bar-block w3-black w3-hide w3-hide-large w3-hide-medium center">
+        <div id="responsiveButton" class="w3-bar-block w3-black w3-hide w3-hide-large center">
           <a href="{% url 'play' %}"  ><li>Play</li></a>
           <a href="{% url 'index' %}" ><li>Home</li></a>
           <a href="{% url 'shop' %}" ><li>Shop</li></a>
@@ -100,39 +101,16 @@
 
       </div>
 
-        <script>
-          function myFunction() {
-            var x = document.getElementById("responsiveButton");
-            if (x.className.indexOf("w3-show") == -1) {
-              x.className += " w3-show";
-            } else { 
-              x.className = x.className.replace(" w3-show", "");
-            }
-          }
+        <script src="{% static 'frontend/dropdownmenu/dropdown.js' %}"></script>
 
-          function cardFunction() {
-            var x = document.getElementById("cardDrop");
-            if (x.className.indexOf("w3-show") == -1) {
-              x.className += " w3-show";
-            } else { 
-              x.className = x.className.replace(" w3-show", "");
-              }
-            }
-
-            function socialFunction() {
-            var x = document.getElementById("socialDrop");
-            if (x.className.indexOf("w3-show") == -1) {
-              x.className += " w3-show";
-            } else { 
-              x.className = x.className.replace(" w3-show", "");
-              }
-            }
-        </script>
-
-        <div class="w3-container" data-barba="container">  
+        <div class="w3-container" data-barba="container" data-barba-namespace="home">  
           {% block body %}
           {% endblock %}
         </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/@barba/core"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.6.1/gsap.min.js"></script>
+        <script src="{% static 'frontend/transitions/transition1.js' %}"></script>
     </body>
 
 </html>
