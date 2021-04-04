@@ -1,3 +1,5 @@
+/* These functions handle dropdown buttons on the layout*/
+
 function myFunction() {
     var x = document.getElementById("responsiveButton");
     if (x.className.indexOf("w3-show") == -1) {

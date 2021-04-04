@@ -27,6 +27,25 @@ def api_player_deck(request):
     return Response(serializer.data)
 
 
+#get logged user's deck shuffled and ready to play
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def api_shuffled_deck(request):
+    pass
+
+    ##player = Player.objects.get(username=request.user)
+    ##query = player.player_cards.all()
+    ##prev_deck = query.filter(on_deck__gte=1)
+
+    ##deck = {}
+    ##for card in prev_deck:
+        #deck.append("card_id"_ card.id)
+
+
+
+
+
+
 
 
 
