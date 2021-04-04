@@ -54,11 +54,11 @@ a:visited, a:link, a:hover, a:active {
 
 }
 
-/*---------------- */
+/*--------Transition-------- */
 
-.transition2 {
+.transition1 {
     position: absolute;
-    z-index: 99;
+    z-index: 90;
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -70,13 +70,62 @@ a:visited, a:link, a:hover, a:active {
     padding: 0;
     pointer-events: none;
   }
-  
-  .transition2 div {
-    width: 100%;
-    -webkit-transform: scaleY(0);
-            transform: scaleY(0);
-    background: black;
+
+.transition1 #teeth1 {
+    position: relative;
+    top: -200%;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 120vh 12vw 0 0;
+    border-color: black transparent transparent transparent;
   }
+
+.transition1 div {
+    
+    position: relative;
+    top: -200%;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 120vh 12vw 0 12vw;
+    border-color: black transparent transparent transparent;
+
+}
+
+
+.transition2 {
+    position: absolute;
+    z-index: 90;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    width: 100%;
+    height: 100vh;
+    top:100;
+    left: 0;
+    margin: 0;
+    padding: 0;
+    pointer-events: none;
+}
+
+.transition2 div {
+    
+    position: relative;
+    bottom: -100%;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 12vw 120vh 12vw;
+    border-color: transparent transparent black transparent;
+
+}
+
+/*End of transition css */
+
       
 .blackTransparent{
     background-color: rgba(0, 0, 0, .5);   
@@ -113,6 +162,15 @@ a:visited, a:link, a:hover, a:active {
 .bgrBlack {
     background-color: black;
     color: $navbar-color;
+    position: relative;
+}
+
+.bgrRed {
+    background-color: red;
+    color: $navbar-color;
+    position: relative;
+    
+
 }
 
 /* Navbar buttons obtained from https://codepen.io */

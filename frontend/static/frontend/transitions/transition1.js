@@ -38,29 +38,52 @@ barba.init({
 }
 
 function pageOut(){
-  var tl1 = gsap.timeline();
-  tl1.to(".transition2 div", {
-    duration: 0.5,
-    scaleY: 1,
-    transformOrigin: "bottom left",
-    stagger: 0.1,
+
+  gsap.to(".transition1 div", {
+    opacity: 1,
+    duration: 1,
+    yPercent:-50,
+    top:"50%",
+    
+    
+  });
+
+  
+  gsap.to(".transition2 div", {
+    opacity: 1,
+    duration: 1,
+    yPercent:-50,
+    top:"50%",
+    
+    
   });
 
 }
 
 function pageIn(){
-  var tl2 = gsap.timeline();
-  tl2.to(".transition2 div", {
-    duration: 0.5,
-    scaleY: 0,
-    transformOrigin: "bottom left",
-    stagger: 0.1,
-    delay: 0.1,
-});
+
+  gsap.to(".transition1 div", {
+    opacity: 0,
+    duration: 1,
+    yPercent:-150,
+    top:"50%",
+    
+    
+  });
+  
+  gsap.to(".transition2 div", {
+    duration: 1,
+    opacity: 0,
+    yPercent:50,
+    top:"50%",
+    
+
+    
+  });
+
+  
   
 }
-
-
 
 
 /*
@@ -94,8 +117,6 @@ function delay(n) {
   });
 }
 
-
-
 barba.init({
   sync: true,
   prevent: data => data.el.classList.contains('stopBarba'),
@@ -113,10 +134,7 @@ barba.init({
           pageIn();
      
         },
-
-
-
-          
+ 
       },
   ],
 });
