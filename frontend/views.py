@@ -33,6 +33,9 @@ def trader(request):
 def leaderboards(request):
     return render(request, "frontend/leaderboards.html")
 
+def database(request):
+    return render(request, "frontend/database.html")
+
 def register(request):
     if request.method == "POST":
         username = request.POST["username"]

@@ -39,18 +39,18 @@
         </div>
 
         <ul>
-          <a href="{% url 'play' %}" class="w3-hide-small w3-mobile stopBarba" ><li>Play</li></a>
-          <a href="{% url 'index' %}" class="w3-hide-small w3-mobile"><li>Home</li></a>
-          <a href="{% url 'shop' %}" class="w3-hide-small w3-mobile"><li>Shop</li></a>
+          <a href="{% url 'play' %}" onclick="closedropdown()" class="w3-hide-small w3-mobile stopBarba" ><li>Play</li></a>
+          <a href="{% url 'index' %}" onclick="closedropdown()" class="w3-hide-small w3-mobile"><li>Home</li></a>
+          <a href="{% url 'shop' %}" onclick="closedropdown()" class="w3-hide-small w3-mobile"><li>Shop</li></a>
           
           <div class="w3-dropdown-click w3-black w3-mobile">
             <a href="#" class="w3-hide-small" onclick="cardFunction()"><li>Collection <i class="fa fa-caret-down"></i></li></a>
             <div id="cardDrop" class="w3-dropdown-content w3-bar-block w3-card w3-black">
           
-              <a href="{% url 'mycollection' %}" class="w3-bar-item w3-button w3-mobile">My Collection</a>
-              <a href="{% url 'deckmanager' %}" class="w3-bar-item w3-button w3-mobile">Deck Manager</a>
+              <a href="{% url 'mycollection' %}" onclick="closedropdown()" class="w3-bar-item w3-button w3-mobile ">My Collection</a>
+              <a href="{% url 'deckmanager' %}" onclick="closedropdown()" class="w3-bar-item w3-button w3-mobile ">Deck Manager</a>
               <div class="dropdown-divider"></div>
-              <a href="#" class="w3-bar-item w3-button w3-mobile">Database</a>
+              <a href="{% url 'database' %}" onclick="closedropdown()" class="w3-bar-item w3-button w3-mobile ">Database</a>
             </div>
           </div>
 
@@ -58,8 +58,8 @@
             <a href="#" class="w3-hide-small" onclick="socialFunction()"><li>Social <i class="fa fa-caret-down"></i></li></a>
             <div id="socialDrop" class="w3-dropdown-content w3-bar-block w3-card w3-black">
           
-              <a href="{% url 'trader' %}" class="w3-bar-item w3-button w3-mobile">Trade Cards</a>
-              <a href="{% url 'leaderboards' %}" class="w3-bar-item w3-button w3-mobile">Leaderboards</a>
+              <a href="{% url 'trader' %}" onclick="closedropdown()" class="w3-bar-item w3-button w3-mobile ">Trade Cards</a>
+              <a href="{% url 'leaderboards' %}" onclick="closedropdown()" class="w3-bar-item w3-button w3-mobile">Leaderboards</a>
               <div class="dropdown-divider"></div>
               <a href="https://twitter.com/jurassicrysiso1" class="w3-bar-item w3-button w3-mobile">Twitter</a>
               <a href="https://www.instagram.com/jurassicrysisofficial/" class="w3-bar-item w3-button w3-mobile">Instagram</a>
@@ -68,9 +68,9 @@
 
           
           {% if user.is_authenticated %}
-            <a href="{% url 'logout' %}" class="w3-hide-small w3-mobile stopBarba"><li>Logout</li></a>
+            <a href="{% url 'logout' %}" onclick="closedropdown()" class="w3-hide-small w3-mobile stopBarba"><li>Logout</li></a>
           {% else %}
-            <a href="{% url 'login' %}" class="w3-hide-small w3-mobile"><li>Login</li></a>
+            <a href="{% url 'login' %}" onclick="closedropdown()" class="w3-hide-small w3-mobile"><li>Login</li></a>
           {% endif %}
 
           <a href="javascript:void(0)" class="w3-bar-item w3-button w3-right w3-hide-large w3-hide-medium" onclick="myFunction()">&#9776;</a>
@@ -100,26 +100,23 @@
 
         </div>
 
+      </div> <!--div bgrblack-->
+
+      <script src="{% static 'frontend/dropdownmenu/dropdown.js' %}"></script>
+
+        
+      <div class="transition2">
+        <div></div>
       </div>
 
-        <script src="{% static 'frontend/dropdownmenu/dropdown.js' %}"></script>
+      <div class="w3-container" data-barba="container" data-barba-namespace="home">
+        {% block body %}
+        {% endblock %}
+      </div>
 
-        <div class="transition2">
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-        </div>
-
-        <div class="w3-container" data-barba="container" data-barba-namespace="home">  
-          {% block body %}
-          {% endblock %}
-        </div>
-
-        <script src="https://cdn.jsdelivr.net/npm/@barba/core"></script>
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.6.1/gsap.min.js"></script>
-        <script src="{% static 'frontend/transitions/transition1.js' %}"></script>
+      <script src="https://cdn.jsdelivr.net/npm/@barba/core"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.6.1/gsap.min.js"></script>
+      <script src="{% static 'frontend/transitions/transition1.js' %}"></script>
     </body>
 
 </html>

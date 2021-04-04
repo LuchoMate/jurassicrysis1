@@ -29,7 +29,7 @@ barba.init({
     });
 
     tl.to(".transition2 div", {
-        duration: 0.2,
+        duration: 0.8,
         scaleY: 0,
         transformOrigin: "bottom left",
         stagger: 0.1,
@@ -37,6 +37,33 @@ barba.init({
     });
 }
 
+function pageOut(){
+  var tl1 = gsap.timeline();
+  tl1.to(".transition2 div", {
+    duration: 0.5,
+    scaleY: 1,
+    transformOrigin: "bottom left",
+    stagger: 0.1,
+  });
+
+}
+
+function pageIn(){
+  var tl2 = gsap.timeline();
+  tl2.to(".transition2 div", {
+    duration: 0.5,
+    scaleY: 0,
+    transformOrigin: "bottom left",
+    stagger: 0.1,
+    delay: 0.1,
+});
+  
+}
+
+
+
+
+/*
 function contentAnimation() {
   var tl = gsap.timeline();
   tl.from("h1", {
@@ -54,6 +81,10 @@ function contentAnimation() {
   );
 }
 
+*/
+
+
+
 function delay(n) {
   n = n || 2000;
   return new Promise((done) => {
@@ -63,26 +94,29 @@ function delay(n) {
   });
 }
 
+
+
 barba.init({
   sync: true,
   prevent: data => data.el.classList.contains('stopBarba'),
 
   transitions: [
       {
-          async leave(data) {
-              const done = this.async();
-              pageTransition();
-              await delay(1500);
-              done();
-          },
+        async leave(data) {
+          const done = this.async();
+          pageOut();
+          await delay(1500);
+          done();
+      },
 
-          async enter(data) {
-              contentAnimation();
-          },
+        async enter(data) {
+          pageIn();
+     
+        },
 
-          async once(data) {
-              contentAnimation();
-          },
+
+
+          
       },
   ],
 });
