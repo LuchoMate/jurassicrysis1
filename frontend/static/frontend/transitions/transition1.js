@@ -15,7 +15,6 @@ barba.init({
       }
     }]
   });
-
   */
 
   function pageTransition() {
@@ -39,6 +38,8 @@ barba.init({
 
 function pageOut(){
 
+  
+
   gsap.to(".transition1 div", {
     opacity: 1,
     duration: 1,
@@ -48,15 +49,22 @@ function pageOut(){
     
   });
 
+  function pageouttr2(){
+    var tl = gsap.timeline()
+    tl.set(".transition2 div", {display: 'block'}).to(".transition2 div", {
+      opacity: 1,
+      duration: 1,
+      yPercent:-50,
+      top:"50%",
+      
+      
+    });
+    return tl;
+  }
+
+  pageouttr2();
+
   
-  gsap.to(".transition2 div", {
-    opacity: 1,
-    duration: 1,
-    yPercent:-50,
-    top:"50%",
-    
-    
-  });
 
 }
 
@@ -70,18 +78,18 @@ function pageIn(){
     
     
   });
-  
-  gsap.to(".transition2 div", {
-    duration: 1,
-    opacity: 0,
-    yPercent:50,
-    top:"50%",
-    
 
-    
-  });
+  function pageintr2(){
+    var tl2 = gsap.timeline();
+    tl2.to(".transition2 div", {
+      duration: 1,
+      opacity: 0,
+      yPercent:50,
+      top:"50%"}).set(".transition2 div", {display: 'none'});
+      return tl2;
+  }
 
-  
+  pageintr2();
   
 }
 
@@ -94,7 +102,6 @@ function contentAnimation() {
       translateY: 50,
       opacity: 0,
   });
-
   tl.to(
       "img",
       {
@@ -103,7 +110,6 @@ function contentAnimation() {
       "-=.1"
   );
 }
-
 */
 
 
@@ -138,5 +144,3 @@ barba.init({
       },
   ],
 });
-
-

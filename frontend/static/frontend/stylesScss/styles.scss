@@ -112,15 +112,17 @@ a:visited, a:link, a:hover, a:active {
 }
 
 .transition2 div {
-    
+
     position: relative;
     bottom: -100%;
     opacity: 0;
+    display: none;
     width: 0;
     height: 0;
     border-style: solid;
     border-width: 0 12vw 120vh 12vw;
     border-color: transparent transparent black transparent;
+
 
 }
 
