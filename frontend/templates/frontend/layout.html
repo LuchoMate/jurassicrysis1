@@ -20,20 +20,20 @@
 
           {% if user.is_authenticated %}
           
-          <div>
-            <a href="#">
-              <img src="https://picsum.photos/200" alt="" class="profileimg">
-              {{user.username}}
-            </a>
-          </div>
-          
+            <div>
+              <a href="#" class="chewyfont">
+                <img src="https://picsum.photos/200" alt="" class="profileimg">
+                {{user.username}}
+              </a>
+              <span class="marginright">&#128178; {{user.dinocoins}}</span>
+            </div>
+            
+            <div class="caesarfont" style="font-size: x-large;">Jurassicrysis</div>
+            <a href="{% url 'logout' %}" class="w3-bar-item w3-button stopBarba"><i class="fa fa-power-off" style="font-size: xx-large;"></i></a>
 
-          <div class="caesarfont" style="font-size: x-large;">Jurassicrysis</div>
-
-          <div class="marginright">&#128178; {{user.dinocoins}}</div>
           {% else %}
-          <div>Not logged in.</div>
-          <div class="caesarfont" style="font-size: x-large;">Jurassicrysis</div>
+            <a href="{% url 'login' %}" class="w3-bar-item w3-button"><i class="fa fa-sign-in" style="font-size: xx-large;"></i></a>
+            <div class="caesarfont marginright" style="font-size: x-large;">Jurassicrysis</div>
           {% endif %}
 
         </div>
@@ -45,7 +45,7 @@
           
           <div class="w3-dropdown-click w3-black w3-mobile">
             <a href="#" class="w3-hide-small" onclick="cardFunction()"><li>Collection <i class="fa fa-caret-down"></i></li></a>
-            <div id="cardDrop" class="w3-dropdown-content w3-bar-block w3-card w3-black">
+            <div id="cardDrop" class="w3-dropdown-content w3-bar-block w3-card w3-black w3-animate-zoom">
           
               <a href="{% url 'mycollection' %}" onclick="closedropdown()" class="w3-bar-item w3-button w3-mobile ">My Collection</a>
               <a href="{% url 'deckmanager' %}" onclick="closedropdown()" class="w3-bar-item w3-button w3-mobile ">Deck Manager</a>
@@ -56,7 +56,7 @@
 
           <div class="w3-dropdown-click w3-black w3-mobile">
             <a href="#" class="w3-hide-small" onclick="socialFunction()"><li>Social <i class="fa fa-caret-down"></i></li></a>
-            <div id="socialDrop" class="w3-dropdown-content w3-bar-block w3-card w3-black">
+            <div id="socialDrop" class="w3-dropdown-content w3-bar-block w3-card w3-black w3-animate-zoom">
           
               <a href="{% url 'trader' %}" onclick="closedropdown()" class="w3-bar-item w3-button w3-mobile ">Trade Cards</a>
               <a href="{% url 'leaderboards' %}" onclick="closedropdown()" class="w3-bar-item w3-button w3-mobile">Leaderboards</a>
@@ -66,45 +66,27 @@
             </div>
           </div>
 
-          
-          {% if user.is_authenticated %}
-            <a href="{% url 'logout' %}" onclick="closedropdown()" class="w3-hide-small w3-mobile stopBarba"><li>Logout</li></a>
-          {% else %}
-            <a href="{% url 'login' %}" onclick="closedropdown()" class="w3-hide-small w3-mobile"><li>Login</li></a>
-          {% endif %}
-
-          <a href="javascript:void(0)" class="w3-bar-item w3-button w3-right w3-hide-large w3-hide-medium" onclick="myFunction()">&#9776;</a>
+          <!--Responsive menu button-->
+          <a href="javascript:void(0)" class="w3-bar-item w3-button w3-right w3-hide-large w3-hide-medium" onclick="respMenu()">&#9776;</a>
 
         </ul>
 
         <div id="responsiveButton" class="w3-bar-block w3-black w3-hide w3-hide-large center">
-          <a href="{% url 'play' %}"  ><li>Play</li></a>
-          <a href="{% url 'index' %}" ><li>Home</li></a>
-          <a href="{% url 'shop' %}" ><li>Shop</li></a>
-          <div class="w3-dropdown-click w3-black">
-            <a href="#" onclick="cardFunction()"><li>Collection <i class="fa fa-caret-down"></i></li></a>
-            <div id="cardDrop" class="w3-dropdown-content w3-bar-block w3-card w3-black">
-          
-              <a href="{% url 'mycollection' %}" class="w3-bar-item w3-button ">My Collection</a>
-              <a href="{% url 'deckmanager' %}" class="w3-bar-item w3-button ">Deck Manager</a>
-              <a href="#" class="w3-bar-item w3-button ">Link 3</a>
-            </div>
-          </div>
-
-          <a href="#"><li>Social</li></a>
-          {% if user.is_authenticated %}
-            <a href="{% url 'logout' %}" ><li>Logout</li></a>
-          {% else %}
-            <a href="{% url 'login' %}" ><li>Login</li></a>
-          {% endif %}
-
+          <a href="{% url 'play' %}" class="stopBarba" ><li>Play</li></a>
+          <a href="{% url 'index' %}" onclick="respMenu()" ><li>Home</li></a>
+          <a href="{% url 'shop' %}"  onclick="respMenu()"><li>Shop</li></a>
+          <a href="{% url 'mycollection' %}"  onclick="respMenu()"><li>My Collection</li></a>
+          <a href="{% url 'deckmanager' %}"  onclick="respMenu()"><li>Deck Manager</li></a>
+          <a href="{% url 'database' %}"  onclick="respMenu()"><li>Database</li></a>
+          <a href="{% url 'trader' %}"  onclick="respMenu()"><li>Trade Cards</li></a>
+          <a href="{% url 'leaderboards' %}"  onclick="respMenu()"><li>Leaderboards</li></a>
         </div>
 
       </div> <!--div bgrblack-->
 
       <script src="{% static 'frontend/dropdownmenu/dropdown.js' %}"></script>
 
-        
+      <!-- Transition Upper arch-->
       <div class="transition1">
         <div id="teeth1"></div>
         <div></div>
@@ -113,7 +95,8 @@
         <div></div>
         <div></div>
       </div>
-
+      
+      <!-- Transition Lower arch-->
       <div class="transition2">
         <div class="tr2div"></div>
         <div class="tr2div"></div>

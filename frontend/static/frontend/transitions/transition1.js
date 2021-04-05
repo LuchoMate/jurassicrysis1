@@ -17,6 +17,8 @@ barba.init({
   });
   */
 
+  /* 
+
   function pageTransition() {
     var tl = gsap.timeline();
 
@@ -36,9 +38,9 @@ barba.init({
     });
 }
 
-function pageOut(){
+*/
 
-  
+function pageOut(){
 
   gsap.to(".transition1 div", {
     opacity: 1,
@@ -55,16 +57,11 @@ function pageOut(){
       opacity: 1,
       duration: 1,
       yPercent:-50,
-      top:"50%",
-      
-      
     });
     return tl;
   }
 
   pageouttr2();
-
-  
 
 }
 
@@ -126,6 +123,7 @@ function delay(n) {
 barba.init({
   sync: true,
   prevent: data => data.el.classList.contains('stopBarba'),
+  preventRunning: true,
 
   transitions: [
       {
