@@ -4,6 +4,7 @@ from rest_framework.permissions import IsAuthenticated
 from .models import Player, Card, Collection
 from .serializers import coll_serializer
 from rest_framework.response import Response
+import random
 
 #get logged user card's collection
 @api_view(['GET'])
@@ -27,19 +28,24 @@ def api_player_deck(request):
     return Response(serializer.data)
 
 
-#get logged user's deck shuffled and ready to play
+#get logged user's shuffled deck
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def api_shuffled_deck(request):
-    pass
+    
+    player = Player.objects.get(username=request.user)
+    query = player.player_cards.all()
+    prev_deck = query.filter(on_deck__gte=1)
 
-    ##player = Player.objects.get(username=request.user)
-    ##query = player.player_cards.all()
-    ##prev_deck = query.filter(on_deck__gte=1)
-
-    ##deck = {}
-    ##for card in prev_deck:
-        #deck.append("card_id"_ card.id)
+    deck = []
+    for card in prev_deck:
+        deck.append(card.Card_collected.id)
+        if card.on_deck > 1 :
+            deck.append(card.Card_collected.id)
+    random.shuffle(deck)
+    shuffled = {"shuffled": deck}
+    return Response(shuffled)
+        
 
 
 

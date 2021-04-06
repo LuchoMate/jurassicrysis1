@@ -34,27 +34,9 @@
     font-family: 'Caesar Dressing', cursive;
 }
 
-$navbar-color: #ebebeb;
 
-.navbarcolor {
-    color: $navbar-color;
-}
 
-.bannerdiv {
-    display: flex; 
-    flex-wrap: nowrap; 
-    flex-direction: row; 
-    justify-content: space-between;
-    align-items: center;
-}
-
-a:visited, a:link, a:hover, a:active {
-    color: honeydew;
-    text-decoration: none;
-
-}
-
-/*--------Transition-------- */
+/*--------Layout Transition-------- */
 
 .transition1 {
     position: absolute;
@@ -82,8 +64,6 @@ a:visited, a:link, a:hover, a:active {
     border-color: black transparent transparent transparent;
   }
 
-  /*border-width: 120vh 12vw 0 0; */
-
 .transition1 div {
     
     position: relative;
@@ -96,7 +76,6 @@ a:visited, a:link, a:hover, a:active {
     border-color: black transparent transparent transparent;
 
 }
-
 
 .transition2 {
     position: absolute;
@@ -127,10 +106,56 @@ a:visited, a:link, a:hover, a:active {
 
 
 }
+/*-------------------*/
 
-/*End of transition css */
+/* -------Play page transition*---------*/
 
-      
+.plytransition{
+    position: absolute;
+    z-index: 99;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    width: 100%;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    margin: 0;
+    padding: 0;
+    pointer-events: none;
+}
+
+.plytransition div {
+    width: 100%;
+    -webkit-transform: scaleY(1);
+          transform: scaleY(1);
+    background: black;
+}
+
+/* -----------------------------*/
+
+/* Layout css*/
+
+$navbar-color: #ebebeb;
+
+.navbarcolor {
+    color: $navbar-color;
+}
+
+.bannerdiv {
+    display: flex; 
+    flex-wrap: nowrap; 
+    flex-direction: row; 
+    justify-content: space-between;
+    align-items: center;
+}
+
+a:visited, a:link, a:hover, a:active {
+    color: honeydew;
+    text-decoration: none;
+
+}
+  
 .blackTransparent{
     background-color: rgba(0, 0, 0, .5);   
 }
@@ -174,10 +199,8 @@ a:visited, a:link, a:hover, a:active {
     color: $navbar-color;
     position: relative;
     
-
 }
 
-/* Navbar buttons obtained from https://codepen.io */
 * {
 	list-style-type: none;
     font-family: "Trebuchet MS", Helvetica, sans-serif;
@@ -235,10 +258,6 @@ li:active {
   }
 }
 
-
-/*------------------------- */
-
-
 .bgrImage{
     background-image: url('images/wallpaper/wallpaper1.jpg'); 
     background-repeat: no-repeat;
@@ -252,6 +271,8 @@ li:active {
 h6 {
     color: gold;
 }
+
+/* -----------Play page------------- */
 
 .maindiv {
     border: 3px solid red;
@@ -269,6 +290,11 @@ h6 {
 
 .position {
     position: absolute;
+}
+
+.quitdiv{
+    top: 1%;
+    left: 1%;
 }
 
 .opphand {
@@ -300,7 +326,7 @@ h6 {
     left: 5%;
 }
 
-.card {
+.cardplayed {
     height: 18vh; 
     width: 6vw; 
     margin: 5px;
@@ -352,3 +378,5 @@ h6 {
     bottom: 2%;
     left:25%
 }
+
+/*------------------------- */
