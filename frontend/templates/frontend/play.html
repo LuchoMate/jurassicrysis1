@@ -12,12 +12,12 @@
 
     </head>
     <body>
-        <div id='main div' class="maindiv">
+        <div id="boarddiv" class="maindiv">
 
          <!-- <div id = 'root'></div>-->
 
-        <div class="position quitdiv btn btn-outline-danger btn-sm" onclick="redirectHome()">Quit</div>
-            <div id="opp_hand" class='border position opphand'>
+            <div class="position quitdiv btn btn-outline-danger btn-sm" onclick="redirectHome()">Quit</div>
+                <div id="opp_hand" class='border position opphand'>
 
             </div>
             <div id='opp_eggs'  class='border position oppeggs'>
@@ -84,6 +84,25 @@
         <div class="plytransition">
             <div><div class="caesarfont flexcontainer" style="font-size: 30vh; color: burlywood;">Jurassicrysis</div></div>
         </div>
+
+        <div class="difficultypage flexcontainer aligncenter">
+            <div id="difficultybox">
+                <div class="caesarfont navbarcolor font10vh glow">Choose difficulty</div>
+                <div class="flexcontainer fl_spacearound">
+                    <div class="buttondifficulty pulse" onclick="difficultyOut()">Easy</div>
+                    <div class="buttondifficulty pulse" onclick="difficultyOut()">Medium</div>
+                    <div class="buttondifficulty pulse" onclick="difficultyOut()">Hard</div>
+                </div>
+            </div>
+
+            <!--
+            <div id="rps">
+                <div class="caesarfont navbarcolor font10vh">Who plays first?</div>
+            </div>
+            -->
+        </div>
+
+        
 
         <script src="{% static 'frontend/play/main.js' %}"></script>
         
