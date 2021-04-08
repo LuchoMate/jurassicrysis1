@@ -172,6 +172,14 @@ a:visited, a:link, a:hover, a:active {
     margin-right: 10px;
 }
 
+.margintop{
+    margin-top: 10px;
+}
+
+.margin10 {
+    margin: 10px;
+}
+
 .center {
     text-align: center;
 }
@@ -282,6 +290,10 @@ h6 {
 
 .font10vh {
     font-size: 10vh;
+}
+
+.font5vh {
+    font-size: 5vh;
 }
 
 @keyframes glow {
@@ -409,6 +421,64 @@ h6 {
     display: grid;
     grid-template-columns: auto auto auto auto auto;
 }
+
+.overhidden {
+    overflow: hidden;
+}
+
+.rpsCard {
+    background: linear-gradient(45deg, crimson, DarkSlateGray);
+    box-shadow: 2px 3px antiquewhite;
+    border-radius: 20px;
+    padding: 5px;
+    cursor: pointer;
+    height: 20vh;
+    transition: 100ms;
+}
+
+.rpsCard:hover {
+    transform: scale(1.2);
+}
+
+.rpsCardOpp {
+    height: 20vh;
+    width: 20vh;
+    padding: 5px;
+    border-radius: 20px;
+    background: antiquewhite;
+}
+
+.rpsImg {
+    max-width: 100%;
+    max-height: 100%;
+    transform: rotate(-90deg);
+
+}
+
+.rpsImgOpp {
+    max-width: 100%;
+    max-height: 100%;
+    
+}
+
+.rotate90 {
+    transform: rotate(90deg);
+}
+
+@keyframes opacitypulse {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.opacityAnim {
+    animation: opacitypulse 1s ease-in-out infinite alternate;
+  }
+
 
 .textalign {
     text-align: center;
