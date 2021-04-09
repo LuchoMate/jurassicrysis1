@@ -6,14 +6,12 @@
 function checkHeight(){
     let orientationdev = window.matchMedia("(orientation: portrait)");
     if (orientationdev.matches){
-        console.log("Orientacion portrait");
         document.getElementById("heightCheck").style.display = "block";
         document.getElementById("heightButton").disabled = true;
         return true;
     }
 
     else {
-        console.log("Orientacion landscape");
         document.getElementById("heightButton").disabled = false;
         return false;
     }
@@ -79,7 +77,7 @@ function pageIn() {
     });
 
 }
-
+/* Animated background*/
 function difficultybg() {
     var tl = gsap.timeline({repeat:-1});
     tl.to(".difficultypage", {
@@ -149,9 +147,9 @@ function hideOthers(chosen){
     decisionRPS.forEach(decision => {
         if(decision.dataset.rpschoice != chosen.name){
             document.querySelector(`[data-rpschoice=${decision.dataset.rpschoice}]`).style.visibility='hidden';
+            
         }
     })
-
 }
 
 function checkRPSWinner(selection){
@@ -177,8 +175,23 @@ function checkRPSWinner(selection){
     else {
         displayCpuChoice(CPUchoice.name);
         console.log("DRAW");
-        document.getElementById("rpstitle").innerHTML="DRAW! Choose again!";
-        document.getElementById("rpsImgDiv").classList.add("opacityAnim");
+        document.getElementById("rpstitle").innerHTML="DRAW!";
+        document.getElementById("chooseOneDiv").innerHTML="";
+        document.getElementById("rps").style.pointerEvents ='none';
+       
+        setTimeout(function(){ 
+            document.getElementById("rps").style.pointerEvents ='auto';
+            document.getElementById("rpsOppImg").src = "/static/frontend/images/icons/qmark.png";
+            document.getElementById("rpsImgDiv").classList.add("opacityAnim");
+            document.getElementById("rpsOppImg").classList.remove("rotate90");
+            document.getElementById("rpstitle").innerHTML="Choose again!";
+            document.getElementById("chooseOneDiv").innerHTML="Choose one!";
+        }, 2000);
+
+        decisionRPS.forEach(element => {
+            gsap.to(`[data-rpschoice=${element.dataset.rpschoice}]`, {visibility: 'visible', delay: 2});
+            
+        })
 
     }
 }
@@ -215,10 +228,13 @@ function displayCpuChoice(cpuchoice){
 
 /*-------------- */
 
-/* On loading page functions*/
+/* ----On page load functions-----*/
 
 difficultybg();
 pageIn();
+
+/*------------------ */
+
 
 /*---------Quit button--------*/
 function pageOut() {
