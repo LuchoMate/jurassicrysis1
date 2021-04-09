@@ -135,10 +135,24 @@ const decisionRPS = document.querySelectorAll('[data-rpschoice]');
 decisionRPS.forEach(decision => {
     decision.addEventListener('click', e => {
         const thisRPS = decision.dataset.rpschoice;
+        console.log(`this RPS = ${thisRPS}`)
         const mychoice = RPSlogic.find(choice => choice.name == thisRPS);
+        const otherchoices = RPSlogic.filter((rps) => {
+            return rps.name != mychoice.name
+        } )
+        hideOthers(mychoice);
         checkRPSWinner(mychoice);
     })
 })
+
+function hideOthers(chosen){
+    decisionRPS.forEach(decision => {
+        if(decision.dataset.rpschoice != chosen.name){
+            document.querySelector(`[data-rpschoice=${decision.dataset.rpschoice}]`).style.visibility='hidden';
+        }
+    })
+
+}
 
 function checkRPSWinner(selection){
     
@@ -148,12 +162,16 @@ function checkRPSWinner(selection){
         console.log("YOU WIN");
         document.getElementById("rpstitle").innerHTML="YOU WIN";
         document.getElementById("rps").style.pointerEvents = 'none';
+        document.getElementById("chooseOneDiv").innerHTML="";
+
+
     }
     else if (CPUchoice.beats == selection.name) {
         displayCpuChoice(CPUchoice.name);
         console.log("YOU LOSE");
         document.getElementById("rpstitle").innerHTML="YOU LOSE";
         document.getElementById("rps").style.pointerEvents = 'none';
+        document.getElementById("chooseOneDiv").innerHTML="";
     }
 
     else {

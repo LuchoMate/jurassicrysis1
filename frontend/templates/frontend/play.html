@@ -87,23 +87,23 @@
 
         <div class="difficultypage flexcontainer aligncenter overhidden">
 
-            <div id="heightCheck" class="flexcontainer aligncenter position" style="display: none; width: 70vw;">
+            <div id="heightCheck" class="flexcontainer aligncenter position glassdiv" style="display: none; width: 70vw;">
                 <div class="navbarcolor flexcontainer aligncenter textalign"><h2 class="pangolinfont">For an optimal experience, please flip your device horizontally.</h2> </div>
                 <div class="flexcontainer aligncenter"><button id="heightButton" onclick="acceptHeight()" type="button" class="btn btn-success btn-lg" disabled>Continue</button></div>
             </div>
 
-            <div id="difficultybox" class="flexcontainer aligncenter position" style="display: none;">
+            <div id="difficultybox" class="flexcontainer aligncenter position padding10 glassdiv" style="display: none;">
                 <div class="caesarfont navbarcolor font10vh glow textalign">Choose difficulty</div>
                 <div class="flexcontainer fl_spacearound">
-                    <div class="buttondifficulty pulse" onclick="difficultyOut('easy')">Easy</div>
-                    <div class="buttondifficulty pulse" onclick="difficultyOut()">Medium</div>
-                    <div class="buttondifficulty pulse" onclick="difficultyOut()">Hard</div>
+                    <div class="buttondifficulty pulse margin10" onclick="difficultyOut('easy')">Easy</div>
+                    <div class="buttondifficulty pulse margin10" onclick="difficultyOut()">Medium</div>
+                    <div class="buttondifficulty pulse margin10" onclick="difficultyOut()">Hard</div>
                 </div>
                 <div class="textalign aligncenter pangolinfont navbarcolor margintop">The higher the difficulty, the higher the rewards!</div>
             </div>
 
             
-            <div id="rps" class="flexcontainer aligncenter position textalign" style="display: none;">
+            <div id="rps" class="flexcontainer aligncenter position textalign glassdiv padding10" style="display: none;">
                 <div id="rpstitle" class="caesarfont navbarcolor font10vh flexcontainer aligncenter glow">Who goes first?</div>
                 <div class="textalign aligncenter font5vh navbarcolor pangolinfont">Opponent</div>
                 <div class="flexcontainer aligncenter">
@@ -112,11 +112,11 @@
                 
                 <div id="separator" style="color: antiquewhite;">--------------</div>
                 <div class="flexcontainer aligncenter">
-                    <div class="rpsCard margin10 flexcontainer aligncenter" data-rpschoice="rock"><img class="rpsImg" src="{% static 'frontend/images/icons/rock.png' %}" alt=""></div>
-                    <div class="rpsCard margin10 flexcontainer aligncenter" data-rpschoice="paper"><img class="rpsImg" src="{% static 'frontend/images/icons/paper.png' %}" alt=""></div>
-                    <div class="rpsCard margin10 flexcontainer aligncenter" data-rpschoice="scissors"><img class="rpsImg" src="{% static 'frontend/images/icons/scissors.png' %}" alt=""></div>
+                    <div id="rpscardrock" class="rpsCard margin10 flexcontainer aligncenter" data-rpschoice="rock"><img class="rpsImg" src="{% static 'frontend/images/icons/rock.png' %}" alt=""></div>
+                    <div id="rpscardpaper" class="rpsCard margin10 flexcontainer aligncenter" data-rpschoice="paper"><img class="rpsImg" src="{% static 'frontend/images/icons/paper.png' %}" alt=""></div>
+                    <div id="rpscarscissors" class="rpsCard margin10 flexcontainer aligncenter" data-rpschoice="scissors"><img class="rpsImg" src="{% static 'frontend/images/icons/scissors.png' %}" alt=""></div>
                 </div>
-                <div class="textalign aligncenter font5vh navbarcolor pangolinfont">Choose one!</div>
+                <div id="chooseOneDiv" class="textalign aligncenter font5vh navbarcolor pangolinfont">Choose one!</div>
             </div>
             
         </div>
