@@ -17,9 +17,7 @@
          <!-- <div id = 'root'></div>-->
 
             <div class="position quitdiv btn btn-outline-danger btn-sm" onclick="redirectHome()">Quit</div>
-                <div id="opp_hand" class='border position opphand'>
-
-            </div>
+            <div id="opp_hand" class='border position opphand'></div>
             <div id='opp_eggs'  class='border position oppeggs'>
 
                 <div class="border textalign">1</div>
@@ -81,50 +79,11 @@
                 
         </div>
 
-        <div class="plytransition">
-            <div><div class="caesarfont flexcontainer" style="font-size: 10vh; color: burlywood;">Jurassicrysis</div></div>
-        </div>
-
-        <div class="difficultypage flexcontainer aligncenter overhidden">
-
-            <div id="heightCheck" class="flexcontainer aligncenter position glassdiv" style="display: none; width: 70vw;">
-                <div class="navbarcolor flexcontainer aligncenter textalign"><h2 class="pangolinfont">For an optimal experience, please flip your device horizontally.</h2> </div>
-                <div class="flexcontainer aligncenter"><button id="heightButton" onclick="acceptHeight()" type="button" class="btn btn-success btn-lg" disabled>Continue</button></div>
-            </div>
-
-            <div id="difficultybox" class="flexcontainer aligncenter position padding10 glassdiv" style="display: none;">
-                <div class="caesarfont navbarcolor font10vh glow textalign">Choose difficulty</div>
-                <div class="flexcontainer fl_spacearound">
-                    <div class="buttondifficulty pulse margin10" onclick="difficultyOut('easy')">Easy</div>
-                    <div class="buttondifficulty pulse margin10" onclick="difficultyOut()">Medium</div>
-                    <div class="buttondifficulty pulse margin10" onclick="difficultyOut()">Hard</div>
-                </div>
-                <div class="textalign aligncenter pangolinfont navbarcolor margintop">The higher the difficulty, the higher the rewards!</div>
-            </div>
-
-            
-            <div id="rps" class="flexcontainer aligncenter position textalign glassdiv padding10" style="display: none;">
-                <div id="rpstitle" class="caesarfont navbarcolor font10vh flexcontainer aligncenter glow">Who goes first?</div>
-                <div class="textalign aligncenter font5vh navbarcolor pangolinfont">Opponent</div>
-                <div class="flexcontainer aligncenter">
-                    <div id ="rpsImgDiv" class="rpsCardOpp margin10 flexcontainer aligncenter opacityAnim"><img id="rpsOppImg" class="rpsImgOpp" src="{% static 'frontend/images/icons/qmark.png' %}" alt=""></div>
-                </div>
-                
-                <div id="separator" style="border-top: 1px solid antiquewhite; width: 100%;"></div>
-                <div class="flexcontainer aligncenter">
-                    <div class="rpsCard margin10 flexcontainer aligncenter" data-rpschoice="rock"><img class="rpsImg" src="{% static 'frontend/images/icons/rock.png' %}" alt=""></div>
-                    <div class="rpsCard margin10 flexcontainer aligncenter" data-rpschoice="paper"><img class="rpsImg" src="{% static 'frontend/images/icons/paper.png' %}" alt=""></div>
-                    <div class="rpsCard margin10 flexcontainer aligncenter" data-rpschoice="scissors"><img class="rpsImg" src="{% static 'frontend/images/icons/scissors.png' %}" alt=""></div>
-                </div>
-                <div id="chooseOneDiv" class="textalign aligncenter font5vh navbarcolor pangolinfont">Choose one!</div>
-            </div>
-            
-        </div>
+        
 
         <script src="{% static 'frontend/play/main.js' %}"></script>
         
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.6.1/gsap.min.js"></script>
-        <script src="{% static 'frontend/transitions/playtransition.js' %}"></script>
         
     </body>
 </html>

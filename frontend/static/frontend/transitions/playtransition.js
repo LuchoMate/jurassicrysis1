@@ -158,18 +158,20 @@ function checkRPSWinner(selection){
     if (selection.beats == CPUchoice.name){
         displayCpuChoice(CPUchoice.name);
         console.log("YOU WIN");
-        document.getElementById("rpstitle").innerHTML="YOU WIN";
+        document.getElementById("rpstitle").innerHTML="YOU WIN!";
         document.getElementById("rps").style.pointerEvents = 'none';
         document.getElementById("chooseOneDiv").innerHTML="";
+        boardIn();
 
 
     }
     else if (CPUchoice.beats == selection.name) {
         displayCpuChoice(CPUchoice.name);
         console.log("YOU LOSE");
-        document.getElementById("rpstitle").innerHTML="YOU LOSE";
+        document.getElementById("rpstitle").innerHTML="YOU LOSE!";
         document.getElementById("rps").style.pointerEvents = 'none';
         document.getElementById("chooseOneDiv").innerHTML="";
+        boardIn();
     }
 
     else {
@@ -184,7 +186,7 @@ function checkRPSWinner(selection){
             document.getElementById("rpsOppImg").src = "/static/frontend/images/icons/qmark.png";
             document.getElementById("rpsImgDiv").classList.add("opacityAnim");
             document.getElementById("rpsOppImg").classList.remove("rotate90");
-            document.getElementById("rpstitle").innerHTML="Choose again!";
+            document.getElementById("rpstitle").innerHTML="Try again!";
             document.getElementById("chooseOneDiv").innerHTML="Choose one!";
         }, 2000);
 
@@ -227,6 +229,29 @@ function displayCpuChoice(cpuchoice){
 }
 
 /*-------------- */
+
+/* ----Takes out rps and shows board------*/
+
+function boardIn(){
+    var tl = gsap.timeline();
+    tl.to("#rps", {
+        delay: 2.5,
+        duration: 1,
+        y: 400,
+        opacity: 0
+    })
+    tl.set("#rps", {
+        display: 'none'
+    })
+    tl.to(".difficultypage", {
+        delay: 1,
+        scaleY: 0,
+        duration: 1,
+    })
+    tl.set(".difficultypage", {
+        display: 'none'
+    });
+}
 
 /* ----On page load functions-----*/
 
