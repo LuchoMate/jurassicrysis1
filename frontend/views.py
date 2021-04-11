@@ -36,6 +36,9 @@ def leaderboards(request):
 def database(request):
     return render(request, "frontend/database.html")
 
+def devbox(request):
+    return render(request, "frontend/devbox.html")
+
 def register(request):
     if request.method == "POST":
         username = request.POST["username"]

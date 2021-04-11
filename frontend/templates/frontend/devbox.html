@@ -12,7 +12,7 @@
 
     </head>
     <body>
-        <div id="boarddiv" class="maindiv bgrImage">
+        <div id="boarddiv" class="maindiv">
 
          <!-- <div id = 'root'></div>-->
 
@@ -32,42 +32,42 @@
                 <div class="border textalign">9</div>
 
             </div>
+            <div class="ingameBoard forestbg">
+                    <div id="opp_event" class="position border singlecardbox oppeventbox persp100">
+                        <div  class="border cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
+                    </div>
 
-            <div id="opp_event" class="position border singlecardbox oppeventbox">
-                <div  class="border cardplayed"></div>
-            </div>
+                    <div id ='opp_board' class="border position oppboard perspTop">
+                        <div  class="border cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
+                        <div  class="border cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
+                        <div  class="border cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
+                        <div  class="border cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
+                        <div  class="border cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
+                        <div  class="border cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
+                    </div>
 
-            <div id ='opp_board' class="border position oppboard">
-                <div  class="border cardplayed"></div>
-                <div  class="border cardplayed"></div>
-                <div  class="border cardplayed"></div>
-                <div  class="border cardplayed"></div>
-                <div  class="border cardplayed"></div>
-                <div  class="border cardplayed"></div>
-                <div  class="border cardplayed"></div>
+                    <div id="opp_deck" class="border position oppdeck persp_100">
+                        <div  class="border cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
+                    </div>
 
-            </div>
+                    <div id='middle line'
+                            style="border-top: 1px solid white; position: absolute; top: 50%; width: 100%;">
+                    </div>
 
-            <div id="opp_deck" class="border position oppdeck">
-                <div class="border cardplayed"></div>
-            </div>
+                    <div id="ply_event" class="border position plyevent persp100">
+                        <div  class="border cardplayed transform10"></div>
+                    </div>
 
-            <div id='middle line'
-                    style="border-top: 1px solid white; position: absolute; top: 50%; width: 100%;">
-            </div>
+                    <div id ='ply_board' class="position border plyboard perspTop">
+                        <div  class="border cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
+                        <div  class="border cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
+                        <div  class="border cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
+                    </div>
 
-            <div id="ply_event" class="border position plyevent">
-                <div  class="border cardplayed"></div>
-            </div>
+                    <div id="ply_deck" class="border position plydeck persp_100">
+                        <div  class="border cardplayed transform10"></div>
+                    </div>
 
-            <div id ='ply_board' class="position border plyboard">
-                <div  class="border cardplayed"></div>
-                <div  class="border cardplayed"></div>
-                <div  class="border cardplayed"></div>
-            </div>
-
-            <div id="ply_deck" class="border position plydeck">
-                <div  class="border cardplayed"></div>
             </div>
 
             <div id='ply_eggs' class="border position plyeggs">
@@ -79,7 +79,13 @@
                 
         </div>
 
-        
+        <div class="background" style="z-index: -10;">
+            <span><img src="{% static 'frontend/images/animated/ptero1.gif' %}" alt="ptero1" style="transform: rotate(90deg);"></span><!--abajo der-->
+            <span><img src="{% static 'frontend/images/animated/ptero2.gif' %}" alt="ptero2" style="transform: rotate(270deg);"></span><!--ab izq-->
+            <span><img src="{% static 'frontend/images/animated/ptero3.gif' %}" alt="ptero3" style="transform: rotate(180deg); transform: scaleX(-1);"></span><!--arriba-->
+            <span>444444</span>
+            
+        </div>
 
         <script src="{% static 'frontend/play/main.js' %}"></script>
         

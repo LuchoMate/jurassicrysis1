@@ -13,4 +13,5 @@ urlpatterns = [
     path("trader", views.trader, name="trader"),
     path("leaderboards", views.leaderboards, name="leaderboards"),
     path("database", views.database, name="database"),
+    path("devbox", views.devbox, name="devbox"),
 ]
