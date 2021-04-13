@@ -4,6 +4,7 @@ from rest_framework.permissions import IsAuthenticated
 from .models import Player, Card, Collection
 from .serializers import coll_serializer
 from rest_framework.response import Response
+from rest_framework import status
 import random
 
 #get logged user card's collection
@@ -48,10 +49,24 @@ def api_shuffled_deck(request):
 
 #get opponents shuffled deck
 @api_view(['GET'])
-def api_opp_deck(request):
-    deck = [3,3,5,5,6,6,18,18,19,19,34,34,35,35,51,51,52,52,53,53]
-    random.shuffle(deck)
-    shuffled = {"shuffled": deck}
+def api_opp_deck(request, difficulty):
+
+    if difficulty == "easy":
+        deck = [3,3,5,5,6,6,18,18,19,19,34,34,35,35,51,51,52,52,53,53]
+        random.shuffle(deck)
+        shuffled = {"shuffled": deck}
+    elif difficulty == "medium":
+        deck = [3,3,5,5,6,6,18,18,19,19,34,34,35,35,51,51,52,52,53,53]
+        random.shuffle(deck)
+        shuffled = {"shuffled": deck}
+    elif difficulty == "hard":
+        deck = [3,3,5,5,6,6,18,18,19,19,34,34,35,35,51,51,52,52,53,53]
+        random.shuffle(deck)
+        shuffled = {"shuffled": deck}
+    else:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    
     return Response(shuffled)
 
     

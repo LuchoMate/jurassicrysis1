@@ -1,5 +1,9 @@
+/* import {startGame} from '../../../src/startgame.js';*/
+
 /* These functions handle transitions, difficulty and rock paper scissors game*/
 
+let difficultyChoice = "";
+let whoplaysfirst = "";
 
 /* ----Checks device's orientation------*/
 
@@ -90,9 +94,22 @@ function difficultybg() {
 
 /* Takes off difficulty page and enters rock paper scissors*/
 function difficultyOut(difficulty) {
-    if (difficulty){
-        console.log("EASY");
+    
+    switch(difficulty){
+        case 'easy':
+            difficultyChoice = difficulty;
+            console.log(difficultyChoice);
+            break;
+        case 'medium':
+            difficultyChoice = difficulty;
+            console.log(difficultyChoice);
+            break;
+        case 'hard':
+            difficultyChoice = difficulty;
+            console.log(difficultyChoice);
+            break;
     }
+
     var tl = gsap.timeline();
     tl.to("#difficultybox", {
         duration: 1,
@@ -133,7 +150,6 @@ const decisionRPS = document.querySelectorAll('[data-rpschoice]');
 decisionRPS.forEach(decision => {
     decision.addEventListener('click', e => {
         const thisRPS = decision.dataset.rpschoice;
-        console.log(`this RPS = ${thisRPS}`)
         const mychoice = RPSlogic.find(choice => choice.name == thisRPS);
         const otherchoices = RPSlogic.filter((rps) => {
             return rps.name != mychoice.name
@@ -158,6 +174,8 @@ function checkRPSWinner(selection){
     if (selection.beats == CPUchoice.name){
         displayCpuChoice(CPUchoice.name);
         console.log("YOU WIN");
+        whoplaysfirst = "ply";
+
         document.getElementById("rpstitle").innerHTML="YOU WIN!";
         document.getElementById("rps").style.pointerEvents = 'none';
         document.getElementById("chooseOneDiv").innerHTML="";
@@ -168,6 +186,8 @@ function checkRPSWinner(selection){
     else if (CPUchoice.beats == selection.name) {
         displayCpuChoice(CPUchoice.name);
         console.log("YOU LOSE");
+        whoplaysfirst = "opp";
+
         document.getElementById("rpstitle").innerHTML="YOU LOSE!";
         document.getElementById("rps").style.pointerEvents = 'none';
         document.getElementById("chooseOneDiv").innerHTML="";
@@ -240,7 +260,7 @@ function removeElement(element) {
     };
   }
 
-/* ----Takes out rps and shows board------*/
+/* ----Takes out rps and start game------*/
 
 function boardIn(){
     var tl = gsap.timeline();
@@ -265,7 +285,9 @@ function boardIn(){
     .from("#ply_eggs", {delay: 0.2, duration: 1, x: -1000, ease: "back.out(0.3)"})
     .from(".plyeggsCount", {duration: 1, opacity: 0})
     .from("#opp_eggs", {duration: 1, x: 2000, ease: "back.out(0.3)" })
-    .from("#gameboard", {duration: 2, y: -1000, ease: "back.out(1.7)"});
+    .from("#gameboard", {duration: 2, y: -1000, ease: "bounce.out"});
+    /* .call(startGame(difficultyChoice, whoplaysfirst));*/
+
 }
 
 /* ----On page load functions-----*/
