@@ -11,83 +11,85 @@
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
     </head>
-    <body>
-        <div id="boarddiv" class="maindiv bgrImage">
+    <body class="overhidden">
+        <div id="boarddiv" class="maindiv">
 
-         <!-- <div id = 'root'></div>-->
+            <!-- <div id = 'root'></div>-->
 
             <div class="position quitdiv btn btn-outline-danger btn-sm" onclick="redirectHome()">Quit</div>
-                <div id="opp_hand" class='border position opphand'>
+            <div id="opp_hand" class='border position opphand'></div>
+            <div id='opp_eggs'  class='position oppeggs'>
+
+                <div class="textalign blackTransparent"><img src="{% static 'frontend/images/eggs/opp_egg.png' %}" alt="" class="height90 oppegganim"></div>
+                <div class="textalign blackTransparent"><img src="{% static 'frontend/images/eggs/opp_egg.png' %}" alt="" class="height90"></div>
+                <div class="textalign blackTransparent"><img src="{% static 'frontend/images/eggs/opp_egg.png' %}" alt="" class="height90"></div>
+                <div class="textalign blackTransparent"><img src="{% static 'frontend/images/eggs/opp_egg.png' %}" alt="" class="height90"></div>
+                <div class="textalign blackTransparent"><img src="{% static 'frontend/images/eggs/opp_egg.png' %}" alt="" class="height90"></div>
+                <div class="textalign blackTransparent"><img src="{% static 'frontend/images/eggs/opp_egg.png' %}" alt="" class="height90"></div>
+                <div class="textalign blackTransparent"><img src="{% static 'frontend/images/eggs/opp_egg.png' %}" alt="" class="height90"></div>
+                <div class="textalign blackTransparent"><img src="{% static 'frontend/images/eggs/opp_egg.png' %}" alt="" class="height90"></div>
+                <div class="textalign blackTransparent"><img src="{% static 'frontend/images/eggs/opp_egg.png' %}" alt="" class="height90"></div>
+                <div class="textalign blackTransparent"><img src="{% static 'frontend/images/eggs/opp_egg.png' %}" alt="" class="height90"></div>
 
             </div>
-            <div id='opp_eggs'  class='border position oppeggs'>
+            <div class="ingameBoard forestbg" id="gameboard">
+                    <div id="opp_event" class="position border singlecardbox oppeventbox persp100">
+                        <div  class="border cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
+                    </div>
 
-                <div class="border textalign">1</div>
-                <div class="border textalign">2</div>
-                <div class="border textalign">3</div>
-                <div class="border textalign">4</div>
-                <div class="border textalign">5</div>
-                <div class="border textalign">6</div>
-                <div class="border textalign">7</div>
-                <div class="border textalign">8</div>
-                <div class="border textalign">9</div>
-                <div class="border textalign">9</div>
+                    <div id ='opp_board' class="border position oppboard perspTop">
+                        <div  class="border cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
+                        <div  class="border cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
+                        <div  class="border cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
+                        <div  class="border cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
+                        <div  class="border cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
+                        <div  class="border cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
+                    </div>
+
+                    <div id="opp_deck" class="border position oppdeck persp_100">
+                        <div  class="border cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
+                    </div>
+
+                    <div id='middle line'
+                            style="border-top: 1px solid white; position: absolute; top: 50%; width: 100%;">
+                    </div>
+
+                    <div id="ply_event" class="border position plyevent persp100">
+                        <div  class="border cardplayed transform10"></div>
+                    </div>
+
+                    <div id ='ply_board' class="position border plyboard perspTop">
+                        <div  class="border cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
+                        <div  class="border cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
+                        <div  class="border cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
+                    </div>
+
+                    <div id="ply_deck" class="border position plydeck persp_100">
+                        <div  class="border cardplayed transform10"></div>
+                    </div>
 
             </div>
 
-            <div id="opp_event" class="position border singlecardbox oppeventbox">
-                <div  class="border cardplayed"></div>
+            <div id='ply_eggs' class="position plyeggs textalign flexcontainer fl_column">
+                <img src="{% static 'frontend/images/eggs/ply_egg.png' %}" alt="" class="height80">
             </div>
-
-            <div id ='opp_board' class="border position oppboard">
-                <div  class="border cardplayed"></div>
-                <div  class="border cardplayed"></div>
-                <div  class="border cardplayed"></div>
-                <div  class="border cardplayed"></div>
-                <div  class="border cardplayed"></div>
-                <div  class="border cardplayed"></div>
-                <div  class="border cardplayed"></div>
-
-            </div>
-
-            <div id="opp_deck" class="border position oppdeck">
-                <div class="border cardplayed"></div>
-            </div>
-
-            <div id='middle line'
-                    style="border-top: 1px solid white; position: absolute; top: 50%; width: 100%;">
-            </div>
-
-            <div id="ply_event" class="border position plyevent">
-                <div  class="border cardplayed"></div>
-            </div>
-
-            <div id ='ply_board' class="position border plyboard">
-                <div  class="border cardplayed"></div>
-                <div  class="border cardplayed"></div>
-                <div  class="border cardplayed"></div>
-            </div>
-
-            <div id="ply_deck" class="border position plydeck">
-                <div  class="border cardplayed"></div>
-            </div>
-
-            <div id='ply_eggs' class="border position plyeggs">
-            </div>
+            
+            <div class="plyeggsCount position textalign"><h1 class="navbarcolor font5w memoirsfont">10</h1></div>
 
             <div id='ply_hand' class="border position plyhand" >
 
             </div>
-                
+                   
         </div>
 
-        <div class="plytransition">
-            <div><div class="caesarfont flexcontainer" style="font-size: 10vh; color: burlywood;">Jurassicrysis</div></div>
+        <div class="plytransition ">
+            <div class="jcbg"><div class="caesarfont flexcontainer" style="font-size: 10vh; color: burlywood;">Jurassicrysis</div></div>
         </div>
 
-        <div class="difficultypage flexcontainer aligncenter overhidden">
+        <div class="difficultypage flexcontainer aligncenter overhidden" id="difficultyid">
 
             <div id="heightCheck" class="flexcontainer aligncenter position glassdiv" style="display: none; width: 70vw;">
+                <div class="bgrBlack aligncenter width10vw marginauto" ><img src="{% static 'frontend/images/icons/flip.gif' %}" alt="" class=" width10vw"></div>
                 <div class="navbarcolor flexcontainer aligncenter textalign"><h2 class="pangolinfont">For an optimal experience, please flip your device horizontally.</h2> </div>
                 <div class="flexcontainer aligncenter"><button id="heightButton" onclick="acceptHeight()" type="button" class="btn btn-success btn-lg" disabled>Continue</button></div>
             </div>
@@ -121,10 +123,16 @@
             
         </div>
 
-        <script src="{% static 'frontend/play/main.js' %}"></script>
-        
+        <div class="background" style="z-index: -10;">
+            <span><img src="{% static 'frontend/images/animated/ptero1.gif' %}" alt="ptero1" style="transform: rotate(90deg); max-height: 10vh;"></span><!--abajo der-->
+            <span><img src="{% static 'frontend/images/animated/ptero2.gif' %}" alt="ptero2" style="transform: rotate(270deg); max-height: 10vh;"></span><!--ab izq-->
+            <span><img src="{% static 'frontend/images/animated/ptero3.gif' %}" alt="ptero3" style="transform: rotate(180deg); transform: scaleX(-1); max-height: 10vh;"></span><!--arriba-->
+            <span>444444</span>
+            
+        </div>
+
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.6.1/gsap.min.js"></script>
         <script src="{% static 'frontend/transitions/playtransition.js' %}"></script>
-        
+        <script src="{% static 'frontend/play/main.js' %}"></script>
     </body>
 </html>

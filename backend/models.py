@@ -48,7 +48,7 @@ class Card(models.Model):
     intro_sound = models.CharField(max_length=200, blank=True)
 
     def __str__(self):
-        return f"{self.name} -- {self.card_type}"
+        return f"[id: {self.id}] -- {self.name} -- {self.card_type}"
 
 
 #Individual cards collected by players

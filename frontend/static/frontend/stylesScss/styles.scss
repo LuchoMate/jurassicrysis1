@@ -129,7 +129,6 @@
     width: 100%;
     -webkit-transform: scaleY(1);
           transform: scaleY(1);
-    background: black;
 }
 
 /* -----------------------------*/
@@ -245,6 +244,8 @@ li:active {
     background-image: url('images/wallpaper/wallpaper2.jpg'); 
     background-repeat: no-repeat;
     background-attachment: fixed;
+    background-position: center;
+    background-size: cover;
 }
 
 .jctext {
@@ -273,7 +274,7 @@ h6 {
     top: 0;
     left: 0;
     margin: 0;
-    background: url('images/wallpaper/wallpaper2.jpg') repeat 0 0 transparent;
+    background: url('images/wallpaper/wallpaper3.jpg') repeat 0 0 transparent;
     
 }
 
@@ -371,7 +372,7 @@ h6 {
   }
   
  
- /*---------------- */
+ /*-----Play page----------- */
 
 .maindiv {
     border: 3px solid red;
@@ -407,8 +408,137 @@ h6 {
     top: 7%;
     left: 35%;
     display: grid;
-    grid-template-columns: auto auto auto auto auto;
+    grid-template-columns: 20% 20% 20% 20% 20% ;
+    grid-template-rows: 50% 50% ;
 }
+
+/* ----opp eggs animation------*/
+
+@keyframes eggsmovement {
+    1% {
+        transform: rotate(-15deg);
+    }
+
+    3% {
+        transform: rotate(10deg);
+    }
+
+    5% {
+        transform: rotate(-10deg);
+    }
+
+    7% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(0deg);
+    }
+}
+
+#opp_eggs div:nth-child(1) img {
+    animation: eggsmovement;
+    animation-duration: 7s;
+    animation-delay: 2s;
+    animation-iteration-count: infinite;
+}
+
+#opp_eggs div:nth-child(2) img {
+    animation: eggsmovement;
+    animation-duration: 7s;
+    animation-delay: 0.5s;
+    animation-iteration-count: infinite;
+}
+
+#opp_eggs div:nth-child(3) img {
+    animation: eggsmovement;
+    animation-duration: 7s;
+    animation-delay: 1s;
+    animation-iteration-count: infinite;
+}
+
+#opp_eggs div:nth-child(4) img {
+    animation: eggsmovement;
+    animation-duration: 7s;
+    animation-delay: 4s;
+    animation-iteration-count: infinite;
+}
+
+#opp_eggs div:nth-child(5) img {
+    animation: eggsmovement;
+    animation-duration: 7s;
+    animation-delay: 7s;
+    animation-iteration-count: infinite;
+}
+
+#opp_eggs div:nth-child(6) img {
+    animation: eggsmovement;
+    animation-duration: 7s;
+    animation-delay: 8s;
+    animation-iteration-count: infinite;
+}
+
+
+#opp_eggs div:nth-child(7) img {
+    animation: eggsmovement;
+    animation-duration: 7s;
+    animation-delay: 3.2s;
+    animation-iteration-count: infinite;
+}
+
+
+#opp_eggs div:nth-child(8) img {
+    animation: eggsmovement;
+    animation-duration: 7s;
+    animation-delay: 1.4s;
+    animation-iteration-count: infinite;
+}
+
+#opp_eggs div:nth-child(9) img {
+    animation: eggsmovement;
+    animation-duration: 7s;
+    animation-delay: 10s;
+    animation-iteration-count: infinite;
+}
+
+#opp_eggs div:nth-child(10) img {
+    animation: eggsmovement;
+    animation-duration: 7s;
+    animation-delay: 5s;
+    animation-iteration-count: infinite;
+}
+
+/*------------------- */
+/* Ply eggs animation*/
+
+@keyframes plyeggsmovement {
+    1% {
+        transform: skewX(-5deg);
+    }
+
+    3% {
+        transform: skewX(5deg); 
+    }
+
+    5% {
+        transform: skewX(-7deg);  
+    }
+
+    7% {
+        transform: skewX(0deg);  
+    }
+
+    100% {
+        transform: rotate(0deg); 
+    }
+}
+
+#ply_eggs img {
+    animation: plyeggsmovement;
+    animation-duration: 15s;
+    animation-delay: 3s;
+    animation-iteration-count: infinite;
+}
+/*------------- */
 
 .overhidden {
     overflow: hidden;
@@ -470,12 +600,15 @@ h6 {
     justify-content: space-around;
 }
 
+.fl_column {
+    flex-direction: column;
+}
+
 .ingameBoard {
     position: absolute;
     height: 45vh;
     width: 93vw;
     transform: perspective(100px) rotateX(1deg);
-    
     top: 27%;
     left: 3%;
 }
@@ -496,6 +629,14 @@ h6 {
     border-bottom: 8px solid green;
     
 } /* https://www.freevector.com/jungle-forest-background-vector--21826*/
+
+.jcbg {
+    background-color: saddlebrown;
+    background-image: url("images/wallpaper/wallpaper1.jpg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
 
 .perspTop {
     -webkit-perspective: 200px;    
@@ -564,7 +705,14 @@ h6 {
     height: 23vh;
     width: 15vw;
     bottom: 2%;
-    left: 7%;
+    left: 3%;
+}
+
+.plyeggsCount {
+    height: 10vh;
+    width: 10vh;
+    bottom: 8%;
+    left: 18%;
 }
 
 .plyhand {
@@ -637,7 +785,28 @@ h6 {
     text-align: center;
 }
 
-/* Background layout*/
+.font5w {
+    font-size: 5vw;
+}
+
+.height80 {
+    height: 80%;
+}
+
+.height90 {
+    height: 90%;
+}
+
+.width10vw {
+    width: 10vw;
+}
+
+.height10vh {
+    height: 10vh;
+}
+
+
+/* ---Board Background layout----*/
 
 
 @keyframes move {

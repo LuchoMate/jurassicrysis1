@@ -17,8 +17,8 @@ function checkHeight(){
     }
 }
 
-/*---- check device orientation every second-----*/
-var timerCheck = setInterval(checkHeight, 1000);
+/*---- check device orientation every half a second-----*/
+var timerCheck = setInterval(checkHeight, 500);
 
 function clearTimerCheck(){
     clearInterval(timerCheck);
@@ -230,6 +230,16 @@ function displayCpuChoice(cpuchoice){
 
 /*-------------- */
 
+/*-----Remove element from dom--- */
+function removeElement(element) {
+    if (typeof(element) === "string") {
+      element = document.querySelector(element);
+    }
+    return function() {
+        element.parentNode.removeChild(element);
+    };
+  }
+
 /* ----Takes out rps and shows board------*/
 
 function boardIn(){
@@ -240,17 +250,22 @@ function boardIn(){
         y: 400,
         opacity: 0
     })
-    tl.set("#rps", {
+    .set("#rps", {
         display: 'none'
     })
-    tl.to(".difficultypage", {
+    .to(".difficultypage", {
         delay: 1,
         scaleY: 0,
         duration: 1,
     })
-    tl.set(".difficultypage", {
+    .set(".difficultypage", {
         display: 'none'
-    });
+    })
+    .call(removeElement(".difficultypage"))
+    .from("#ply_eggs", {delay: 0.2, duration: 1, x: -1000, ease: "back.out(0.3)"})
+    .from(".plyeggsCount", {duration: 1, opacity: 0})
+    .from("#opp_eggs", {duration: 1, x: 2000, ease: "back.out(0.3)" })
+    .from("#gameboard", {duration: 2, y: -1000, ease: "back.out(1.7)"});
 }
 
 /* ----On page load functions-----*/
