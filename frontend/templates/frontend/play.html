@@ -14,7 +14,7 @@
     <body class="overhidden">
         <div id="boarddiv" class="maindiv">
 
-            <!-- <div id = 'root'></div>-->
+            <div id = 'root' class="position opphand"></div>
 
             <div class="position quitdiv btn btn-outline-danger btn-sm" onclick="redirectHome()">Quit</div>
             <div id="opp_hand" class='border position opphand'></div>
@@ -79,6 +79,10 @@
             <div id='ply_hand' class="border position plyhand" >
 
             </div>
+
+            <div class="position plyhand" id="startbutton" data-difficulty="" data-firstturn="">
+                <button>Click me</button>
+            </div>
                    
         </div>
 
@@ -132,7 +136,7 @@
         </div>
 
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.6.1/gsap.min.js"></script>
-        <script src="{% static 'frontend/transitions/playtransition.js' %}"></script>
-        <script src="{% static 'frontend/play/main.js' %}"></script>
+        <script type="text/javascript" src="{% static 'frontend/transitions/playtransition.js' %}"></script>
+        <script type="text/javascript" src="{% static 'frontend/play/main.js' %}"></script>
     </body>
 </html>

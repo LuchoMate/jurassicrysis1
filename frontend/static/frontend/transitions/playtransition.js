@@ -94,22 +94,9 @@ function difficultybg() {
 
 /* Takes off difficulty page and enters rock paper scissors*/
 function difficultyOut(difficulty) {
+    console.log(difficulty);
+    document.getElementById("startbutton").dataset.difficulty = difficulty;
     
-    switch(difficulty){
-        case 'easy':
-            difficultyChoice = difficulty;
-            console.log(difficultyChoice);
-            break;
-        case 'medium':
-            difficultyChoice = difficulty;
-            console.log(difficultyChoice);
-            break;
-        case 'hard':
-            difficultyChoice = difficulty;
-            console.log(difficultyChoice);
-            break;
-    }
-
     var tl = gsap.timeline();
     tl.to("#difficultybox", {
         duration: 1,
@@ -174,7 +161,7 @@ function checkRPSWinner(selection){
     if (selection.beats == CPUchoice.name){
         displayCpuChoice(CPUchoice.name);
         console.log("YOU WIN");
-        whoplaysfirst = "ply";
+        document.getElementById("startbutton").dataset.firstturn = "ply";
 
         document.getElementById("rpstitle").innerHTML="YOU WIN!";
         document.getElementById("rps").style.pointerEvents = 'none';
@@ -186,7 +173,7 @@ function checkRPSWinner(selection){
     else if (CPUchoice.beats == selection.name) {
         displayCpuChoice(CPUchoice.name);
         console.log("YOU LOSE");
-        whoplaysfirst = "opp";
+        document.getElementById("startbutton").dataset.firstturn = "opp";
 
         document.getElementById("rpstitle").innerHTML="YOU LOSE!";
         document.getElementById("rps").style.pointerEvents = 'none';
@@ -285,7 +272,8 @@ function boardIn(){
     .from("#ply_eggs", {delay: 0.2, duration: 1, x: -1000, ease: "back.out(0.3)"})
     .from(".plyeggsCount", {duration: 1, opacity: 0})
     .from("#opp_eggs", {duration: 1, x: 2000, ease: "back.out(0.3)" })
-    .from("#gameboard", {duration: 2, y: -1000, ease: "bounce.out"});
+    .from("#gameboard", {duration: 2, y: -1000, ease: "back.out(0.8)"})
+    .from("#startbutton", {opacity: 0, duration: 1});
     /* .call(startGame(difficultyChoice, whoplaysfirst));*/
 
 }
