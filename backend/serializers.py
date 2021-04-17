@@ -6,3 +6,9 @@ class coll_serializer(serializers.ModelSerializer):
     class Meta:
         model= Collection
         fields = ('Card_collected', 'quantity', 'on_deck')
+
+class card_serializer(serializers.ModelSerializer):
+
+    class Meta:
+        model= Card
+        fields = '__all__'

@@ -39,6 +39,8 @@ class Card(models.Model):
     name = models.CharField(max_length=30)
     attack = models.PositiveSmallIntegerField(default = 0)
     life_points = models.PositiveSmallIntegerField(default = 0)
+    cost = models.PositiveSmallIntegerField(default=1, 
+        validators=[MaxValueValidator(2, 'Maximum 2 energy cost')])
     card_type = models.CharField(max_length=2, choices=type_choices, default='ca')
     rarity = models.CharField(max_length=2, choices=rarity_choices, default='co')
     size = models.CharField(max_length=2, choices=size_choices, default='sm')

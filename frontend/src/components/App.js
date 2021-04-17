@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 /* import gsap from 'gsap';*/
 
+/*---------Utilities----------*/
 function removeElement(element) {
     if (typeof(element) === "string") {
       element = document.querySelector(element);
@@ -16,7 +17,7 @@ function removeElement(element) {
 let oppdeck = [];
 let plydeck = [];
 let currentTurn = "";
-/*------------ */
+/*------Start button calls startGame------ */
 
 document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('startbutton').addEventListener('click', function() {
@@ -27,6 +28,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+/*---Each player draw 5 cards to begin. Player who got first turn draws another one */
 function startGame() {
     
     const diff_chosen = document.getElementById("startbutton").dataset.difficulty;
@@ -63,12 +65,19 @@ function startGame() {
     setTimeout(function(){ console.log("first turn"); drawCard(currentTurn); }, 6000);
 }
 
-function drawCard(who){/* call destroyegg if pop == undefined*/
+async function drawCard(who){/* call destroyegg if pop == undefined*/
     if(who == "ply"){
-        console.log(`ply: ${plydeck.pop()}`);  
+        
+        let response = await fetch(`/api/get_card/${plydeck.pop()}`);
+        let card = await response.json(); 
+
+        console.log(`ply: ${card.name}`);
     }
     else {
-        console.log(`opp: ${oppdeck.pop()}`);
+        let response = await fetch(`/api/get_card/${oppdeck.pop()}`);
+        let card = await response.json(); 
+
+        console.log(`opp: ${card.name}`);
     }
 }
 

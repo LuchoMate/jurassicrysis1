@@ -2,10 +2,21 @@ from django.shortcuts import render
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from .models import Player, Card, Collection
-from .serializers import coll_serializer
+from .serializers import coll_serializer, card_serializer
 from rest_framework.response import Response
 from rest_framework import status
 import random
+
+@permission_classes([IsAuthenticated])
+@api_view(['GET'])
+def api_get_card(request, cardId):
+    try:
+        thiscard = Card.objects.get(id=cardId)
+    except Card.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    
+    serializer = card_serializer(thiscard, many=False)
+    return Response(serializer.data)
 
 #get logged user card's collection
 @api_view(['GET'])
