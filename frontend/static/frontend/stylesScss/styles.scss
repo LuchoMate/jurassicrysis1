@@ -317,7 +317,7 @@ h6 {
   .buttondifficulty {
     display: inline-flex;
     align-items: center;
-    background: #C06C84;
+    background: Crimson;
     box-shadow: 0 3px 2px 0 rgba(0,0,0,0.1);
     border-radius: 5px;
     height: 45px;
@@ -717,6 +717,13 @@ h6 {
     height: 23vh; width: 50vw;
     bottom: 2%;
     left:25%
+}
+
+.startdiv {
+    bottom: 7%;
+    left:45%;
+    width: 10vw;
+    height: 10vh;
 }
 
 /*---------General---------------- */

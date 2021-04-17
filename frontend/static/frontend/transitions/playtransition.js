@@ -94,6 +94,9 @@ function difficultybg() {
 
 /* Takes off difficulty page and enters rock paper scissors*/
 function difficultyOut(difficulty) {
+    const button = new Audio('/static/frontend/sounds/button1.mp3');
+    button.loop = false;
+    button.play();
     console.log(difficulty);
     document.getElementById("startbutton").dataset.difficulty = difficulty;
     
@@ -136,6 +139,7 @@ const decisionRPS = document.querySelectorAll('[data-rpschoice]');
 
 decisionRPS.forEach(decision => {
     decision.addEventListener('click', e => {
+
         const thisRPS = decision.dataset.rpschoice;
         const mychoice = RPSlogic.find(choice => choice.name == thisRPS);
         const otherchoices = RPSlogic.filter((rps) => {
@@ -161,6 +165,10 @@ function checkRPSWinner(selection){
     if (selection.beats == CPUchoice.name){
         displayCpuChoice(CPUchoice.name);
         console.log("YOU WIN");
+        const button = new Audio('/static/frontend/sounds/winrps.mp3');
+        button.loop = false;
+        button.play();
+
         document.getElementById("startbutton").dataset.firstturn = "ply";
 
         document.getElementById("rpstitle").innerHTML="YOU WIN!";
@@ -173,6 +181,10 @@ function checkRPSWinner(selection){
     else if (CPUchoice.beats == selection.name) {
         displayCpuChoice(CPUchoice.name);
         console.log("YOU LOSE");
+        const button = new Audio('/static/frontend/sounds/loserps.mp3');
+        button.loop = false;
+        button.play();
+
         document.getElementById("startbutton").dataset.firstturn = "opp";
 
         document.getElementById("rpstitle").innerHTML="YOU LOSE!";
@@ -183,6 +195,11 @@ function checkRPSWinner(selection){
 
     else {
         displayCpuChoice(CPUchoice.name);
+
+        const button = new Audio('/static/frontend/sounds/button1.mp3');
+        button.loop = false;
+        button.play();
+        
         console.log("DRAW");
         document.getElementById("rpstitle").innerHTML="DRAW!";
         document.getElementById("chooseOneDiv").innerHTML="";
