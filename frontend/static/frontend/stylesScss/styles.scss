@@ -181,6 +181,10 @@ a:visited, a:link, a:hover, a:active {
     position: relative;
 }
 
+.blackbg {
+    background-color: black;
+}
+
 * {
 	list-style-type: none;
     font-family: "Trebuchet MS", Helvetica, sans-serif;
@@ -589,6 +593,25 @@ h6 {
     border-radius: 5px;
 }
 
+.cardinHand {
+    flex: 0 0 50px;
+    height: 22vh; 
+    width: 7vw;
+    min-width: 7vw; 
+    border-radius: 5px;
+    overflow: hidden;
+    transition: transform .25s;
+
+}
+
+.cardWrapper {
+    overflow: hidden;
+}
+  
+.cardWrapper:last-child, .cardWrapper:hover {
+    overflow: visible;
+}
+
 .flexcontainer{
     display: flex;
     justify-content: center; 
@@ -665,6 +688,14 @@ h6 {
     transform: rotateX(3deg);
 }
 
+.handorigin {
+    transform-origin: center center;
+}
+
+.transformHand {
+    transform: rotate(20deg);
+}
+
 .oppeventbox {
     top: 2%;
     left: 1%;
@@ -714,14 +745,14 @@ h6 {
 }
 
 .plyhand {
-    height: 23vh; width: 50vw;
+    height: 23vh; width: 30vw;
     bottom: 2%;
-    left:25%
+    left:35%
 }
 
 .startdiv {
     bottom: 7%;
-    left:45%;
+    left:80%;
     width: 10vw;
     height: 10vh;
 }
@@ -788,6 +819,10 @@ h6 {
 
 .center {
     text-align: center;
+}
+
+.font1w {
+    font-size: 1vw;
 }
 
 .font5w {

@@ -14,7 +14,7 @@
     <body>
         <div id="boarddiv" class="maindiv">
 
-         <!-- <div id = 'root'></div>-->
+         <div id = 'root'></div>
 
             <div class="position quitdiv btn btn-outline-danger btn-sm" onclick="redirectHome()">Quit</div>
             <div id="opp_hand" class='border position opphand'></div>
@@ -76,8 +76,17 @@
             
             <div class="plyeggsCount position textalign"><h1 class="navbarcolor font5w memoirsfont">10</h1></div>
 
-            <div id='ply_hand' class="border position plyhand" >
+            <div id='ply_hand' class="border position plyhand flexcontainer" >
+                <div class="cardWrapper" draggable="true">
+                    <div class="border cardinHand navbarcolor" style="background-color: black; font-size: 1vw; ">
+                        Huevo<img src="{% static 'frontend/images/eggs/ply_egg.png' %}" alt="" class="height80">
+                    </div>
+                </div>
+                
+            </div>
 
+            <div class="position startdiv border">
+                <div class="buttondifficulty pulse margin10" id="startbutton" data-difficulty="medium" data-firstturn="ply">Start</div>
             </div>
                 
         </div>
@@ -90,9 +99,7 @@
             
         </div>
 
-        <script src="{% static 'frontend/play/main.js' %}"></script>
-        
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.6.1/gsap.min.js"></script>
-        
+        <script type="text/javascript" src="{% static 'frontend/play/main.js' %}"></script>
     </body>
 </html>
