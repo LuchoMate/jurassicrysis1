@@ -148,18 +148,25 @@ async function drawCard(who){/* call destroyegg if pop == undefined*/
         const lastchild = document.getElementById("ply_hand").lastElementChild;
 
         drawDeck("ply");
-        ReactDOM.render(<SketchHandCard name={card.name} />, lastchild);
+        ReactDOM.render(<SketchHandCard name={card.name} player="ply" />, lastchild);
 
-        sortCardsPly();
+        sortCards("ply");
         console.log(`ply: ${card.name}`);
     }
     else {
         
         let response = await fetch(`/api/get_card/${oppdeck.pop()}`);
         let card = await response.json();
-        
-        drawDeck(who)
 
+        var parentEl = document.getElementById("opp_hand");
+        var div1 = document.createElement("div");
+        div1.classList.add("cardWrapperOpp");
+        parentEl.appendChild(div1);
+        const lastchild = document.getElementById("opp_hand").lastElementChild;
+        
+        drawDeck("opp");
+        ReactDOM.render(<SketchHandCard name={card.name} player="opp" />, lastchild);
+        sortCards("opp");
         console.log(`opp: ${card.name}`);
     }
 }
@@ -167,29 +174,65 @@ async function drawCard(who){/* call destroyegg if pop == undefined*/
 /* Sketches hand's card inside wrapper div*/
 
 function SketchHandCard(props){
-    const classes = 'border cardinHand navbarcolor blackbg font1w';
-    return <React.Fragment>
+    if(props.player == "ply"){
+        const classes = 'border cardinHand navbarcolor blackbg font1w';
+        return <React.Fragment>
                 <div className={classes}>
                     {props.name}
                 </div>
             </React.Fragment>
+
+    }
+    else{
+        console.log("sketch opp")
+        const classes = 'border cardinHand navbarcolor blackbg font1w';
+        return <React.Fragment>
+                <div className={classes}>
+                    card card card
+                </div>
+            </React.Fragment>
+
+    }
+    
 }
 
 /* Arrange cards in players hand*/
 
-function sortCardsPly() {
-    var cards = document.getElementsByClassName("cardWrapper");
-      
-    if(cards.length > 2 ){
-        for (var i = 0; i < cards.length; i++) {
-        cards[i].style.transform = "rotate(" + (i-2)*4 +"deg)";
+function sortCards(who) {
+
+    if(who=="ply"){
+
+        var cards = document.getElementsByClassName("cardWrapper");
+        
+        if(cards.length > 2 ){
+            for (var i = 0; i < cards.length; i++) {
+            cards[i].style.transform = "rotate(" + (i-2)*4 +"deg)";
+            }
         }
+        
+        else {
+            for (var i = 0; i < cards.length; i++) {
+                cards[i].style.transform = "rotate(0)";
+            }
+        }
+
     }
-    
-    else {
-        for (var i = 0; i < cards.length; i++) {
-            cards[i].style.transform = "rotate(0)";
+
+    else{
+        var cards = document.getElementsByClassName("cardWrapperOpp");
+     
+        if(cards.length > 2 ){
+            for (var i = 0; i < cards.length; i++) {
+                cards[i].style.transform = "rotate(" + (10-(i*4)) +"deg)";
+                }
         }
+        
+        else {
+            for (var i = 0; i < cards.length; i++) {
+                cards[i].style.transform = "rotate(0)";
+                }
+        }
+        
     }
    
 }

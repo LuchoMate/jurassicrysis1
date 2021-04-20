@@ -399,10 +399,10 @@ h6 {
 }
 
 .opphand {
-    top: 0%;
+    top: -17%;
     left: 35%;
     width: 30vw;
-    height: 5vh;
+    height: 24vh;
 }
 
 .oppeggs {
@@ -595,7 +595,8 @@ h6 {
 
 .cardinHand {
     flex: 0 0 50px;
-    height: 22vh; 
+    height: 22vh;
+    min-height: 22vh; 
     width: 7vw;
     min-width: 7vw; 
     border-radius: 5px;
@@ -611,6 +612,15 @@ h6 {
 .cardWrapper:last-child, .cardWrapper:hover {
     overflow: visible;
 }
+
+.cardWrapperOpp {/*same as previous one, but necessary for sortcards function*/
+    overflow: hidden;  
+}
+
+.cardWrapperOpp:last-child {
+    overflow: visible;
+}
+
 
 .flexcontainer{
     display: flex;
