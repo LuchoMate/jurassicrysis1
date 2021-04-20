@@ -7,6 +7,7 @@ function removeElement(element) {
     if (typeof(element) === "string") {
       element = document.querySelector(element);
     }
+    
     return function() {
         element.parentNode.removeChild(element);
     };
@@ -40,25 +41,58 @@ document.addEventListener('DOMContentLoaded', function() {
 
 /* Animates cards being placed in deck*/
 function placeDeck(who){
+
+    const shuffle = new Audio('/static/frontend/sounds/shuffle.mp3');
+    shuffle.loop = false;
+    shuffle.play();
+
     if(who=="opp"){
         var tl = gsap.timeline();
-        tl.from("#opp_deck div", {x: 500, stagger: 0.1});
+        tl.from("#opp_deck div", {left: "200%", stagger: 0.1});
     }
 
     else{
         var tl = gsap.timeline();
-        tl.from("#ply_deck div", {x: 500, stagger: 0.1});
+        tl.from("#ply_deck div", {left: "200%", stagger: 0.1});
     }
-    
    
 }
 
+/* Animate drawing from deck*/
+function drawDeck(who){
+    const drawsound = new Audio('/static/frontend/sounds/drawcard.mp3');
+    drawsound.loop = false;
+    drawsound.play();
+
+    if(who=="ply"){
+        var tl = gsap.timeline();
+        const lastchild = document.getElementById("ply_deck").lastElementChild;
+        tl.to(lastchild, {x: -400, y: 200, duration: 0.5})
+        .to(lastchild, {opacity: 0, duration: 0.1})
+        .call(removeElement(lastchild));
+
+    }
+
+    else{
+        const lastchild = document.getElementById("opp_deck").lastElementChild;
+        var tl = gsap.timeline();
+        tl.to(lastchild, {x: -400, y: -200, duration: 0.5})
+        .to(lastchild, {opacity: 0, duration: 0.1})
+        .call(removeElement(lastchild));
+
+    }
+
+}
+
 /*---Each player draw 5 cards to begin. */
-function startGame() {
+async function startGame() {
 
     /* Llamar función que pone cartas*/
     placeDeck("opp");
+    await sleep(2500);
     placeDeck("ply");
+    await sleep(2500);
+
     
     const diff_chosen = document.getElementById("startbutton").dataset.difficulty;
     console.log(`gonna fetch oppdeck ${diff_chosen}`);
@@ -101,7 +135,6 @@ function startGame() {
 /* ----Fetch and draw a card----*/
 async function drawCard(who){/* call destroyegg if pop == undefined*/
 
-    
     if(who == "ply"){
         
         let response = await fetch(`/api/get_card/${plydeck.pop()}`);
@@ -114,10 +147,7 @@ async function drawCard(who){/* call destroyegg if pop == undefined*/
         parentEl.appendChild(div1);
         const lastchild = document.getElementById("ply_hand").lastElementChild;
 
-        const drawsound = new Audio('/static/frontend/sounds/drawcard.mp3');
-        drawsound.loop = false;
-        drawsound.play();
-
+        drawDeck("ply");
         ReactDOM.render(<SketchHandCard name={card.name} />, lastchild);
 
         sortCardsPly();
@@ -126,7 +156,9 @@ async function drawCard(who){/* call destroyegg if pop == undefined*/
     else {
         
         let response = await fetch(`/api/get_card/${oppdeck.pop()}`);
-        let card = await response.json(); 
+        let card = await response.json();
+        
+        drawDeck(who)
 
         console.log(`opp: ${card.name}`);
     }
