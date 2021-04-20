@@ -2,9 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 /* import gsap from 'gsap';*/
 
-/*--Test-*/
-/* sortCardsPly();*/
-
 /*---------Utilities----------*/
 function removeElement(element) {
     if (typeof(element) === "string") {
@@ -30,15 +27,38 @@ let currentTurn = "";
 
 document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('startbutton').addEventListener('click', function() {
+        const button = new Audio('/static/frontend/sounds/button2.mp3');
+        button.loop = false;
+        button.play();
+
         var tl = gsap.timeline();
-        tl.to("#startbutton", {rotation: 360, duration: 1})
+        tl.to("#startbutton", {scaleY: 0, scaleX: 0, duration: 1})
         .call(startGame);
 
     });
 });
 
+/* Animates cards being placed in deck*/
+function placeDeck(who){
+    if(who=="opp"){
+        var tl = gsap.timeline();
+        tl.from("#opp_deck div", {x: 500, stagger: 0.1});
+    }
+
+    else{
+        var tl = gsap.timeline();
+        tl.from("#ply_deck div", {x: 500, stagger: 0.1});
+    }
+    
+   
+}
+
 /*---Each player draw 5 cards to begin. */
 function startGame() {
+
+    /* Llamar función que pone cartas*/
+    placeDeck("opp");
+    placeDeck("ply");
     
     const diff_chosen = document.getElementById("startbutton").dataset.difficulty;
     console.log(`gonna fetch oppdeck ${diff_chosen}`);
@@ -88,21 +108,17 @@ async function drawCard(who){/* call destroyegg if pop == undefined*/
         let card = await response.json();
         
         var parentEl = document.getElementById("ply_hand");
-        var div = document.createElement("div");
-        div.classList.add("cardWrapper");
-        parentEl.appendChild(div);
-        var div2 = document.createElement("div");
-        div2.classList.add("cardinHand");
-        div2.classList.add("border");
-        div2.classList.add("navbarcolor");
-        div2.classList.add("blackbg");
-        div2.classList.add("font1w");
-        div2.draggable = true;
-        div.appendChild(div2);
-        div2.innerHTML = card.name;
-        /* 
-        var img = document.createElement("img");
-        img.classList.add("height80");*/
+        var div1 = document.createElement("div");
+        div1.classList.add("cardWrapper");
+        div1.draggable = true;
+        parentEl.appendChild(div1);
+        const lastchild = document.getElementById("ply_hand").lastElementChild;
+
+        const drawsound = new Audio('/static/frontend/sounds/drawcard.mp3');
+        drawsound.loop = false;
+        drawsound.play();
+
+        ReactDOM.render(<SketchHandCard name={card.name} />, lastchild);
 
         sortCardsPly();
         console.log(`ply: ${card.name}`);
@@ -115,6 +131,19 @@ async function drawCard(who){/* call destroyegg if pop == undefined*/
         console.log(`opp: ${card.name}`);
     }
 }
+
+/* Sketches hand's card inside wrapper div*/
+
+function SketchHandCard(props){
+    const classes = 'border cardinHand navbarcolor blackbg font1w';
+    return <React.Fragment>
+                <div className={classes}>
+                    {props.name}
+                </div>
+            </React.Fragment>
+}
+
+/* Arrange cards in players hand*/
 
 function sortCardsPly() {
     var cards = document.getElementsByClassName("cardWrapper");
