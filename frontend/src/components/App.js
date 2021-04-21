@@ -87,13 +87,11 @@ function drawDeck(who){
 /*---Each player draw 5 cards to begin. */
 async function startGame() {
 
-    /* Llamar función que pone cartas*/
     placeDeck("opp");
     await sleep(2500);
     placeDeck("ply");
     await sleep(2500);
 
-    
     const diff_chosen = document.getElementById("startbutton").dataset.difficulty;
     console.log(`gonna fetch oppdeck ${diff_chosen}`);
     currentTurn = document.getElementById("startbutton").dataset.firstturn;
@@ -129,7 +127,44 @@ async function startGame() {
     })
     .then(console.log(plydeck));
 
-    setTimeout(function(){ console.log("FIRST TURN"); drawCard(currentTurn); }, 10000);
+    setTimeout(function(){ console.log("FIRST TURN"); turnHandler(currentTurn); }, 8500);
+}
+
+/* ---Handles players turns----*/
+
+function turnHandler(who){
+    var tl = gsap.timeline();
+    if(who == "ply"){
+        const turn = new Audio('/static/frontend/sounds/turn.mp3');
+        turn.loop = false;
+        turn.play();
+
+        tl.set("#ply_turn", {display: 'block', opacity: 0})
+        tl.from("#ply_turn", {y: 1000, duration: 0.5, opacity: 1})
+        tl.to("#ply_turn", {top: "50%", duration: 2})
+        tl.to("#ply_turn", {y: -1000, duration: 0.5, opacity: 0})
+        tl.set("#ply_turn", {display: 'none'})
+        
+        setTimeout(function(){ drawCard("ply")}, 3500);
+
+
+    }
+
+    else{
+        const turn2 = new Audio('/static/frontend/sounds/turn2.mp3');
+        turn2.loop = false;
+        turn2.play();
+
+        tl.set("#opp_turn", {display: 'block', opacity: 0})
+        tl.from("#opp_turn", {y: 1000, duration: 0.5, opacity: 1})
+        tl.to("#opp_turn", {top: "50%", duration: 3})
+        tl.to("#opp_turn", {y: -1000, duration: 0.5, opacity: 0})
+        tl.set("#opp_turn", {display: 'none'});
+
+        setTimeout(function(){ drawCard("opp")}, 3500);
+
+    }
+
 }
 
 /* ----Fetch and draw a card----*/
@@ -259,4 +294,4 @@ class App extends React.Component {
     }
 }
 
-ReactDOM.render(<App />, document.getElementById('root'))
+/* ReactDOM.render(<App />, document.getElementById('root'))*/

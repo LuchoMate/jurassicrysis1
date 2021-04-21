@@ -17,7 +17,7 @@
          <div id = 'root'></div>
 
             <div class="position quitdiv btn btn-outline-danger btn-sm" onclick="redirectHome()">Quit</div>
-            <div id="opp_hand" class='border position opphand flexcontainer'>
+            <div id="opp_hand" class='position opphand flexcontainer'>
                 
             </div>
         
@@ -49,7 +49,7 @@
                         <div  class="border cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
                     </div>
 
-                    <div id="opp_deck" class="border position oppdeck persp_100">
+                    <div id="opp_deck" class="position oppdeck persp_100">
                         <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
                         <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
                         <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
@@ -77,17 +77,17 @@
                             style="border-top: 1px solid white; position: absolute; top: 50%; width: 100%;">
                     </div>
 
-                    <div id="ply_event" class="border position plyevent persp100">
-                        <div  class="border cardplayed transform10"></div>
+                    <div id="ply_event" class="position plyevent persp100">
+                        <div  class="border cardplayed transform10 blackbg"></div>
                     </div>
 
-                    <div id ='ply_board' class="position border plyboard perspTop">
+                    <div id ='ply_board' class="position plyboard perspTop">
                         <div  class="border cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
                         <div  class="border cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
                         <div  class="border cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
                     </div>
 
-                    <div id="ply_deck" class="border position plydeck persp_100">
+                    <div id="ply_deck" class="position plydeck persp_100">
                         <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card</div>
                         <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card</div>
                         <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card</div>
@@ -118,7 +118,7 @@
             
             <div class="plyeggsCount position textalign"><h1 class="navbarcolor font5w memoirsfont">10</h1></div>
 
-            <div id='ply_hand' class="border position plyhand flexcontainer" >
+            <div id='ply_hand' class="position plyhand flexcontainer border" >
                 <div class="cardWrapper" draggable="true">
                     <div class="border cardinHand navbarcolor" style="background-color: black; font-size: 1vw; ">
                         Huevo<img src="{% static 'frontend/images/eggs/ply_egg.png' %}" alt="" class="height80" draggable="false">
@@ -127,8 +127,18 @@
                 
             </div>
 
-            <div class="position startdiv border">
-                <div class="buttondifficulty pulse margin10" id="startbutton" data-difficulty="medium" data-firstturn="ply">Start</div>
+            <div class="position startdiv">
+                <div class="buttondifficulty pulse margin10" id="startbutton" data-difficulty="hard" data-firstturn="ply">Start</div>
+            </div>
+
+            <div id="ply_turn" class="border glassdiv position centerpage flexcontainer textalign" style="z-index: 10; display: none;">
+
+                <h1 class="navbarcolor">Your Turn</h1>
+            </div>
+
+            <div id="opp_turn" class="border glassdiv position centerpage flexcontainer textalign" style="z-index: 10; display: none;">
+
+                <h1 class="navbarcolor">Opponent's Turn</h1>
             </div>
                 
         </div>

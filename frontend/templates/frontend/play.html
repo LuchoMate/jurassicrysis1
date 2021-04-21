@@ -14,30 +14,33 @@
     <body class="overhidden">
         <div id="boarddiv" class="maindiv">
 
-            <div id = 'root' class="position opphand"></div>
-
+            <div id = 'root'></div>
+   
             <div class="position quitdiv btn btn-outline-danger btn-sm" onclick="redirectHome()">Quit</div>
-            <div id="opp_hand" class='border position opphand'></div>
-            <div id='opp_eggs'  class='position oppeggs border blackTransparent'>
-
-                <div class="textalign "><img src="{% static 'frontend/images/eggs/opp_egg.png' %}" alt="" class="height90"></div>
-                <div class="textalign "><img src="{% static 'frontend/images/eggs/opp_egg.png' %}" alt="" class="height90"></div>
-                <div class="textalign "><img src="{% static 'frontend/images/eggs/opp_egg.png' %}" alt="" class="height90"></div>
-                <div class="textalign "><img src="{% static 'frontend/images/eggs/opp_egg.png' %}" alt="" class="height90"></div>
-                <div class="textalign "><img src="{% static 'frontend/images/eggs/opp_egg.png' %}" alt="" class="height90"></div>
-                <div class="textalign "><img src="{% static 'frontend/images/eggs/opp_egg.png' %}" alt="" class="height90"></div>
-                <div class="textalign "><img src="{% static 'frontend/images/eggs/opp_egg.png' %}" alt="" class="height90"></div>
-                <div class="textalign "><img src="{% static 'frontend/images/eggs/opp_egg.png' %}" alt="" class="height90"></div>
-                <div class="textalign "><img src="{% static 'frontend/images/eggs/opp_egg.png' %}" alt="" class="height90"></div>
+            <div id="opp_hand" class='border position opphand flexcontainer'>
                 
+            </div>
+        
+            <div id='opp_eggs'  class='position oppeggs'>
+
+                <div class="textalign blackTransparent"><img src="{% static 'frontend/images/eggs/opp_egg.png' %}" alt="" class="height90 oppegganim"></div>
+                <div class="textalign blackTransparent"><img src="{% static 'frontend/images/eggs/opp_egg.png' %}" alt="" class="height90"></div>
+                <div class="textalign blackTransparent"><img src="{% static 'frontend/images/eggs/opp_egg.png' %}" alt="" class="height90"></div>
+                <div class="textalign blackTransparent"><img src="{% static 'frontend/images/eggs/opp_egg.png' %}" alt="" class="height90"></div>
+                <div class="textalign blackTransparent"><img src="{% static 'frontend/images/eggs/opp_egg.png' %}" alt="" class="height90"></div>
+                <div class="textalign blackTransparent"><img src="{% static 'frontend/images/eggs/opp_egg.png' %}" alt="" class="height90"></div>
+                <div class="textalign blackTransparent"><img src="{% static 'frontend/images/eggs/opp_egg.png' %}" alt="" class="height90"></div>
+                <div class="textalign blackTransparent"><img src="{% static 'frontend/images/eggs/opp_egg.png' %}" alt="" class="height90"></div>
+                <div class="textalign blackTransparent"><img src="{% static 'frontend/images/eggs/opp_egg.png' %}" alt="" class="height90"></div>
+                <div class="textalign blackTransparent"><img src="{% static 'frontend/images/eggs/opp_egg.png' %}" alt="" class="height90"></div>
 
             </div>
             <div class="ingameBoard forestbg" id="gameboard">
-                    <div id="opp_event" class="position border singlecardbox oppeventbox persp100">
+                    <div id="opp_event" class="position singlecardbox oppeventbox persp100">
                         <div  class="border cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
                     </div>
 
-                    <div id ='opp_board' class="border position oppboard perspTop">
+                    <div id ='opp_board' class="position oppboard perspTop">
                         <div  class="border cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
                         <div  class="border cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
                         <div  class="border cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
@@ -47,7 +50,27 @@
                     </div>
 
                     <div id="opp_deck" class="border position oppdeck persp_100">
-                        <div  class="border cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
+                        <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
+                        <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
+                        <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
+                        <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
+                        <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
+                        <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
+                        <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
+                        <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
+                        <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
+                        <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
+                        <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
+                        <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
+                        <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
+                        <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
+                        <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
+                        <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
+                        <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
+                        <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
+                        <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
+                        <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
+
                     </div>
 
                     <div id='middle line'
@@ -65,7 +88,26 @@
                     </div>
 
                     <div id="ply_deck" class="border position plydeck persp_100">
-                        <div  class="border cardplayed transform10"></div>
+                        <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card</div>
+                        <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card</div>
+                        <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card</div>
+                        <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card</div>
+                        <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card</div>
+                        <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card</div>
+                        <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card</div>
+                        <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card</div>
+                        <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card</div>
+                        <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card</div>
+                        <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card</div>
+                        <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card</div>
+                        <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card</div>
+                        <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card</div>
+                        <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card</div>
+                        <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card</div>
+                        <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card</div>
+                        <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card</div>
+                        <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card</div>
+                        <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card</div>
                     </div>
 
             </div>
@@ -76,7 +118,12 @@
             
             <div class="plyeggsCount position textalign"><h1 class="navbarcolor font5w memoirsfont">10</h1></div>
 
-            <div id='ply_hand' class="border position plyhand" >
+            <div id='ply_hand' class="border position plyhand flexcontainer" >
+                <div class="cardWrapper" draggable="true">
+                    <div class="border cardinHand navbarcolor" style="background-color: black; font-size: 1vw; ">
+                        Huevo<img src="{% static 'frontend/images/eggs/ply_egg.png' %}" alt="" class="height80" draggable="false">
+                    </div>
+                </div>
                 
             </div>
 
@@ -84,7 +131,7 @@
                 <div class="buttondifficulty pulse margin10" id="startbutton">Start</div>
             </div>
                    
-        </div>
+           </div>
 
         <div class="plytransition ">
             <div class="jcbg"><div class="caesarfont flexcontainer" style="font-size: 10vh; color: black">Jurassicrysis</div></div>
