@@ -34,6 +34,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         var tl = gsap.timeline();
         tl.to("#startbutton", {scaleY: 0, scaleX: 0, duration: 1})
+        tl.set("#startbutton", {display: 'none'})
         .call(startGame);
 
     });
@@ -135,36 +136,52 @@ async function startGame() {
 function turnHandler(who){
     var tl = gsap.timeline();
     if(who == "ply"){
-        const turn = new Audio('/static/frontend/sounds/turn.mp3');
+        const turn = new Audio('/static/frontend/sounds/turn1.mp3');
         turn.loop = false;
         turn.play();
 
         tl.set("#ply_turn", {display: 'block', opacity: 0})
         tl.from("#ply_turn", {y: 1000, duration: 0.5, opacity: 1})
-        tl.to("#ply_turn", {top: "50%", duration: 2})
+        tl.to("#ply_turn", {top: "50%", duration: 1.3})
         tl.to("#ply_turn", {y: -1000, duration: 0.5, opacity: 0})
         tl.set("#ply_turn", {display: 'none'})
         
-        setTimeout(function(){ drawCard("ply")}, 3500);
+        setTimeout(function(){ drawCard("ply")}, 3000);
+        setTimeout(function(){ draggableHand("on")}, 3200);
+        setTimeout(function(){ showEnergy("ply")}, 3300);
+        /* Restaurar energía*/
 
 
     }
 
     else{
-        const turn2 = new Audio('/static/frontend/sounds/turn2.mp3');
+        draggableHand("off");
+
+        const turn2 = new Audio('/static/frontend/sounds/turn2.wav');
         turn2.loop = false;
         turn2.play();
 
         tl.set("#opp_turn", {display: 'block', opacity: 0})
         tl.from("#opp_turn", {y: 1000, duration: 0.5, opacity: 1})
-        tl.to("#opp_turn", {top: "50%", duration: 3})
+        tl.to("#opp_turn", {top: "50%", duration: 1.3})
         tl.to("#opp_turn", {y: -1000, duration: 0.5, opacity: 0})
         tl.set("#opp_turn", {display: 'none'});
 
-        setTimeout(function(){ drawCard("opp")}, 3500);
+        setTimeout(function(){ drawCard("opp")}, 3000);
+        setTimeout(function(){ showEnergy("opp")}, 3400);
 
     }
 
+}
+
+function showEnergy(who){
+    
+    if(who == "ply"){
+        gsap.to(".plyEnergy", {opacity: 1, duration: 1});
+    }
+    else{
+        gsap.to(".oppEnergy", {opacity: 1, duration: 1});
+    }
 }
 
 /* ----Fetch and draw a card----*/
@@ -178,7 +195,7 @@ async function drawCard(who){/* call destroyegg if pop == undefined*/
         var parentEl = document.getElementById("ply_hand");
         var div1 = document.createElement("div");
         div1.classList.add("cardWrapper");
-        div1.draggable = true;
+        div1.draggable = false;
         parentEl.appendChild(div1);
         const lastchild = document.getElementById("ply_hand").lastElementChild;
 
@@ -270,6 +287,25 @@ function sortCards(who) {
         
     }
    
+}
+
+/* Makes cards in player's hand draggable or undraggable*/
+function draggableHand(onoff){
+
+    if(onoff == "on"){
+        var cards = document.getElementsByClassName("cardWrapper");
+        for (var i = 0; i < cards.length; i++) {
+            cards[i].draggable = true;
+        }
+    }
+    
+    else{
+        var cards = document.getElementsByClassName("cardWrapper");
+        for (var i = 0; i < cards.length; i++) {
+            cards[i].draggable = false;
+        }
+    }
+  
 }
 
 class App extends React.Component {

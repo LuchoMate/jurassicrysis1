@@ -23,7 +23,7 @@
         
             <div id='opp_eggs'  class='position oppeggs'>
 
-                <div class="textalign blackTransparent"><img src="{% static 'frontend/images/eggs/opp_egg.png' %}" alt="" class="height90 oppegganim"></div>
+                <div class="textalign blackTransparent"><img src="{% static 'frontend/images/eggs/opp_egg.png' %}" alt="" class="height90"></div>
                 <div class="textalign blackTransparent"><img src="{% static 'frontend/images/eggs/opp_egg.png' %}" alt="" class="height90"></div>
                 <div class="textalign blackTransparent"><img src="{% static 'frontend/images/eggs/opp_egg.png' %}" alt="" class="height90"></div>
                 <div class="textalign blackTransparent"><img src="{% static 'frontend/images/eggs/opp_egg.png' %}" alt="" class="height90"></div>
@@ -35,6 +35,14 @@
                 <div class="textalign blackTransparent"><img src="{% static 'frontend/images/eggs/opp_egg.png' %}" alt="" class="height90"></div>
 
             </div>
+
+            <div class="oppEnergy position flexcontainer" style="opacity: 0;">
+                <div class="textalign height90"><img src="{% static 'frontend/images/icons/energy.png' %}" alt="" class="height90"></div>
+                <div class="textalign height90"><img src="{% static 'frontend/images/icons/energy.png' %}" alt="" class="height90"></div>
+
+
+            </div>
+
             <div class="ingameBoard forestbg">
                     <div id="opp_event" class="position singlecardbox oppeventbox persp100">
                         <div  class="border cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
@@ -131,14 +139,20 @@
                 <div class="buttondifficulty pulse margin10" id="startbutton" data-difficulty="hard" data-firstturn="ply">Start</div>
             </div>
 
-            <div id="ply_turn" class="border glassdiv position centerpage flexcontainer textalign" style="z-index: 10; display: none;">
+            <div class="plyEnergy position flexcontainer" style="opacity: 0;">
+                <div class="textalign height90"><img src="{% static 'frontend/images/icons/energy.png' %}" alt="" class="height90"></div>
+                <div class="textalign height90"><img src="{% static 'frontend/images/icons/energy.png' %}" alt="" class="height90"></div>
 
-                <h1 class="navbarcolor">Your Turn</h1>
             </div>
 
-            <div id="opp_turn" class="border glassdiv position centerpage flexcontainer textalign" style="z-index: 10; display: none;">
+            <div id="ply_turn" class="border glassdiv position centerTop flexcontainer textalign marginauto" style="z-index: 10; display: none; left: 40%;">
 
-                <h1 class="navbarcolor">Opponent's Turn</h1>
+                <h1 class="caesarfont navbarcolor font10vh flexcontainer aligncenter glow">Your Turn</h1>
+            </div>
+
+            <div id="opp_turn" class="border glassdiv position centerTop flexcontainer textalign marginauto" style="z-index: 10; display: none; left: 35%;">
+
+                <h1 class="caesarfont navbarcolor font10vh flexcontainer aligncenter glow">Opponent's Turn</h1>
             </div>
                 
         </div>

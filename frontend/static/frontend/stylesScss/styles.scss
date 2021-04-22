@@ -542,6 +542,62 @@ h6 {
 }
 /*------------- */
 
+
+/*--- Energy animation ----*/
+
+@keyframes energymove {
+    1% {
+        transform: rotate(5deg);
+    }
+
+    2% {
+        transform: rotate(5deg);
+    }
+
+    3% {
+        transform: rotate(-5deg);
+    }
+
+    4% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(0deg);
+    }
+
+}
+
+.plyEnergy div:nth-child(1) img {
+    animation: energymove;
+    animation-duration: 7s;
+    animation-delay: 3s;
+    animation-iteration-count: infinite;
+}
+
+.plyEnergy div:nth-child(2) img {
+    animation: energymove;
+    animation-duration: 7s;
+    animation-delay: 5.3s;
+    animation-iteration-count: infinite;
+}
+
+.oppEnergy div:nth-child(1) img {
+    animation: energymove;
+    animation-duration: 7s;
+    animation-delay: 10.3s;
+    animation-iteration-count: infinite;
+}
+
+.oppEnergy div:nth-child(2) img {
+    animation: energymove;
+    animation-duration: 7s;
+    animation-delay: 17s;
+    animation-iteration-count: infinite;
+}
+
+/* --------------------*/
+
 .overhidden {
     overflow: hidden;
 }
@@ -767,6 +823,24 @@ h6 {
     height: 10vh;
 }
 
+.plyEnergy {
+    bottom: 3%;
+    left:70%;
+    width: 15vw;
+    height: 22vh;
+}
+
+.oppEnergy {
+    top: 3%;
+    left:70%;
+    width: 15vw;
+    height: 22vh; 
+}
+
+.energystyle {
+    color: black;
+}
+
 /*---------General---------------- */
 
 .glassdiv {
@@ -851,13 +925,21 @@ h6 {
     width: 10vw;
 }
 
+.width5vw {
+    width: 5vw;
+}
+
+.width10 {
+    width: 10%;
+}
+
 .height10vh {
     height: 10vh;
 }
 
-.centerpage {
+.centerTop {
     top: 40%;
-    left: 40%;
+    
 }
 
 

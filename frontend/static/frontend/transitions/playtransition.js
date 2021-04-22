@@ -286,12 +286,11 @@ function boardIn(){
         display: 'none'
     })
     .call(removeElement(".difficultypage"))
-    .from("#ply_eggs", {delay: 0.2, duration: 1, x: -1000, ease: "back.out(0.3)"})
-    .from(".plyeggsCount", {duration: 1, opacity: 0})
-    .from("#opp_eggs", {duration: 1, x: 2000, ease: "back.out(0.3)" })
-    .from("#gameboard", {duration: 2, y: -1000, ease: "back.out(0.8)"})
-    .from("#startbutton", {opacity: 0, duration: 1});
-    /* .call(startGame(difficultyChoice, whoplaysfirst));*/
+    .from("#ply_eggs", {delay: 0.2, duration: 0.3, x: -1000, ease: "back.out(0.3)"})
+    .from(".plyeggsCount", {duration: 0.5, opacity: 0})
+    .from("#opp_eggs", {duration: 0.5, x: 2000, ease: "back.out(0.3)" })
+    .from("#gameboard", {duration: 1.2, y: -1000, ease: "back.out(0.8)"})
+    .from("#startbutton", {opacity: 0, duration: 0.7});
 
 }
 
