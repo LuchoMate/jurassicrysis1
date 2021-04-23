@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 /* import gsap from 'gsap';*/
 
 /*---------Utilities----------*/
+/*Removes element from dom*/
 function removeElement(element) {
     if (typeof(element) === "string") {
       element = document.querySelector(element);
@@ -13,6 +14,7 @@ function removeElement(element) {
     };
 }
 
+/*Adds a delay when needed*/
 function sleep(ms) {
     return new Promise(
       resolve => setTimeout(resolve, ms)
@@ -40,7 +42,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-/* Animates cards being placed in deck*/
+/* Animates cards being shuffled into deck*/
 function placeDeck(who){
 
     const shuffle = new Audio('/static/frontend/sounds/shuffle.mp3');
@@ -59,7 +61,7 @@ function placeDeck(who){
    
 }
 
-/* Animate drawing from deck*/
+/* Animates drawing from deck*/
 function drawDeck(who){
     const drawsound = new Audio('/static/frontend/sounds/drawcard.mp3');
     drawsound.loop = false;
@@ -87,11 +89,11 @@ function drawDeck(who){
 
 /*---Each player draw 5 cards to begin. */
 async function startGame() {
-
+    /* 
     placeDeck("opp");
     await sleep(2500);
     placeDeck("ply");
-    await sleep(2500);
+    await sleep(2500);*/
 
     const diff_chosen = document.getElementById("startbutton").dataset.difficulty;
     console.log(`gonna fetch oppdeck ${diff_chosen}`);
@@ -128,6 +130,7 @@ async function startGame() {
     })
     .then(console.log(plydeck));
 
+    setTimeout(function(){ showEnergy("ply"); showEnergy("opp")}, 8000);
     setTimeout(function(){ console.log("FIRST TURN"); turnHandler(currentTurn); }, 8500);
 }
 
@@ -148,8 +151,8 @@ function turnHandler(who){
         
         setTimeout(function(){ drawCard("ply")}, 3000);
         setTimeout(function(){ draggableHand("on")}, 3200);
-        setTimeout(function(){ showEnergy("ply")}, 3300);
-        /* Restaurar energía*/
+        
+        /* Restaurar energías*/
 
 
     }
@@ -168,8 +171,8 @@ function turnHandler(who){
         tl.set("#opp_turn", {display: 'none'});
 
         setTimeout(function(){ drawCard("opp")}, 3000);
-        setTimeout(function(){ showEnergy("opp")}, 3400);
-
+        /* Restaurar energías*/
+       
     }
 
 }
