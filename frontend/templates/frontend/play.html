@@ -16,132 +16,142 @@
 
             <div id = 'root'></div>
    
-            <div class="position quitdiv btn btn-outline-danger btn-sm" onclick="redirectHome()">Quit</div>
-            <div id="opp_hand" class='border position opphand flexcontainer'>
-                
-            </div>
-        
-            <div id='opp_eggs'  class='position oppeggs'>
-
-                <div class="textalign blackTransparent"><img src="{% static 'frontend/images/eggs/opp_egg.png' %}" alt="" class="height90 oppegganim"></div>
-                <div class="textalign blackTransparent"><img src="{% static 'frontend/images/eggs/opp_egg.png' %}" alt="" class="height90"></div>
-                <div class="textalign blackTransparent"><img src="{% static 'frontend/images/eggs/opp_egg.png' %}" alt="" class="height90"></div>
-                <div class="textalign blackTransparent"><img src="{% static 'frontend/images/eggs/opp_egg.png' %}" alt="" class="height90"></div>
-                <div class="textalign blackTransparent"><img src="{% static 'frontend/images/eggs/opp_egg.png' %}" alt="" class="height90"></div>
-                <div class="textalign blackTransparent"><img src="{% static 'frontend/images/eggs/opp_egg.png' %}" alt="" class="height90"></div>
-                <div class="textalign blackTransparent"><img src="{% static 'frontend/images/eggs/opp_egg.png' %}" alt="" class="height90"></div>
-                <div class="textalign blackTransparent"><img src="{% static 'frontend/images/eggs/opp_egg.png' %}" alt="" class="height90"></div>
-                <div class="textalign blackTransparent"><img src="{% static 'frontend/images/eggs/opp_egg.png' %}" alt="" class="height90"></div>
-                <div class="textalign blackTransparent"><img src="{% static 'frontend/images/eggs/opp_egg.png' %}" alt="" class="height90"></div>
-
-            </div>
-            <div class="ingameBoard forestbg" id="gameboard">
-                    <div id="opp_event" class="position singlecardbox oppeventbox persp100">
-                        <div  class="border cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
-                    </div>
-
-                    <div id ='opp_board' class="position oppboard perspTop">
-                        <div  class="border cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
-                        <div  class="border cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
-                        <div  class="border cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
-                        <div  class="border cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
-                        <div  class="border cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
-                        <div  class="border cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
-                    </div>
-
-                    <div id="opp_deck" class="border position oppdeck persp_100">
-                        <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
-                        <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
-                        <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
-                        <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
-                        <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
-                        <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
-                        <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
-                        <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
-                        <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
-                        <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
-                        <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
-                        <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
-                        <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
-                        <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
-                        <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
-                        <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
-                        <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
-                        <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
-                        <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
-                        <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
-
-                    </div>
-
-                    <div id='middle line'
-                            style="border-top: 1px solid white; position: absolute; top: 50%; width: 100%;">
-                    </div>
-
-                    <div id="ply_event" class="border position plyevent persp100">
-                        <div  class="border cardplayed transform10"></div>
-                    </div>
-
-                    <div id ='ply_board' class="position border plyboard perspTop">
-                        <div  class="border cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
-                        <div  class="border cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
-                        <div  class="border cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
-                    </div>
-
-                    <div id="ply_deck" class="border position plydeck persp_100">
-                        <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card</div>
-                        <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card</div>
-                        <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card</div>
-                        <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card</div>
-                        <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card</div>
-                        <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card</div>
-                        <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card</div>
-                        <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card</div>
-                        <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card</div>
-                        <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card</div>
-                        <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card</div>
-                        <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card</div>
-                        <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card</div>
-                        <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card</div>
-                        <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card</div>
-                        <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card</div>
-                        <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card</div>
-                        <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card</div>
-                        <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card</div>
-                        <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card</div>
-                    </div>
-
-            </div>
-
-            <div id='ply_eggs' class="position plyeggs textalign flexcontainer fl_column">
-                <img src="{% static 'frontend/images/eggs/ply_egg.png' %}" alt="" class="height80">
-            </div>
-            
-            <div class="plyeggsCount position textalign"><h1 class="navbarcolor font5w memoirsfont">10</h1></div>
-
-            <div id='ply_hand' class="border position plyhand flexcontainer" >
-                <div class="cardWrapper" draggable="true">
-                    <div class="border cardinHand navbarcolor" style="background-color: black; font-size: 1vw; ">
-                        Huevo<img src="{% static 'frontend/images/eggs/ply_egg.png' %}" alt="" class="height80" draggable="false">
-                    </div>
-                </div>
-                
-            </div>
-
-            <div class="position startdiv border">
-                <div class="buttondifficulty pulse margin10" id="startbutton">Start</div>
-            </div>
-
-            <div id="ply_turn" class="border glassdiv position centerpage flexcontainer textalign marginauto" style="z-index: 10; display: none;">
-
-                <h1 class="caesarfont navbarcolor font10vh flexcontainer aligncenter glow">Your Turn</h1>
-            </div>
-
-            <div id="opp_turn" class="border glassdiv position centerpage flexcontainer textalign marginauto" style="z-index: 10; display: none;">
-
-                <h1 class="caesarfont navbarcolor font10vh flexcontainer aligncenter glow">Opponent's Turn</h1>
-            </div>
+               <div class="position quitdiv btn btn-outline-danger btn-sm" onclick="redirectHome()">Quit</div>
+               <div id="opp_hand" class='position opphand flexcontainer'>
                    
-           </div>
+               </div>
+           
+               <div id='opp_eggs' class='position oppeggs'>
+   
+                   <div class="textalign blackTransparent"><img src="{% static 'frontend/images/eggs/opp_egg.png' %}" alt="" class="height90"></div>
+                   <div class="textalign blackTransparent"><img src="{% static 'frontend/images/eggs/opp_egg.png' %}" alt="" class="height90"></div>
+                   <div class="textalign blackTransparent"><img src="{% static 'frontend/images/eggs/opp_egg.png' %}" alt="" class="height90"></div>
+                   <div class="textalign blackTransparent"><img src="{% static 'frontend/images/eggs/opp_egg.png' %}" alt="" class="height90"></div>
+                   <div class="textalign blackTransparent"><img src="{% static 'frontend/images/eggs/opp_egg.png' %}" alt="" class="height90"></div>
+                   <div class="textalign blackTransparent"><img src="{% static 'frontend/images/eggs/opp_egg.png' %}" alt="" class="height90"></div>
+                   <div class="textalign blackTransparent"><img src="{% static 'frontend/images/eggs/opp_egg.png' %}" alt="" class="height90"></div>
+                   <div class="textalign blackTransparent"><img src="{% static 'frontend/images/eggs/opp_egg.png' %}" alt="" class="height90"></div>
+                   <div class="textalign blackTransparent"><img src="{% static 'frontend/images/eggs/opp_egg.png' %}" alt="" class="height90"></div>
+                   <div class="textalign blackTransparent"><img src="{% static 'frontend/images/eggs/opp_egg.png' %}" alt="" class="height90"></div>
+   
+               </div>
+   
+               <div class="oppEnergy position flexcontainer" style="opacity: 0;">
+                   <div class="textalign height90"><img src="{% static 'frontend/images/icons/energy.png' %}" alt="" class="height90"></div>
+                   <div class="textalign height90"><img src="{% static 'frontend/images/icons/energy.png' %}" alt="" class="height90"></div>
+   
+   
+               </div>
+   
+               <div class="ingameBoard forestbg">
+                       <div id="opp_event" class="position singlecardbox oppeventbox persp100">
+                           <div  class="border cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
+                       </div>
+   
+                       <div id ='opp_board' class="position oppboard perspTop">
+                           <div  class="border cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
+                           <div  class="border cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
+                           <div  class="border cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
+                           <div  class="border cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
+                           <div  class="border cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
+                           <div  class="border cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
+                       </div>
+   
+                       <div id="opp_deck" class="position oppdeck persp_100">
+                           <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
+                           <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
+                           <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
+                           <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
+                           <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
+                           <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
+                           <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
+                           <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
+                           <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
+                           <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
+                           <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
+                           <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
+                           <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
+                           <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
+                           <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
+                           <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
+                           <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
+                           <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
+                           <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
+                           <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
+   
+                       </div>
+   
+                       <div id='middle line'
+                               style="border-top: 1px solid white; position: absolute; top: 50%; width: 100%;">
+                       </div>
+   
+                       <div id="ply_event" class="position plyevent persp100">
+                           <div  class="border cardplayed transform10 blackbg"></div>
+                       </div>
+   
+                       <div id ='ply_board' class="position plyboard perspTop">
+                          
+                       </div>
+   
+                       <div id="ply_deck" class="position plydeck persp_100">
+                           <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card</div>
+                           <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card</div>
+                           <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card</div>
+                           <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card</div>
+                           <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card</div>
+                           <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card</div>
+                           <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card</div>
+                           <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card</div>
+                           <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card</div>
+                           <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card</div>
+                           <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card</div>
+                           <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card</div>
+                           <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card</div>
+                           <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card</div>
+                           <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card</div>
+                           <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card</div>
+                           <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card</div>
+                           <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card</div>
+                           <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card</div>
+                           <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card</div>
+                       </div>
+   
+               </div>
+   
+               <div id='ply_eggs' class="position plyeggs textalign flexcontainer fl_column">
+                   <img src="{% static 'frontend/images/eggs/ply_egg.png' %}" alt="" class="height80">
+               </div>
+               
+               <div class="plyeggsCount position textalign"><h1 class="navbarcolor font5w memoirsfont">10</h1></div>
+   
+               <div id='ply_hand' class="position plyhand flexcontainer border" >
+                   <div class="cardWrapper" draggable="true">
+                       
+                   </div>
+                   
+               </div>
+   
+               <div class="position startdiv">
+                   <div class="buttondifficulty pulse margin10" id="startbutton" data-difficulty="hard" data-firstturn="ply">Start</div>
+               </div>
+   
+               <div class="plyEnergy position flexcontainer" style="opacity: 0;">
+                   <div class="textalign height90"><img src="{% static 'frontend/images/icons/energy.png' %}" alt="" class="height90"></div>
+                   <div class="textalign height90"><img src="{% static 'frontend/images/icons/energy.png' %}" alt="" class="height90"></div>
+   
+               </div>
+   
+               <div id="ply_turn" class="border glassdiv position centerTop flexcontainer textalign marginauto" style="z-index: 10; display: none; left: 40%;">
+   
+                   <h1 class="caesarfont navbarcolor font10vh flexcontainer aligncenter glow">Your Turn</h1>
+               </div>
+   
+               <div id="opp_turn" class="border glassdiv position centerTop flexcontainer textalign marginauto" style="z-index: 10; display: none; left: 35%;">
+   
+                   <h1 class="caesarfont navbarcolor font10vh flexcontainer aligncenter glow">Opponent's Turn</h1>
+               </div>
+                   
+        </div>
 
         <div class="plytransition ">
             <div class="jcbg"><div class="caesarfont flexcontainer" style="font-size: 10vh; color: black">Jurassicrysis</div></div>

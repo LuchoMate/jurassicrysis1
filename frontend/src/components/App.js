@@ -26,9 +26,108 @@ function sleep(ms) {
 let oppdeck = [];
 let plydeck = [];
 let currentTurn = "";
+
+/*Class to communicate attacks data between components */
+
+class attackData {
+
+    constructor() {
+        this.atkValue = 0;
+        this.atkDinoType = "";
+    }
+
+    getAttack(attackPoints, dinoType) {
+        this.atkValue = attackPoints;
+        this.atkDinoType = dinoType;
+    }
+
+    returnAttack() {
+        return this.atkValue;
+    }
+    returnDinoType(){
+    		return this.atkDinoType;
+    }
+    showValues(){
+    	console.log(this.atkValue);
+        console.log(this.atkDinoType);
+    }
+
+}
+
+let handleAttacks = new attackData();
+
+/* ----Drag and Drop cards to play on player board----*/
+var dragged;
+document.addEventListener("drag", function( event ) {
+}, false);
+
+document.addEventListener("dragstart", function( event ) {
+    // store a ref. on the dragged elem
+    dragged = event.target;
+    // make it virtually invisible
+    event.target.style.opacity = 0.01;
+    if(event.target.className.includes("cardWrapper")){
+        console.log("contains cardwrapper");
+        document.getElementById("ply_board").classList.add("highlightTarget");
+    }
+}, false);
+
+document.addEventListener("dragend", function( event ) {
+    // reset the transparency
+    event.target.style.opacity = "";
+    if(event.target.className.includes("cardWrapper")){
+        document.getElementById("ply_board").classList.remove("highlightTarget");
+    }
+}, false);
+
+/*Esto posiblemente haya que ponerlo como global con restriccion
+        por ej solo si event.target.classname == cardWrapper */
+
+document.getElementById("ply_board").addEventListener("dragover", function( event ) {
+    // prevent default to allow drop
+    event.preventDefault();
+    
+}, false);
+
+document.getElementById("ply_board").addEventListener("dragenter", function( event ) {
+    
+    /* document.getElementById("ply_board").style.background = "red";*/
+
+}, false);
+
+document.getElementById("ply_board").addEventListener("dragleave", function( event ) {
+    
+    // reset background of potential drop target when the draggable element leaves it
+    document.getElementById("ply_board").style.background = "";
+}, false);
+
+document.getElementById("ply_board").addEventListener("drop", function( event ) {
+    // prevent default action (open as link for some elements)
+    event.preventDefault();
+    // move dragged elem to the selected drop target
+    document.getElementById("ply_board").classList.remove("highlightTarget");
+    /* Allows only cards from hand*/
+    if(dragged.className.includes("cardWrapper")){
+        dragged.parentNode.removeChild(dragged);
+        let appenddiv = document.createElement("div");
+        document.getElementById("ply_board").appendChild(appenddiv);
+        let lastplychild = document.getElementById("ply_board").lastElementChild;
+     
+        ReactDOM.render(<SketchPlayerCard name={dragged.dataset.name}
+            atk={dragged.dataset.atk} lifepoints={dragged.dataset.lifepoints} 
+        />, lastplychild);
+    
+        sortCards("ply");
+    }
+    
+    
+    
+}, false);
+
 /*------Start button calls startGame------ */
 
 document.addEventListener('DOMContentLoaded', function() {
+    
     document.getElementById('startbutton').addEventListener('click', function() {
         const button = new Audio('/static/frontend/sounds/button2.mp3');
         button.loop = false;
@@ -188,18 +287,25 @@ function showEnergy(who){
 }
 
 /* ----Fetch and draw a card----*/
-async function drawCard(who){/* call destroyegg if pop == undefined*/
+async function drawCard(who){/* call destroyegg if plydeck.length==0*/
 
     if(who == "ply"){
         
+        /*ifplydeck.length==0 call destroy egg and dont fetch */
         let response = await fetch(`/api/get_card/${plydeck.pop()}`);
         let card = await response.json();
-        
+        /* Adds wrapper to cards to achieve nice hidden effect in hand*/
         var parentEl = document.getElementById("ply_hand");
         var div1 = document.createElement("div");
         div1.classList.add("cardWrapper");
-        div1.draggable = false;
+        div1.draggable = true;
+
+        div1.dataset.name=card.name;
+        div1.dataset.atk=card.attack;
+        div1.dataset.lifepoints=card.life_points;
+        
         parentEl.appendChild(div1);
+       
         const lastchild = document.getElementById("ply_hand").lastElementChild;
 
         drawDeck("ply");
@@ -249,6 +355,48 @@ function SketchHandCard(props){
 
     }
     
+}
+
+/* Sketches card played by Player on board*/
+class SketchPlayerCard extends React.Component{
+    constructor(props){
+        super(props);
+        this.state = {
+            life_points: 0,
+            atk: 0,
+            cardname: "",
+            classes: "border cardplayed transform10 navbarcolor blackbg font1w"
+
+        }
+        this.handleDragStart = this.handleDragStart.bind(this);
+
+    }
+
+    componentDidMount(){
+    	this.setState({life_points: this.props.lifepoints});
+        this.setState({atk: this.props.atk});
+        this.setState({cardname: this.props.name});
+    }
+
+    handleDragStart(){
+        handleAttacks.getAttack(this.state.atk, "ca");
+        handleAttacks.showValues();
+      }
+
+    render(){
+    	return(
+            <React.Fragment>
+                <div className={this.state.classes} 
+                onDragStart={this.handleDragStart}
+                draggable="true"
+                >
+                    Atk: {this.state.atk} LP: {this.state.life_points}
+                    {this.state.cardname} 
+                </div>
+            </React.Fragment>
+      );
+    }
+
 }
 
 /* Arrange cards in players hand*/

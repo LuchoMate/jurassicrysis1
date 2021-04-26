@@ -647,6 +647,7 @@ h6 {
     width: 6.5vw; 
     margin: 5px;
     border-radius: 5px;
+    box-shadow: 2px 2px #888888;
 }
 
 .cardinHand {
@@ -675,6 +676,22 @@ h6 {
 
 .cardWrapperOpp:last-child {
     overflow: visible;
+}
+
+@keyframes validTargetBorder {
+    50% {
+      box-shadow: 0 0 2vw blue;
+    }
+    
+    100% {
+      box-shadow: none;
+    }
+  }
+  
+.highlightTarget {
+animation: validTargetBorder;
+animation-duration: 1s;
+animation-iteration-count: infinite;
 }
 
 
