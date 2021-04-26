@@ -25,6 +25,7 @@ function sleep(ms) {
 
 let oppdeck = [];
 let plydeck = [];
+let opphand = [];
 let currentTurn = "";
 
 /*Class to communicate attacks data between components */
@@ -258,6 +259,7 @@ function turnHandler(who){
 
     else{
         draggableHand("off");
+        console.log(`turn handler opphand: ${opphand}`);
 
         const turn2 = new Audio('/static/frontend/sounds/turn2.wav');
         turn2.loop = false;
@@ -270,7 +272,9 @@ function turnHandler(who){
         tl.set("#opp_turn", {display: 'none'});
 
         setTimeout(function(){ drawCard("opp")}, 3000);
-        /* Restaurar energías*/
+        setTimeout(function(){ cpuAi()}, 3500);
+        /* Restaurar energías opp*/
+        /* llamar cpuAi*/
        
     }
 
@@ -298,6 +302,7 @@ async function drawCard(who){/* call destroyegg if plydeck.length==0*/
         var parentEl = document.getElementById("ply_hand");
         var div1 = document.createElement("div");
         div1.classList.add("cardWrapper");
+        /* ACA PONERLE OTRA CLASE PARA LAS EVENT CARDS Y NO RESALTAR PLYBOARD*/
         div1.draggable = true;
 
         div1.dataset.name=card.name;
@@ -305,11 +310,10 @@ async function drawCard(who){/* call destroyegg if plydeck.length==0*/
         div1.dataset.lifepoints=card.life_points;
         
         parentEl.appendChild(div1);
-       
         const lastchild = document.getElementById("ply_hand").lastElementChild;
-
         drawDeck("ply");
-        ReactDOM.render(<SketchHandCard name={card.name} player="ply" />, lastchild);
+
+        ReactDOM.render(<SketchHandCard name={card.name}/>, lastchild);
 
         sortCards("ply");
         console.log(`ply: ${card.name}`);
@@ -325,36 +329,45 @@ async function drawCard(who){/* call destroyegg if plydeck.length==0*/
         parentEl.appendChild(div1);
         const lastchild = document.getElementById("opp_hand").lastElementChild;
         
+        /*adds card to opp hand*/
+
+        let cardToAdd = {};
+        cardToAdd.name = card.name;
+        cardToAdd.atk = card.attack;
+        cardToAdd.lifepoints = card.life_points;
+        cardToAdd.cost = card.cost;
+        cardToAdd.type = card.card_type;
+        cardToAdd.rarity = card.rarity;
+        cardToAdd.size = card.size;
+        cardToAdd.condition = card.condition_text;
+        console.log(cardToAdd);
+        opphand.push(cardToAdd);
+
         drawDeck("opp");
-        ReactDOM.render(<SketchHandCard name={card.name} player="opp" />, lastchild);
+        ReactDOM.render(<SketchHandOpp />, lastchild);
         sortCards("opp");
-        console.log(`opp: ${card.name}`);
+ 
     }
 }
 
-/* Sketches hand's card inside wrapper div*/
+/* Sketches player's hand card inside wrapper div*/
 
 function SketchHandCard(props){
-    if(props.player == "ply"){
         const classes = 'border cardinHand navbarcolor blackbg font1w';
         return <React.Fragment>
                 <div className={classes}>
                     {props.name}
                 </div>
             </React.Fragment>
-
-    }
-    else{
-        console.log("sketch opp")
-        const classes = 'border cardinHand navbarcolor blackbg font1w';
-        return <React.Fragment>
-                <div className={classes}>
-                    card card card
-                </div>
-            </React.Fragment>
-
-    }
+}
+/* Sketches opp's hand card inside wrapper div*/
+function SketchHandOpp() {
     
+    const classes = 'border cardinHand navbarcolor blackbg font1w';
+    return <React.Fragment>
+            <div className={classes}>
+            </div>
+        </React.Fragment>
 }
 
 /* Sketches card played by Player on board*/
@@ -395,6 +408,69 @@ class SketchPlayerCard extends React.Component{
                 </div>
             </React.Fragment>
       );
+    }
+
+}
+
+class SketchOppCard extends React.Component{
+    constructor(props){
+        super(props);
+        this.state = {
+            life_points: 0,
+            atk: 0,
+            cardname: "",
+            classes: "border cardplayed transform10 navbarcolor blackbg font1w"
+
+        }
+    }
+
+    componentDidMount(){
+    	this.setState({life_points: this.props.lifepoints});
+        this.setState({atk: this.props.atk});
+        this.setState({cardname: this.props.name});
+    }
+
+    render(){
+    	return(
+            <React.Fragment>
+                <div className={this.state.classes} 
+                /* handlers drag enter drag end DROP*/
+            
+                >
+                    Atk: {this.state.atk} LP: {this.state.life_points}
+                    {this.state.cardname} 
+                </div>
+            </React.Fragment>
+      );
+    }
+
+}
+
+async function cpuAi(){
+    var cards = document.getElementsByClassName("cardWrapperOpp");
+    await sleep(1000);
+
+    if (cards.length > 0){
+        const pickrandom = Math.floor(Math.random()*cards.length);
+        console.log(`pickrandom: ${pickrandom}`);
+        console.log(`opphand previa: ${opphand}`)
+        let cardtoPlay = opphand.splice(pickrandom, 1);
+
+        let appenddiv = document.createElement("div");
+        document.getElementById("opp_board").appendChild(appenddiv);
+        let lastoppchild = document.getElementById("opp_board").lastElementChild;
+
+        ReactDOM.render(<SketchOppCard name={cardtoPlay[0].name}
+            atk={cardtoPlay[0].atk} lifepoints={cardtoPlay[0].lifepoints} 
+        />, lastoppchild);
+
+        console.log(`card is: ${cardtoPlay.name}`);
+        console.log(`opphand ahora: ${opphand}`);
+
+    }
+
+    else {
+        turnHandler("opp"); /*finishes turn AÑADIR SI TIENE DINOS ATACAR*/
     }
 
 }

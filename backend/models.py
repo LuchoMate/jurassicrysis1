@@ -45,7 +45,7 @@ class Card(models.Model):
     rarity = models.CharField(max_length=2, choices=rarity_choices, default='co')
     size = models.CharField(max_length=2, choices=size_choices, default='sm')
     condition_text = models.CharField(max_length=50, blank=True)
-    effect_text = models.CharField(max_length=200, blank=True)
+    
 
     def __str__(self):
         return f"[id: {self.id}] -- {self.name} -- {self.card_type}"
