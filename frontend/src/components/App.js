@@ -82,9 +82,6 @@ document.addEventListener("dragend", function( event ) {
     }
 }, false);
 
-/*Esto posiblemente haya que ponerlo como global con restriccion
-        por ej solo si event.target.classname == cardWrapper */
-
 document.getElementById("ply_board").addEventListener("dragover", function( event ) {
     // prevent default to allow drop
     event.preventDefault();
@@ -110,6 +107,7 @@ document.getElementById("ply_board").addEventListener("drop", function( event ) 
     document.getElementById("ply_board").classList.remove("highlightTarget");
     /* Allows only cards from hand*/
     if(dragged.className.includes("cardWrapper")){
+        
         dragged.parentNode.removeChild(dragged);
         let appenddiv = document.createElement("div");
         document.getElementById("ply_board").appendChild(appenddiv);
@@ -280,34 +278,6 @@ async function turnHandler(who){
     }
 
 }
-
-/* 
-function playerTurn(){
-    const turn = new Audio('/static/frontend/sounds/turn1.mp3');
-    turn.loop = false;
-    turn.play();
-    turnTransition("ply");
-   
-     
-  
-}
-
-async function oppturn(){
-    document.getElementById("turnButton").classList.toggle('hover');
-    document.getElementById("turnButton").style.pointerEvents = "none";
-    draggableHand("off");
-    
-    const turn2 = new Audio('/static/frontend/sounds/turn2.wav');
-    turn2.loop = false;
-    turn2.play();
-
-    await (turnTransition("opp"));
-    turnNumber++;
-    setTimeout(function(){ drawCard("opp")}, 4500);
-    setTimeout(function(){ cpuAi()}, 5500);
-
-}
-*/
 
 function turnTransition(who){
     gsap.globalTimeline.clear();
@@ -489,15 +459,22 @@ class SketchOppCard extends React.Component{
 /* Manages opponent's turn*/
 async function cpuAi(){
     var cards = document.getElementsByClassName("cardWrapperOpp");
-
-
-
+    await(sleep(1500));
     if (cards.length > 0){
         const pickrandom = Math.floor(Math.random()*cards.length);
-    
+
+        /* simulates playing from hand*/
         let cardDiscard = document.getElementById("opp_hand").lastElementChild;
         document.getElementById("opp_hand").removeChild(cardDiscard);
         sortCards("opp");
+
+        let divCreate = document.createElement("div");
+        divCreate.classList.add('border', 'cardinHand', 'blackbg', 'position');
+        document.getElementById("boarddiv").appendChild(divCreate);
+        /* IF cardtoPlay.type == ev mover a left: 15%*/
+        gsap.fromTo(divCreate, {top: '0%', left: '50%'},{xPercent:-50, yPercent:-50, left:"50%", top:"35%", duration: 1});
+        await(sleep(1500));
+        divCreate.parentNode.removeChild(divCreate);
 
         let appenddiv = document.createElement("div");
         document.getElementById("opp_board").appendChild(appenddiv);
@@ -514,7 +491,7 @@ async function cpuAi(){
     }
 
     else {
-        
+        await(sleep(1500));
         turnHandler("ply");
         return;
     }
