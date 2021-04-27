@@ -313,10 +313,9 @@ function turnTransition(who){
     gsap.globalTimeline.clear();
     var tl = gsap.timeline();
    
-    tl.set(`#${who}_turn`, {display: 'block', opacity: 0})
-    tl.from(`#${who}_turn`, {y: 10, duration: 0.5, opacity: 1})
-    tl.to(`#${who}_turn`, {top: "50%", duration: 1.3})
-    tl.to(`#${who}_turn`, {y: 10, duration: 0.5, opacity: 0})
+    tl.set(`#${who}_turn`, {display: 'block'})
+    tl.to(`#${who}_turn`, {duration: 0.5, opacity: 1})
+    tl.to(`#${who}_turn`, {delay: 1, duration: 1, opacity: 0})
     tl.set(`#${who}_turn`, {display: 'none'});
     
 }
