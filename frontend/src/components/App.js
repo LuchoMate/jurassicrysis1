@@ -27,6 +27,7 @@ let oppdeck = [];
 let plydeck = [];
 let opphand = [];
 let currentTurn = "";
+let turnNumber = 1;
 
 /*Class to communicate attacks data between components */
 
@@ -120,14 +121,18 @@ document.getElementById("ply_board").addEventListener("drop", function( event ) 
     
         sortCards("ply");
     }
-    
-    
-    
+  
 }, false);
 
 /*------Start button calls startGame------ */
 
 document.addEventListener('DOMContentLoaded', function() {
+
+     
+    document.getElementById("turnButton").addEventListener('click', 
+    function(){
+        turnHandler("opp");
+    })
     
     document.getElementById('startbutton').addEventListener('click', function() {
         const button = new Audio('/static/frontend/sounds/button2.mp3');
@@ -198,7 +203,7 @@ async function startGame() {
     const diff_chosen = document.getElementById("startbutton").dataset.difficulty;
     console.log(`gonna fetch oppdeck ${diff_chosen}`);
     currentTurn = document.getElementById("startbutton").dataset.firstturn;
-     
+
     fetch(`/api/opp_deck/${diff_chosen}`)
     .then(response => response.json())
     .then(oppdata => {
@@ -231,53 +236,89 @@ async function startGame() {
     .then(console.log(plydeck));
 
     setTimeout(function(){ showEnergy("ply"); showEnergy("opp")}, 8000);
-    setTimeout(function(){ console.log("FIRST TURN"); turnHandler(currentTurn); }, 8500);
+    setTimeout(function(){ 
+        console.log("FIRST TURN");
+        turnHandler(currentTurn);
+        document.getElementById("turnButton").style.display = 'block';
+        }
+    , 8500);
+    
 }
 
-/* ---Handles players turns----*/
-
-function turnHandler(who){
-    var tl = gsap.timeline();
+async function turnHandler(who){
+    
     if(who == "ply"){
+        await(turnTransition("ply"));
         const turn = new Audio('/static/frontend/sounds/turn1.mp3');
         turn.loop = false;
         turn.play();
-
-        tl.set("#ply_turn", {display: 'block', opacity: 0})
-        tl.from("#ply_turn", {y: 1000, duration: 0.5, opacity: 1})
-        tl.to("#ply_turn", {top: "50%", duration: 1.3})
-        tl.to("#ply_turn", {y: -1000, duration: 0.5, opacity: 0})
-        tl.set("#ply_turn", {display: 'none'})
-        
-        setTimeout(function(){ drawCard("ply")}, 3000);
-        setTimeout(function(){ draggableHand("on")}, 3200);
-        
-        /* Restaurar energías*/
-
-
+        if(turnNumber != 1){
+            document.getElementById("turnButton").classList.toggle('hover');
+            document.getElementById("turnButton").style.pointerEvents = "auto";
+            document.getElementById("turnButton").style.cursor = 'pointer';
+            
+        }
+        turnNumber++; 
+        setTimeout(function(){ drawCard("ply")}, 4000);
+        setTimeout(function(){ draggableHand("on")}, 4200);
     }
 
     else{
+        await(turnTransition("opp"));
+        document.getElementById("turnButton").classList.toggle('hover');
+        document.getElementById("turnButton").style.pointerEvents = "none";
         draggableHand("off");
-        console.log(`turn handler opphand: ${opphand}`);
-
+      
         const turn2 = new Audio('/static/frontend/sounds/turn2.wav');
         turn2.loop = false;
         turn2.play();
 
-        tl.set("#opp_turn", {display: 'block', opacity: 0})
-        tl.from("#opp_turn", {y: 1000, duration: 0.5, opacity: 1})
-        tl.to("#opp_turn", {top: "50%", duration: 1.3})
-        tl.to("#opp_turn", {y: -1000, duration: 0.5, opacity: 0})
-        tl.set("#opp_turn", {display: 'none'});
-
-        setTimeout(function(){ drawCard("opp")}, 3000);
+        turnNumber++;
+        setTimeout(function(){ drawCard("opp")}, 2500);
         setTimeout(function(){ cpuAi()}, 3500);
-        /* Restaurar energías opp*/
-        /* llamar cpuAi*/
-       
+      
     }
 
+}
+
+/* 
+function playerTurn(){
+    const turn = new Audio('/static/frontend/sounds/turn1.mp3');
+    turn.loop = false;
+    turn.play();
+    turnTransition("ply");
+   
+     
+  
+}
+
+async function oppturn(){
+    document.getElementById("turnButton").classList.toggle('hover');
+    document.getElementById("turnButton").style.pointerEvents = "none";
+    draggableHand("off");
+    
+    const turn2 = new Audio('/static/frontend/sounds/turn2.wav');
+    turn2.loop = false;
+    turn2.play();
+
+    await (turnTransition("opp"));
+    turnNumber++;
+    setTimeout(function(){ drawCard("opp")}, 4500);
+    setTimeout(function(){ cpuAi()}, 5500);
+
+}
+*/
+
+function turnTransition(who){
+    gsap.globalTimeline.clear();
+    var tl = gsap.timeline();
+   
+    tl.set(`#${who}_turn`, {display: 'block', opacity: 0})
+    tl.from(`#${who}_turn`, {y: 10, duration: 0.5, opacity: 1})
+    tl.to(`#${who}_turn`, {top: "50%", duration: 1.3})
+    tl.to(`#${who}_turn`, {y: 10, duration: 0.5, opacity: 0})
+    tl.set(`#${who}_turn`, {display: 'none'});
+    
 }
 
 function showEnergy(who){
@@ -446,31 +487,37 @@ class SketchOppCard extends React.Component{
 
 }
 
+/* Manages opponent's turn*/
 async function cpuAi(){
     var cards = document.getElementsByClassName("cardWrapperOpp");
-    await sleep(1000);
+
+
 
     if (cards.length > 0){
         const pickrandom = Math.floor(Math.random()*cards.length);
-        console.log(`pickrandom: ${pickrandom}`);
-        console.log(`opphand previa: ${opphand}`)
-        let cardtoPlay = opphand.splice(pickrandom, 1);
+    
+        let cardDiscard = document.getElementById("opp_hand").lastElementChild;
+        document.getElementById("opp_hand").removeChild(cardDiscard);
+        sortCards("opp");
 
         let appenddiv = document.createElement("div");
         document.getElementById("opp_board").appendChild(appenddiv);
         let lastoppchild = document.getElementById("opp_board").lastElementChild;
 
+        let cardtoPlay = opphand.splice(pickrandom, 1);
         ReactDOM.render(<SketchOppCard name={cardtoPlay[0].name}
             atk={cardtoPlay[0].atk} lifepoints={cardtoPlay[0].lifepoints} 
         />, lastoppchild);
-
-        console.log(`card is: ${cardtoPlay.name}`);
-        console.log(`opphand ahora: ${opphand}`);
-
+        
+        await(sleep(1500));
+        turnHandler("ply");
+        return;
     }
 
     else {
-        turnHandler("opp"); /*finishes turn AÑADIR SI TIENE DINOS ATACAR*/
+        
+        turnHandler("ply");
+        return;
     }
 
 }
@@ -523,6 +570,7 @@ function draggableHand(onoff){
         var cards = document.getElementsByClassName("cardWrapper");
         for (var i = 0; i < cards.length; i++) {
             cards[i].draggable = true;
+            cards[i].style.cursor = 'grab';
         }
     }
     
@@ -530,6 +578,7 @@ function draggableHand(onoff){
         var cards = document.getElementsByClassName("cardWrapper");
         for (var i = 0; i < cards.length; i++) {
             cards[i].draggable = false;
+            cards[i].style.cursor = 'auto';
         }
     }
   

@@ -39,8 +39,17 @@
             <div class="oppEnergy position flexcontainer" style="opacity: 0;">
                 <div class="textalign height90"><img src="{% static 'frontend/images/icons/energy.png' %}" alt="" class="height90"></div>
                 <div class="textalign height90"><img src="{% static 'frontend/images/icons/energy.png' %}" alt="" class="height90"></div>
+            </div>
 
-
+            <div class="flip-turn" id="turnButton" style="cursor: pointer; display: none;">
+                <div class="flip-turn-inner">
+                  <div class="flip-turn-front font3w caesarfont flexcontainer textalign aligncenter pulse">
+                    End Turn
+                  </div>
+                  <div class="flip-turn-back font3w caesarfont flexcontainer textalign aligncenter">
+                    Wait Turn
+                  </div>
+                </div>
             </div>
 
             <div class="ingameBoard forestbg">
@@ -128,7 +137,7 @@
             </div>
 
             <div class="position startdiv">
-                <div class="buttondifficulty pulse margin10" id="startbutton" data-difficulty="hard" data-firstturn="opp">Start</div>
+                <div class="buttondifficulty pulse margin10" id="startbutton" data-difficulty="hard" data-firstturn="ply">Start</div>
             </div>
 
             <div class="plyEnergy position flexcontainer" style="opacity: 0;">

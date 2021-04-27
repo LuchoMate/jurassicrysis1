@@ -7,6 +7,9 @@ from django.db import IntegrityError
 from django.contrib.auth.decorators import login_required
 from backend.models import Player, Card
 
+def test(request):
+    return render(request, "frontend/test.html")
+
 def index(request):
     return render(request, "frontend/index.html")
 
