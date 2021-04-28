@@ -514,18 +514,27 @@ class SketchOppCard extends React.Component{
             life_points: 0,
             atk: 0,
             cardname: "",
-            classes: "border cardplayed transform10 navbarcolor blackbg font1w"
-
+            classes: "border cardplayed transform10 navbarcolor blackbg font1w",
+            condition: "",
+            can_attack: false
         }
+        this.attackCheck = this.attackCheck.bind(this);
     }
 
     componentDidMount(){
     	this.setState({life_points: this.props.lifepoints});
         this.setState({atk: this.props.atk});
         this.setState({cardname: this.props.name});
+        this.setState({condition: this.props.condition}, function(){this.attackCheck()});
 
         gsap.fromTo(ReactDOM.findDOMNode(this), {scaleX: 1.2, scaleY: 1.2},{duration: 1, scaleY: 1, scaleX: 1});
+    }
 
+    attackCheck(){
+        if(this.state.condition.includes("Agile")){/* first turn attack*/
+            this.setState({can_attack: true});
+        }
+      
     }
 
     render(){
@@ -535,8 +544,9 @@ class SketchOppCard extends React.Component{
                 /* handlers drag enter drag end DROP*/
             
                 >
+                    <span>{this.state.can_attack ? '' : 'zZzZ'}</span>
                     Atk: {this.state.atk} LP: {this.state.life_points}
-                    {this.state.cardname} 
+                    <b>{this.state.cardname}</b> 
                 </div>
             </React.Fragment>
       );
@@ -578,7 +588,8 @@ async function cpuAi(){
                 let lastoppchild = document.getElementById("opp_board").lastElementChild;
                 
                 ReactDOM.render(<SketchOppCard name={cardtoPlay[0].name}
-                    atk={cardtoPlay[0].atk} lifepoints={cardtoPlay[0].lifepoints} 
+                    atk={cardtoPlay[0].atk} lifepoints={cardtoPlay[0].lifepoints}
+                     condition={cardtoPlay[0].condition} 
                 />, lastoppchild);
 
                 
