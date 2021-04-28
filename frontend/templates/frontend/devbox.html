@@ -21,7 +21,7 @@
                 
             </div>
         
-            <div id='opp_eggs' class='position oppeggs'>
+            <div id='opp_eggs' class='position oppeggs noEvents'>
 
                 <div class="textalign blackTransparent"><img src="{% static 'frontend/images/eggs/opp_egg.png' %}" alt="" class="height90"></div>
                 <div class="textalign blackTransparent"><img src="{% static 'frontend/images/eggs/opp_egg.png' %}" alt="" class="height90"></div>
@@ -36,9 +36,9 @@
 
             </div>
 
-            <div class="oppEnergy position flexcontainer" style="opacity: 0;">
-                <div class="textalign height90"><img src="{% static 'frontend/images/icons/energy.png' %}" alt="" class="height90"></div>
-                <div class="textalign height90"><img src="{% static 'frontend/images/icons/energy.png' %}" alt="" class="height90"></div>
+            <div class="oppEnergy position flexcontainer noEvents" style="opacity: 0;">
+                <div class="textalign height90" id="oppEng1"><img src="{% static 'frontend/images/icons/energy.png' %}" alt="" class="height90"></div>
+                <div class="textalign height90" id="oppEng2"><img src="{% static 'frontend/images/icons/energy.png' %}" alt="" class="height90"></div>
             </div>
 
             <div class="flip-turn" id="turnButton" style="cursor: pointer; display: none;">
@@ -121,11 +121,11 @@
 
             </div>
 
-            <div id='ply_eggs' class="position plyeggs textalign flexcontainer fl_column">
+            <div id='ply_eggs' class="position plyeggs textalign flexcontainer fl_column noEvents">
                 <img src="{% static 'frontend/images/eggs/ply_egg.png' %}" alt="" class="height80">
             </div>
             
-            <div class="plyeggsCount position textalign"><h1 class="navbarcolor font5w memoirsfont">10</h1></div>
+            <div class="plyeggsCount position textalign"><h1 class="navbarcolor font5w memoirsfont noEvents">10</h1></div>
 
             <div id='ply_hand' class="position plyhand flexcontainer" >
                 <!-- <div class="cardWrapper" draggable="true">
@@ -138,9 +138,9 @@
                 <div class="buttondifficulty pulse margin10" id="startbutton" data-difficulty="hard" data-firstturn="opp">Start</div>
             </div>
 
-            <div class="plyEnergy position flexcontainer" style="opacity: 0;">
-                <div class="textalign height90"><img src="{% static 'frontend/images/icons/energy.png' %}" alt="" class="height90"></div>
-                <div class="textalign height90"><img src="{% static 'frontend/images/icons/energy.png' %}" alt="" class="height90"></div>
+            <div class="plyEnergy position flexcontainer noEvents" style="opacity: 0;">
+                <div class="textalign height90" id="plyEng1"><img src="{% static 'frontend/images/icons/energy.png' %}" alt="" class="height90"></div>
+                <div class="textalign height90" id="plyEng2"><img src="{% static 'frontend/images/icons/energy.png' %}" alt="" class="height90"></div>
 
             </div>
 

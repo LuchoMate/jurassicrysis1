@@ -26,6 +26,8 @@ function sleep(ms) {
 let oppdeck = [];
 let plydeck = [];
 let opphand = [];
+let oppEnergies = 2;
+let plyEnergies = 2;
 let currentTurn = "";
 let turnNumber = 1;
 
@@ -68,9 +70,28 @@ document.addEventListener("dragstart", function( event ) {
     dragged = event.target;
     // make it virtually invisible
     event.target.style.opacity = 0.01;
-    if(event.target.className.includes("cardWrapper")){
-        console.log("contains cardwrapper");
+    if(event.target.className.includes("cardWrapper")){/* poner condicion enrgy*/
         document.getElementById("ply_board").classList.add("highlightTarget");
+        /*plyEnergies*/
+        if(plyEnergies == 2){
+            if(event.target.dataset.cost == 1){
+                document.getElementById("plyEng2").classList.add("highlightEnergy");
+            }
+            if(event.target.dataset.cost == 2){
+                document.getElementById("plyEng2").classList.add("highlightEnergy");
+                document.getElementById("plyEng1").classList.add("highlightEnergy");
+            }
+        }
+        if(plyEnergies == 1){
+            if(event.target.dataset.cost == 1){
+                document.getElementById("plyEng1").classList.add("highlightEnergy");
+            }
+            if(event.target.dataset.cost == 2){
+                document.getElementById("plyEng1").classList.add("invalidBorder");
+            }
+        }
+
+        
     }
 }, false);
 
@@ -79,6 +100,10 @@ document.addEventListener("dragend", function( event ) {
     event.target.style.opacity = "";
     if(event.target.className.includes("cardWrapper")){
         document.getElementById("ply_board").classList.remove("highlightTarget");
+        document.getElementById("plyEng1").classList.remove("highlightEnergy");
+        document.getElementById("plyEng2").classList.remove("highlightEnergy");
+        document.getElementById("plyEng1").classList.remove("invalidBorder");
+        document.getElementById("plyEng2").classList.remove("invalidBorder");
     }
 }, false);
 
@@ -107,17 +132,50 @@ document.getElementById("ply_board").addEventListener("drop", function( event ) 
     document.getElementById("ply_board").classList.remove("highlightTarget");
     /* Allows only cards from hand*/
     if(dragged.className.includes("cardWrapper")){
-        
-        dragged.parentNode.removeChild(dragged);
-        let appenddiv = document.createElement("div");
-        document.getElementById("ply_board").appendChild(appenddiv);
-        let lastplychild = document.getElementById("ply_board").lastElementChild;
-     
-        ReactDOM.render(<SketchPlayerCard name={dragged.dataset.name}
-            atk={dragged.dataset.atk} lifepoints={dragged.dataset.lifepoints} 
-        />, lastplychild);
+        if(dragged.dataset.cost <= plyEnergies){/* Allow*/
+            document.getElementById("plyEng1").classList.remove("highlightEnergy");
+            document.getElementById("plyEng2").classList.remove("highlightEnergy");
+            if(plyEnergies == 2){
+                if(dragged.dataset.cost == 1){
+                    document.getElementById("plyEng2").style.visibility = 'hidden';
     
-        sortCards("ply");
+                }
+                if(dragged.dataset.cost == 2){
+                    document.getElementById("plyEng2").style.visibility = 'hidden';
+                    document.getElementById("plyEng1").style.visibility = 'hidden';
+                }
+            }
+
+            if(plyEnergies == 1){
+                document.getElementById("plyEng1").style.visibility = 'hidden';
+
+            }
+            
+            dragged.parentNode.removeChild(dragged);
+            let appenddiv = document.createElement("div");
+            document.getElementById("ply_board").appendChild(appenddiv);
+            let lastplychild = document.getElementById("ply_board").lastElementChild;
+        
+            ReactDOM.render(<SketchPlayerCard name={dragged.dataset.name}
+                atk={dragged.dataset.atk} lifepoints={dragged.dataset.lifepoints}
+                condition={dragged.dataset.condition} 
+            />, lastplychild); /* pasar condition*/
+
+
+        
+            sortCards("ply");
+            plyEnergies--;
+            console.log(`Energy left: ${plyEnergies}`);
+
+        }
+        else{/* Now allow*/
+            const wrong = new Audio('/static/frontend/sounds/wrong.wav');
+            wrong.loop = false;
+            wrong.play();
+            console.log("No energy!")
+        }
+        
+        
     }
   
 }, false);
@@ -250,6 +308,11 @@ async function turnHandler(who){
         const turn = new Audio('/static/frontend/sounds/turn1.mp3');
         turn.loop = false;
         turn.play();
+
+        plyEnergies = 2;
+        document.getElementById("plyEng1").style.visibility = 'visible';
+        document.getElementById("plyEng2").style.visibility = 'visible';
+
         if(turnNumber != 1){
             document.getElementById("turnButton").classList.toggle('hover');
             document.getElementById("turnButton").style.pointerEvents = "auto";
@@ -257,7 +320,7 @@ async function turnHandler(who){
             
         }
         turnNumber++; 
-        setTimeout(function(){ drawCard("ply")}, 4000);
+        setTimeout(function(){ drawCard("ply")}, 3000);
         setTimeout(function(){ draggableHand("on")}, 4200);
     }
 
@@ -266,13 +329,17 @@ async function turnHandler(who){
         document.getElementById("turnButton").classList.toggle('hover');
         document.getElementById("turnButton").style.pointerEvents = "none";
         draggableHand("off");
-      
+
+        oppEnergies = 2;
+        document.getElementById("oppEng1").style.visibility = 'visible';
+        document.getElementById("oppEng2").style.visibility = 'visible';
+
         const turn2 = new Audio('/static/frontend/sounds/turn2.wav');
         turn2.loop = false;
         turn2.play();
 
         turnNumber++;
-        setTimeout(function(){ drawCard("opp")}, 2500);
+        setTimeout(function(){ drawCard("opp")}, 2000);
         setTimeout(function(){ cpuAi()}, 3500);
       
     }
@@ -318,6 +385,8 @@ async function drawCard(who){/* call destroyegg if plydeck.length==0*/
         div1.dataset.name=card.name;
         div1.dataset.atk=card.attack;
         div1.dataset.lifepoints=card.life_points;
+        div1.dataset.cost=card.cost;
+        div1.dataset.condition = card.condition_text;
         
         parentEl.appendChild(div1);
         const lastchild = document.getElementById("ply_hand").lastElementChild;
@@ -352,6 +421,7 @@ async function drawCard(who){/* call destroyegg if plydeck.length==0*/
         cardToAdd.condition = card.condition_text;
         console.log(cardToAdd);
         opphand.push(cardToAdd);
+        console.log(`hand.length after push: ${opphand.length}`);
 
         drawDeck("opp");
         ReactDOM.render(<SketchHandOpp />, lastchild);
@@ -388,8 +458,8 @@ class SketchPlayerCard extends React.Component{
             life_points: 0,
             atk: 0,
             cardname: "",
+            condition: "",
             classes: "border cardplayed transform10 navbarcolor blackbg font1w"
-
         }
         this.handleDragStart = this.handleDragStart.bind(this);
 
@@ -399,12 +469,17 @@ class SketchPlayerCard extends React.Component{
     	this.setState({life_points: this.props.lifepoints});
         this.setState({atk: this.props.atk});
         this.setState({cardname: this.props.name});
+        this.setState({condition: this.props.condition});
+
+        gsap.fromTo(ReactDOM.findDOMNode(this), {scaleX: 1.2, scaleY: 1.2},{duration: 1, scaleY: 1, scaleX: 1})
+
     }
 
     handleDragStart(){
         handleAttacks.getAttack(this.state.atk, "ca");
         handleAttacks.showValues();
-      }
+
+    }
 
     render(){
     	return(
@@ -413,8 +488,9 @@ class SketchPlayerCard extends React.Component{
                 onDragStart={this.handleDragStart}
                 draggable="true"
                 >
-                    Atk: {this.state.atk} LP: {this.state.life_points}
-                    {this.state.cardname} 
+                    <div>Atk:{this.state.atk} ------ LP:{this.state.life_points}</div>
+                    <div>{this.state.cardname}</div>
+                    <div>{this.state.condition}</div>
                 </div>
             </React.Fragment>
       );
@@ -422,6 +498,7 @@ class SketchPlayerCard extends React.Component{
 
 }
 
+/* Sketches card played by opponent on board*/
 class SketchOppCard extends React.Component{
     constructor(props){
         super(props);
@@ -438,6 +515,9 @@ class SketchOppCard extends React.Component{
     	this.setState({life_points: this.props.lifepoints});
         this.setState({atk: this.props.atk});
         this.setState({cardname: this.props.name});
+
+        gsap.fromTo(ReactDOM.findDOMNode(this), {scaleX: 1.2, scaleY: 1.2},{duration: 1, scaleY: 1, scaleX: 1});
+
     }
 
     render(){
@@ -458,48 +538,75 @@ class SketchOppCard extends React.Component{
 
 /* Manages opponent's turn*/
 async function cpuAi(){
-    var cards = document.getElementsByClassName("cardWrapperOpp");
+
+    let pickrandom = 0;
+    let cardtoPlay = [];
+    
     await(sleep(1500));
-    if (cards.length > 0){
-        const pickrandom = Math.floor(Math.random()*cards.length);
 
-        /* simulates playing from hand*/
-        let cardDiscard = document.getElementById("opp_hand").lastElementChild;
-        document.getElementById("opp_hand").removeChild(cardDiscard);
-        sortCards("opp");
+    for(let i=0; i<2;i++){/* Attempts to play 2 cards*/
+        if(opphand.length > 0){
+            console.log(`cards in hand: ${opphand.length}`)
+            pickrandom = Math.floor(Math.random()*opphand.length);
+            if(opphand[pickrandom].cost <= oppEnergies){/* Card can be played*/
+                cardtoPlay = opphand.splice(pickrandom, 1);
+                console.log(cardtoPlay[0]);
+                let cardDiscard = document.getElementById("opp_hand").lastElementChild;
+                document.getElementById("opp_hand").removeChild(cardDiscard);
+                sortCards("opp");
+                
+                let divCreate = document.createElement("div");
+                divCreate.classList.add('border', 'cardinHand', 'blackbg', 'position');
+                document.getElementById("boarddiv").appendChild(divCreate);
+                
+                /* simulates playing a card*/
+                gsap.fromTo(divCreate, {top: '0%', left: '50%'},{xPercent:-50, yPercent:-50, left:"50%", top:"38%", duration: 0.8, ease: "power1.out"});
+                await(sleep(2200));
+                divCreate.parentNode.removeChild(divCreate);
 
-        let divCreate = document.createElement("div");
-        divCreate.classList.add('border', 'cardinHand', 'blackbg', 'position');
-        document.getElementById("boarddiv").appendChild(divCreate);
-        /* IF cardtoPlay.type == ev mover a left: 15%*/
-        gsap.fromTo(divCreate, {top: '0%', left: '50%'},{xPercent:-50, yPercent:-50, left:"50%", top:"35%", duration: 1});
-        await(sleep(1500));
-        divCreate.parentNode.removeChild(divCreate);
+                /*to mount component here */
+                let appenddiv = document.createElement("div");
+                document.getElementById("opp_board").appendChild(appenddiv);
+                let lastoppchild = document.getElementById("opp_board").lastElementChild;
+                
+                ReactDOM.render(<SketchOppCard name={cardtoPlay[0].name}
+                    atk={cardtoPlay[0].atk} lifepoints={cardtoPlay[0].lifepoints} 
+                />, lastoppchild);
 
-        let appenddiv = document.createElement("div");
-        document.getElementById("opp_board").appendChild(appenddiv);
-        let lastoppchild = document.getElementById("opp_board").lastElementChild;
+                
 
-        let cardtoPlay = opphand.splice(pickrandom, 1);
-        ReactDOM.render(<SketchOppCard name={cardtoPlay[0].name}
-            atk={cardtoPlay[0].atk} lifepoints={cardtoPlay[0].lifepoints} 
-        />, lastoppchild);
+                if(oppEnergies == 1){
+                    if(cardtoPlay[0].cost == 1){
+                        document.getElementById("oppEng1").style.visibility = 'hidden';
+                        oppEnergies--;
+                    }  
+                }
+
+                if(oppEnergies == 2){
+                    if(cardtoPlay[0].cost == 1){
+                        document.getElementById("oppEng2").style.visibility = 'hidden';
+                        oppEnergies--;
+                    }
+                    if(cardtoPlay[0].cost == 2){
+                        oppEnergies--;
+                        oppEnergies--;
+                        document.getElementById("oppEng2").style.visibility = 'hidden';
+                        document.getElementById("oppEng1").style.visibility = 'hidden';
+                    }
+                }  
+                await(sleep(1500));
+            }
+        }
         
-        await(sleep(1500));
-        turnHandler("ply");
-        return;
     }
-
-    else {
-        await(sleep(1500));
-        turnHandler("ply");
-        return;
-    }
-
+     
+    await(sleep(1000));
+    turnHandler("ply");
+    return;
 }
 
-/* Arrange cards in players hand*/
 
+/* Arrange cards in players hand*/
 function sortCards(who) {
 
     if(who=="ply"){
