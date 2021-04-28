@@ -459,20 +459,20 @@ class SketchPlayerCard extends React.Component{
             atk: 0,
             cardname: "",
             condition: "",
-            classes: "border cardplayed transform10 navbarcolor blackbg font1w"
+            classes: "border cardplayed transform10 navbarcolor blackbg font1w",
+            can_attack: false
         }
         this.handleDragStart = this.handleDragStart.bind(this);
-
+        this.attackCheck = this.attackCheck.bind(this);
     }
 
     componentDidMount(){
     	this.setState({life_points: this.props.lifepoints});
         this.setState({atk: this.props.atk});
         this.setState({cardname: this.props.name});
-        this.setState({condition: this.props.condition});
+        this.setState({condition: this.props.condition}, function(){this.attackCheck()});
 
         gsap.fromTo(ReactDOM.findDOMNode(this), {scaleX: 1.2, scaleY: 1.2},{duration: 1, scaleY: 1, scaleX: 1})
-
     }
 
     handleDragStart(){
@@ -481,18 +481,26 @@ class SketchPlayerCard extends React.Component{
 
     }
 
+    attackCheck(){
+        if(this.state.condition.includes("Agile")){/* first turn attack*/
+            this.setState({can_attack: true});
+        }
+      
+    }
+
     render(){
     	return(
             <React.Fragment>
-                <div className={this.state.classes} 
-                onDragStart={this.handleDragStart}
-                draggable="true"
-                >
-                    <div>Atk:{this.state.atk} ------ LP:{this.state.life_points}</div>
-                    <div>{this.state.cardname}</div>
-                    <div>{this.state.condition}</div>
-                </div>
-            </React.Fragment>
+            <div className={this.state.classes} 
+            onDragStart={this.handleDragStart}
+            draggable={this.state.can_attack ? true : false}
+            >
+                <span>{this.state.can_attack ? '' : 'zZzZ'}</span>
+                <div>Atk:{this.state.atk} -------- LP:{this.state.life_points}</div>
+                <div><b>{this.state.cardname}</b></div>
+                <div>{this.state.condition}</div>
+            </div>
+        </React.Fragment>
       );
     }
 
