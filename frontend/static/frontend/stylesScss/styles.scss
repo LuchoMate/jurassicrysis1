@@ -906,6 +906,15 @@ animation-iteration-count: infinite;
 
 }
 
+.cardplayedOpp {
+    @extend .border;
+    @extend .cardplayed;
+    @extend .transform10;
+    @extend .navbarcolor;
+    @extend .blackbg;
+    @extend .font1w;
+}
+
 .inputTurnply {
     display: none;
 }

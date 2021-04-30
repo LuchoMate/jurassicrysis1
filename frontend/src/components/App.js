@@ -63,6 +63,7 @@ let handleAttacks = new attackData();
 /* ----Drag and Drop cards to play on player board----*/
 var dragged;
 document.addEventListener("drag", function( event ) {
+    
 }, false);
 
 document.addEventListener("dragstart", function( event ) {
@@ -492,6 +493,7 @@ class SketchPlayerCard extends React.Component{
             can_attack: false
         }
         this.handleDragStart = this.handleDragStart.bind(this);
+        this.handleDragEnd = this.handleDragEnd.bind(this);
         this.attack1Turn = this.attack1Turn.bind(this);
         this.handleturnStart = this.handleturnStart.bind(this);
         this.handlesleepcard = this.handlesleepcard.bind(this);
@@ -511,6 +513,18 @@ class SketchPlayerCard extends React.Component{
         handleAttacks.getAttack(this.state.atk, "ca");
         handleAttacks.showValues();
 
+        let oppCards = document.getElementsByClassName("cardplayedOpp");
+        for(let i=0; i< oppCards.length ; i++){
+            oppCards[i].classList.add("highlightTarget");
+        }
+
+    }
+
+    handleDragEnd(){
+        let oppCards = document.getElementsByClassName("cardplayedOpp");
+        for(let i=0; i< oppCards.length ; i++){
+            oppCards[i].classList.remove("highlightTarget");
+        }
     }
 
     /* Checks if card can attack on its first turn*/
@@ -533,11 +547,14 @@ class SketchPlayerCard extends React.Component{
     }
 
     render(){
+        
     	return(
             <React.Fragment>
             <div className={this.state.classes} 
             onDragStart={this.handleDragStart}
+            onDragEnd={this.handleDragEnd}
             draggable={this.state.can_attack ? true : false}
+            style={{cursor: this.state.can_attack ? 'grab' : 'none'}}
             >
                 <div>{this.state.can_attack ? 'Go' : 'zZzZ'}</div>
                 <div>Atk:{this.state.atk} -------- LP:{this.state.life_points}</div>
@@ -552,6 +569,8 @@ class SketchPlayerCard extends React.Component{
     }
 }
 
+
+
 /* Sketches card played by opponent on board*/
 class SketchOppCard extends React.Component{
     constructor(props){
@@ -560,12 +579,16 @@ class SketchOppCard extends React.Component{
             life_points: 0,
             atk: 0,
             cardname: "",
-            classes: "border cardplayed transform10 navbarcolor blackbg font1w",
+            classes: "cardplayedOpp",
             condition: "",
             can_attack: false
         }
         this.attack1Turn = this.attack1Turn.bind(this);
         this.handleturnStart = this.handleturnStart.bind(this);
+
+        this.handleDragOver = this.handleDragOver.bind(this);
+        this.handleDrop = this.handleDrop.bind(this);
+        this.handleDestroyed = this.handleDestroyed.bind(this);
     }
 
     componentDidMount(){
@@ -589,11 +612,56 @@ class SketchOppCard extends React.Component{
         console.log("Ready to Attack")
     }
 
+    handleDragOver(){
+        event.preventDefault();
+    }
+
+    handleDrop(){
+    	event.preventDefault();
+    	console.log("being attacked!");
+        this.setState({ life_points: this.state.life_points - handleAttacks.returnAttack()}, function(){this.handleDestroyed()});
+
+        /* That card cannot attack again this turn*/
+        var evento = new Event('input', {
+            bubbles: true,
+            cancelable: true,
+            });
+        dragged.getElementsByClassName("inputsleepply")[0].dispatchEvent(evento);
+
+        /*
+        function sleepPlyCard(){
+    var event = new Event('input', {
+        bubbles: true,
+        cancelable: true,
+    });
+
+	let cards = document.getElementsByClassName("inputsleepply");
+    for(let i = 0; i<cards.length; i++){
+	    cards[i].dispatchEvent(event);
+    }
+}
+         */
+    }
+
+    handleDestroyed(){
+    	console.log(`my hp is now: ${this.state.life_points}`);
+        if(this.state.life_points <= 0){
+            console.log("Executed with impunity!!");
+            const thisNode = ReactDOM.findDOMNode(this);
+            const parent = thisNode.parentNode;
+            ReactDOM.unmountComponentAtNode(thisNode.parentNode);
+            parent.parentNode.removeChild(parent);
+        
+        }
+    }
+
     render(){
     	return(
             <React.Fragment>
                 <div className={this.state.classes} 
-                /* handlers drag enter drag end DROP*/
+                onDragOver={this.handleDragOver}
+                onDrop={this.handleDrop}
+
             
                 >
                     <div>{this.state.can_attack ? 'Go' : 'zZzZ'}</div>
