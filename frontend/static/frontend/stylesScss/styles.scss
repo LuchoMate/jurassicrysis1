@@ -896,6 +896,28 @@ animation-iteration-count: infinite;
     left: 33%;
 }
 
+.cardplayedPly {
+    @extend .border;
+    @extend .cardplayed;
+    @extend .transform10;
+    @extend .navbarcolor;
+    @extend .blackbg;
+    @extend .font1w;
+
+}
+
+.inputTurnply {
+    display: none;
+}
+
+.inputTurnopp {
+    display: none;
+}
+
+.inputsleepply {
+    display: none;
+}
+
 .energystyle {
     color: black;
 }

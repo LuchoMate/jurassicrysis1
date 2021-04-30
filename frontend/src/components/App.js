@@ -322,9 +322,11 @@ async function turnHandler(who){
         turnNumber++; 
         setTimeout(function(){ drawCard("ply")}, 3000);
         setTimeout(function(){ draggableHand("on")}, 4200);
+        setTimeout(function(){cardsReady("ply")}, 4300);
     }
 
     else{
+        sleepPlyCard();
         await(turnTransition("opp"));
         document.getElementById("turnButton").classList.toggle('hover');
         document.getElementById("turnButton").style.pointerEvents = "none";
@@ -340,10 +342,37 @@ async function turnHandler(who){
 
         turnNumber++;
         setTimeout(function(){ drawCard("opp")}, 2000);
+        setTimeout(function(){ cardsReady("opp")}, 3000);
         setTimeout(function(){ cpuAi()}, 3500);
       
     }
 
+}
+/* Unorthodox/hacky way to signal certain events to components*/
+/* Set cards so they are ready to attack again*/
+function cardsReady(who){
+    
+    var event = new Event('input', {
+        bubbles: true,
+        cancelable: true,
+    });
+
+	let cards = document.getElementsByClassName(`inputTurn${who}`);
+    for(let i = 0; i<cards.length; i++){
+	    cards[i].dispatchEvent(event);
+    }
+}
+
+function sleepPlyCard(){
+    var event = new Event('input', {
+        bubbles: true,
+        cancelable: true,
+    });
+
+	let cards = document.getElementsByClassName("inputsleepply");
+    for(let i = 0; i<cards.length; i++){
+	    cards[i].dispatchEvent(event);
+    }
 }
 
 function turnTransition(who){
@@ -459,33 +488,48 @@ class SketchPlayerCard extends React.Component{
             atk: 0,
             cardname: "",
             condition: "",
-            classes: "border cardplayed transform10 navbarcolor blackbg font1w",
+            classes: "cardplayedPly",
             can_attack: false
         }
         this.handleDragStart = this.handleDragStart.bind(this);
-        this.attackCheck = this.attackCheck.bind(this);
+        this.attack1Turn = this.attack1Turn.bind(this);
+        this.handleturnStart = this.handleturnStart.bind(this);
+        this.handlesleepcard = this.handlesleepcard.bind(this);
     }
 
     componentDidMount(){
     	this.setState({life_points: this.props.lifepoints});
         this.setState({atk: this.props.atk});
         this.setState({cardname: this.props.name});
-        this.setState({condition: this.props.condition}, function(){this.attackCheck()});
+        this.setState({condition: this.props.condition}, function(){this.attack1Turn()});
 
         gsap.fromTo(ReactDOM.findDOMNode(this), {scaleX: 1.2, scaleY: 1.2},{duration: 1, scaleY: 1, scaleX: 1})
     }
 
+    /* Passes attacking info to data handler*/
     handleDragStart(){
         handleAttacks.getAttack(this.state.atk, "ca");
         handleAttacks.showValues();
 
     }
 
-    attackCheck(){
+    /* Checks if card can attack on its first turn*/
+    attack1Turn(){
         if(this.state.condition.includes("Agile")){/* first turn attack*/
             this.setState({can_attack: true});
         }
       
+    }
+
+    /* Set cards ready to attack at the beginning of turn */
+    handleturnStart(){
+        this.setState({can_attack: true});
+        console.log("Ready to Attack")
+    }
+
+    /*Set cards unable to attack at the end of turn  */
+    handlesleepcard(){
+        this.setState({can_attack: false});
     }
 
     render(){
@@ -495,15 +539,17 @@ class SketchPlayerCard extends React.Component{
             onDragStart={this.handleDragStart}
             draggable={this.state.can_attack ? true : false}
             >
-                <span>{this.state.can_attack ? '' : 'zZzZ'}</span>
+                <div>{this.state.can_attack ? 'Go' : 'zZzZ'}</div>
                 <div>Atk:{this.state.atk} -------- LP:{this.state.life_points}</div>
                 <div><b>{this.state.cardname}</b></div>
                 <div>{this.state.condition}</div>
+                <input className="inputTurnply" onInput={this.handleturnStart} />
+                <input className="inputsleepply" onInput={this.handlesleepcard} />
+
             </div>
         </React.Fragment>
       );
     }
-
 }
 
 /* Sketches card played by opponent on board*/
@@ -518,23 +564,29 @@ class SketchOppCard extends React.Component{
             condition: "",
             can_attack: false
         }
-        this.attackCheck = this.attackCheck.bind(this);
+        this.attack1Turn = this.attack1Turn.bind(this);
+        this.handleturnStart = this.handleturnStart.bind(this);
     }
 
     componentDidMount(){
     	this.setState({life_points: this.props.lifepoints});
         this.setState({atk: this.props.atk});
         this.setState({cardname: this.props.name});
-        this.setState({condition: this.props.condition}, function(){this.attackCheck()});
+        this.setState({condition: this.props.condition}, function(){this.attack1Turn()});
 
         gsap.fromTo(ReactDOM.findDOMNode(this), {scaleX: 1.2, scaleY: 1.2},{duration: 1, scaleY: 1, scaleX: 1});
     }
 
-    attackCheck(){
+    attack1Turn(){
         if(this.state.condition.includes("Agile")){/* first turn attack*/
             this.setState({can_attack: true});
         }
       
+    }
+
+    handleturnStart(){
+        this.setState({can_attack: true});
+        console.log("Ready to Attack")
     }
 
     render(){
@@ -544,9 +596,10 @@ class SketchOppCard extends React.Component{
                 /* handlers drag enter drag end DROP*/
             
                 >
-                    <span>{this.state.can_attack ? '' : 'zZzZ'}</span>
+                    <div>{this.state.can_attack ? 'Go' : 'zZzZ'}</div>
                     Atk: {this.state.atk} LP: {this.state.life_points}
-                    <b>{this.state.cardname}</b> 
+                    <b>{this.state.cardname}</b>
+                    <input className="inputTurnopp" onInput={this.handleturnStart} /> 
                 </div>
             </React.Fragment>
       );
@@ -665,7 +718,7 @@ function sortCards(who) {
    
 }
 
-/* Makes cards in player's hand draggable or undraggable*/
+/* Allow/prevents player to play cards from hand*/
 function draggableHand(onoff){
 
     if(onoff == "on"){
@@ -685,27 +738,3 @@ function draggableHand(onoff){
     }
   
 }
-
-class App extends React.Component {
-    constructor(props){
-        super(props);
-
-        this.state = {
-            height : window.innerHeight,
-            width : window.innerWidth
-        }
-
-    }
-
-    componentDidMount() {
-        console.log(this.state.height);
-        console.log(this.state.width);
-        console.log("cmp did mount");
-    }
-
-    render() {
-        return <h1>React App</h1>
-    }
-}
-
-/* ReactDOM.render(<App />, document.getElementById('root'))*/
