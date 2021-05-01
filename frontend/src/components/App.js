@@ -49,7 +49,7 @@ class attackData {
         return this.atkValue;
     }
     returnDinoType(){
-    		return this.atkDinoType;
+    	return this.atkDinoType;
     }
     showValues(){
     	console.log(this.atkValue);
@@ -152,6 +152,7 @@ document.getElementById("ply_board").addEventListener("drop", function( event ) 
 
             }
             
+            plyEnergies = plyEnergies - dragged.dataset.cost;
             dragged.parentNode.removeChild(dragged);
             let appenddiv = document.createElement("div");
             document.getElementById("ply_board").appendChild(appenddiv);
@@ -162,10 +163,8 @@ document.getElementById("ply_board").addEventListener("drop", function( event ) 
                 condition={dragged.dataset.condition} 
             />, lastplychild); /* pasar condition*/
 
-
-        
             sortCards("ply");
-            plyEnergies--;
+            /* plyEnergies--;*/
             console.log(`Energy left: ${plyEnergies}`);
 
         }
@@ -390,10 +389,10 @@ function turnTransition(who){
 function showEnergy(who){
     
     if(who == "ply"){
-        gsap.to(".plyEnergy", {opacity: 1, duration: 1});
+        gsap.to(".plyEnergy", {visibility: 'visible', duration: 1});
     }
     else{
-        gsap.to(".oppEnergy", {opacity: 1, duration: 1});
+        gsap.to(".oppEnergy", {visibility: 'visible', duration: 1});
     }
 }
 
@@ -494,9 +493,13 @@ class SketchPlayerCard extends React.Component{
         }
         this.handleDragStart = this.handleDragStart.bind(this);
         this.handleDragEnd = this.handleDragEnd.bind(this);
+        this.handleDrop = this.handleDrop.bind(this);
+        this.handleDragOver = this.handleDragOver.bind(this);
+
         this.attack1Turn = this.attack1Turn.bind(this);
         this.handleturnStart = this.handleturnStart.bind(this);
         this.handlesleepcard = this.handlesleepcard.bind(this);
+        this.handleDestroyed = this.handleDestroyed.bind(this);
     }
 
     componentDidMount(){
@@ -527,6 +530,37 @@ class SketchPlayerCard extends React.Component{
         }
     }
 
+    handleDragOver(){
+        event.preventDefault();
+    }
+
+    handleDestroyed(){
+    	console.log(`my hp is now: ${this.state.life_points}`);
+        if(this.state.life_points <= 0){
+            console.log("Executed with impunity!!");
+            const thisNode = ReactDOM.findDOMNode(this);
+            const parent = thisNode.parentNode;
+            ReactDOM.unmountComponentAtNode(thisNode.parentNode);
+            parent.parentNode.removeChild(parent);
+        
+        }
+    }
+
+    handleDrop(){
+    	event.preventDefault();
+        if(dragged.className.includes("cardplayedOpp")){
+            console.log("being attacked!");
+            this.setState({ life_points: this.state.life_points - handleAttacks.returnAttack()}, function(){this.handleDestroyed()});
+
+            /* That card cannot attack again this turn*/
+            var evento = new Event('input', {
+                bubbles: true,
+                cancelable: true,
+                });
+            dragged.getElementsByClassName("inputsleepopp")[0].dispatchEvent(evento);
+        }	   
+    }
+
     /* Checks if card can attack on its first turn*/
     attack1Turn(){
         if(this.state.condition.includes("Agile")){/* first turn attack*/
@@ -541,7 +575,7 @@ class SketchPlayerCard extends React.Component{
         console.log("Ready to Attack")
     }
 
-    /*Set cards unable to attack at the end of turn  */
+    /*Set cards unable to attack at the end of turn or if it attacks(last one is triggered by target card)  */
     handlesleepcard(){
         this.setState({can_attack: false});
     }
@@ -553,6 +587,8 @@ class SketchPlayerCard extends React.Component{
             <div className={this.state.classes} 
             onDragStart={this.handleDragStart}
             onDragEnd={this.handleDragEnd}
+            onDragOver={this.handleDragOver}
+            onDrop={this.handleDrop}
             draggable={this.state.can_attack ? true : false}
             style={{cursor: this.state.can_attack ? 'grab' : 'none'}}
             >
@@ -585,7 +621,9 @@ class SketchOppCard extends React.Component{
         }
         this.attack1Turn = this.attack1Turn.bind(this);
         this.handleturnStart = this.handleturnStart.bind(this);
+        this.handlesleepcard = this.handlesleepcard.bind(this);
 
+        this.handleDragStart = this.handleDragStart.bind(this);
         this.handleDragOver = this.handleDragOver.bind(this);
         this.handleDrop = this.handleDrop.bind(this);
         this.handleDestroyed = this.handleDestroyed.bind(this);
@@ -607,6 +645,14 @@ class SketchOppCard extends React.Component{
       
     }
 
+    handlesleepcard(){
+        this.setState({can_attack: false});
+    }
+    handleDragStart(){
+        handleAttacks.getAttack(this.state.atk, "ca");
+        handleAttacks.showValues();
+    }
+    
     handleturnStart(){
         this.setState({can_attack: true});
         console.log("Ready to Attack")
@@ -627,20 +673,6 @@ class SketchOppCard extends React.Component{
             cancelable: true,
             });
         dragged.getElementsByClassName("inputsleepply")[0].dispatchEvent(evento);
-
-        /*
-        function sleepPlyCard(){
-    var event = new Event('input', {
-        bubbles: true,
-        cancelable: true,
-    });
-
-	let cards = document.getElementsByClassName("inputsleepply");
-    for(let i = 0; i<cards.length; i++){
-	    cards[i].dispatchEvent(event);
-    }
-}
-         */
     }
 
     handleDestroyed(){
@@ -661,13 +693,15 @@ class SketchOppCard extends React.Component{
                 <div className={this.state.classes} 
                 onDragOver={this.handleDragOver}
                 onDrop={this.handleDrop}
+                onDragStart={this.handleDragStart}
+                draggable={true}
 
-            
                 >
                     <div>{this.state.can_attack ? 'Go' : 'zZzZ'}</div>
                     Atk: {this.state.atk} LP: {this.state.life_points}
                     <b>{this.state.cardname}</b>
-                    <input className="inputTurnopp" onInput={this.handleturnStart} /> 
+                    <input className="inputTurnopp" onInput={this.handleturnStart} />
+                    <input className="inputsleepopp" onInput={this.handlesleepcard} />  
                 </div>
             </React.Fragment>
       );
@@ -713,8 +747,6 @@ async function cpuAi(){
                      condition={cardtoPlay[0].condition} 
                 />, lastoppchild);
 
-                
-
                 if(oppEnergies == 1){
                     if(cardtoPlay[0].cost == 1){
                         document.getElementById("oppEng1").style.visibility = 'hidden';
@@ -739,6 +771,10 @@ async function cpuAi(){
         }
         
     }
+
+    /* Attemps to attack player's cards*/
+
+    /* Make opp card draggable before calling function*/
      
     await(sleep(1000));
     turnHandler("ply");
