@@ -746,7 +746,6 @@ class SketchOppCard extends React.Component{
                 onDragOver={this.handleDragOver}
                 onDrop={this.handleDrop}
                 onDragStart={this.handleDragStart}
-                draggable={true}
                 data-can_attack={this.state.can_attack}
 
                 >
@@ -842,11 +841,11 @@ async function cpuAi(){
                     if(plyDinos.length > 0){
 
                         /* Make opp card draggable before calling function*/
-
+                        oppDinos[i].draggable = true;
                         gsap.fromTo(oppDinos[i], {scaleX: 1.4, scaleY: 1.4},{duration: 1.3, scaleY: 1, scaleX: 1});
                         await(sleep(1700))
                         triggerDragAndDrop(oppDinos[i], plyDinos[Math.floor(Math.random()*plyDinos.length)]);
-                        
+                        oppDinos[i].draggable = false;
                         /* Make opp card undraggable*/
                     }
                     else{
