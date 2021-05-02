@@ -28,6 +28,8 @@ let plydeck = [];
 let opphand = [];
 let oppEnergies = 2;
 let plyEnergies = 2;
+let oppEggs = 10;
+let plyEggs = 10;
 let currentTurn = "";
 let turnNumber = 1;
 
@@ -166,19 +168,63 @@ document.getElementById("ply_board").addEventListener("drop", function( event ) 
             sortCards("ply");
             /* plyEnergies--;*/
             console.log(`Energy left: ${plyEnergies}`);
-
         }
         else{/* Now allow*/
             const wrong = new Audio('/static/frontend/sounds/wrong.wav');
             wrong.loop = false;
             wrong.play();
             console.log("No energy!")
-        }
-        
-        
+        }  
     }
-  
 }, false);
+
+/* ---Enemy eggs----*/
+
+function destroyEgg(who){
+    if(who == "opp"){
+        oppEggs--;
+        const lastegg = document.getElementById("opp_eggs").lastElementChild;
+        lastegg.parentNode.removeChild(lastegg);
+        console.log(`oppeggs: ${oppEggs}`);
+
+        if(oppEggs <= 0){
+            console.log("A winner is you")
+        }
+        /* if oppeggs <= 0 llamar a you win*/
+    }
+
+    else{
+        plyEggs--;
+        console.log(`plyeggs: ${plyEggs}`);
+        document.getElementById("plyEggsCounter").innerHTML = plyEggs;
+        if(plyEggs <= 0){
+            console.log("You lose !!")
+        }
+        /* if oppeggs <= 0 llamar a you lose*/
+    }
+}
+
+document.getElementById("opp_eggs").addEventListener("dragover", function( event ) {
+    // prevent default to allow drop
+    event.preventDefault();
+    
+}, false);
+
+document.getElementById("opp_eggs").addEventListener("drop", function(event) {
+    event.preventDefault();
+
+    if(dragged.className.includes("cardplayedPly")){
+        console.log("dropped over eggs")
+        document.getElementById("opp_eggs").classList.remove("highlightTarget");
+        /* That card cannot attack again this turn*/
+        var evento = new Event('input', {
+            bubbles: true,
+            cancelable: true,
+            });
+        dragged.getElementsByClassName("inputsleepply")[0].dispatchEvent(evento);
+        destroyEgg("opp");
+    }
+});
 
 /*------Start button calls startGame------ */
 
@@ -304,6 +350,7 @@ async function startGame() {
 async function turnHandler(who){
     
     if(who == "ply"){
+        sleepCard("opp");
         await(turnTransition("ply"));
         const turn = new Audio('/static/frontend/sounds/turn1.mp3');
         turn.loop = false;
@@ -326,7 +373,8 @@ async function turnHandler(who){
     }
 
     else{
-        sleepPlyCard();
+        sleepCard("ply");
+        cardsReady("opp");
         await(turnTransition("opp"));
         document.getElementById("turnButton").classList.toggle('hover');
         document.getElementById("turnButton").style.pointerEvents = "none";
@@ -351,25 +399,25 @@ async function turnHandler(who){
 /* Unorthodox/hacky way to signal certain events to components*/
 /* Set cards so they are ready to attack again*/
 function cardsReady(who){
-    
     var event = new Event('input', {
         bubbles: true,
         cancelable: true,
     });
 
-	let cards = document.getElementsByClassName(`inputTurn${who}`);
+    let cards = document.getElementsByClassName(`inputTurn${who}`);
     for(let i = 0; i<cards.length; i++){
-	    cards[i].dispatchEvent(event);
-    }
+        cards[i].dispatchEvent(event);
+    }	
 }
 
-function sleepPlyCard(){
+/* Put cards to sleep*/
+function sleepCard(who){
     var event = new Event('input', {
         bubbles: true,
         cancelable: true,
     });
 
-	let cards = document.getElementsByClassName("inputsleepply");
+	let cards = document.getElementsByClassName(`inputsleep${who}`);
     for(let i = 0; i<cards.length; i++){
 	    cards[i].dispatchEvent(event);
     }
@@ -424,7 +472,7 @@ async function drawCard(who){/* call destroyegg if plydeck.length==0*/
         ReactDOM.render(<SketchHandCard name={card.name}/>, lastchild);
 
         sortCards("ply");
-        console.log(`ply: ${card.name}`);
+        
     }
     else {
         
@@ -448,7 +496,7 @@ async function drawCard(who){/* call destroyegg if plydeck.length==0*/
         cardToAdd.rarity = card.rarity;
         cardToAdd.size = card.size;
         cardToAdd.condition = card.condition_text;
-        console.log(cardToAdd);
+        /* console.log(cardToAdd);*/
         opphand.push(cardToAdd);
         console.log(`hand.length after push: ${opphand.length}`);
 
@@ -508,7 +556,7 @@ class SketchPlayerCard extends React.Component{
         this.setState({cardname: this.props.name});
         this.setState({condition: this.props.condition}, function(){this.attack1Turn()});
 
-        gsap.fromTo(ReactDOM.findDOMNode(this), {scaleX: 1.2, scaleY: 1.2},{duration: 1, scaleY: 1, scaleX: 1})
+        gsap.fromTo(ReactDOM.findDOMNode(this), {scaleX: 1.2, scaleY: 1.2},{duration: 1, scaleY: 1, scaleX: 1});
     }
 
     /* Passes attacking info to data handler*/
@@ -521,6 +569,9 @@ class SketchPlayerCard extends React.Component{
             oppCards[i].classList.add("highlightTarget");
         }
 
+        document.getElementById("opp_eggs").classList.add("highlightTarget");
+
+
     }
 
     handleDragEnd(){
@@ -528,6 +579,7 @@ class SketchPlayerCard extends React.Component{
         for(let i=0; i< oppCards.length ; i++){
             oppCards[i].classList.remove("highlightTarget");
         }
+        document.getElementById("opp_eggs").classList.remove("highlightTarget");
     }
 
     handleDragOver(){
@@ -695,6 +747,7 @@ class SketchOppCard extends React.Component{
                 onDrop={this.handleDrop}
                 onDragStart={this.handleDragStart}
                 draggable={true}
+                data-can_attack={this.state.can_attack}
 
                 >
                     <div>{this.state.can_attack ? 'Go' : 'zZzZ'}</div>
@@ -766,19 +819,118 @@ async function cpuAi(){
                         document.getElementById("oppEng1").style.visibility = 'hidden';
                     }
                 }  
-                await(sleep(1500));
+                await(sleep(1800));
             }
         }
         
     }
 
-    /* Attemps to attack player's cards*/
+    /* Attemps to attack player's cards or eggs*/
 
-    /* Make opp card draggable before calling function*/
-     
+    let oppDinos = document.getElementsByClassName("cardplayedOpp");
+    let plyDinos = document.getElementsByClassName("cardplayedPly");
+  
+    /* Checkear si puede atacar*/
+    if(oppDinos.length > 0){
+        console.log("oppdinos > 0");
+        for(let i=0; i<oppDinos.length; i++){
+            console.log(`checking dino ${i}`);
+            if(oppDinos[i].dataset.can_attack == "true"){/* Ready to attack*/
+                console.log(`dino ${i} can attack`)
+                await(sleep(1500));
+                if(Math.random() > 0.5){/* Attack a player's dino */
+                    if(plyDinos.length > 0){
+
+                        /* Make opp card draggable before calling function*/
+
+                        gsap.fromTo(oppDinos[i], {scaleX: 1.4, scaleY: 1.4},{duration: 1.3, scaleY: 1, scaleX: 1});
+                        await(sleep(1700))
+                        triggerDragAndDrop(oppDinos[i], plyDinos[Math.floor(Math.random()*plyDinos.length)]);
+                        
+                        /* Make opp card undraggable*/
+                    }
+                    else{
+                        gsap.fromTo(oppDinos[i], {scaleX: 1.4, scaleY: 1.4},{duration: 1.3, scaleY: 1, scaleX: 1});
+                        await(sleep(1700))
+                        destroyEgg("ply");
+                    }
+                } 
+                else{
+                    gsap.fromTo(oppDinos[i], {scaleX: 1.4, scaleY: 1.4},{duration: 1.3, scaleY: 1, scaleX: 1});
+                    await(sleep(1700))
+                    destroyEgg("ply"); 
+                }
+             
+            }
+
+        }
+    }
+
     await(sleep(1000));
     turnHandler("ply");
     return;
+}
+
+function triggerDragAndDrop(selectorDrag, selectorDrop) {
+	console.log("enterd d$d fn");
+    // function for triggering mouse events
+    var fireMouseEvent = function (type, elem, centerX, centerY) {
+        var evt = document.createEvent('MouseEvents')
+        evt.initMouseEvent(
+            type,
+            true,
+            true,
+            window,
+            1,
+            1,
+            1,
+            centerX,
+            centerY,
+            false,
+            false,
+            false,
+            false,
+            0,
+            elem
+        )
+        elem.dispatchEvent(evt)
+  }
+
+  if (!selectorDrop || !selectorDrag) return false
+
+  // calculate positions
+  var pos = selectorDrag.getBoundingClientRect();
+  var center1X = Math.floor((pos.left + pos.right) / 2)
+  var center1Y = Math.floor((pos.top + pos.bottom) / 2)
+  pos = selectorDrop.getBoundingClientRect()
+  var center2X = Math.floor((pos.left + pos.right) / 2)
+  var center2Y = Math.floor((pos.top + pos.bottom) / 2)
+
+  // mouse over dragged element and mousedown
+  fireMouseEvent('mousemove', selectorDrag, center1X, center1Y)
+  fireMouseEvent('mouseenter', selectorDrag, center1X, center1Y)
+  fireMouseEvent('mouseover', selectorDrag, center1X, center1Y)
+  fireMouseEvent('mousedown', selectorDrag, center1X, center1Y)
+
+  // start dragging process over to drop target
+  fireMouseEvent('dragstart', selectorDrag, center1X, center1Y)
+  fireMouseEvent('drag', selectorDrag, center1X, center1Y)
+  fireMouseEvent('mousemove', selectorDrag, center1X, center1Y)
+  fireMouseEvent('drag', selectorDrag, center2X, center2Y)
+  fireMouseEvent('mousemove', selectorDrop, center2X, center2Y)
+
+  // trigger dragging process on top of drop target
+  fireMouseEvent('mouseenter', selectorDrop, center2X, center2Y)
+  fireMouseEvent('dragenter', selectorDrop, center2X, center2Y)
+  fireMouseEvent('mouseover', selectorDrop, center2X, center2Y)
+  fireMouseEvent('dragover', selectorDrop, center2X, center2Y)
+
+  // release dragged element on top of drop target
+  fireMouseEvent('drop', selectorDrop, center2X, center2Y)
+  fireMouseEvent('dragend', selectorDrag, center2X, center2Y)
+  fireMouseEvent('mouseup', selectorDrag, center2X, center2Y)
+
+  return true
 }
 
 
