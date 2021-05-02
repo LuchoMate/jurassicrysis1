@@ -1,3 +1,7 @@
+/* Author: Luis Balladares
+    For the CS50's Web development with Python and Javascript
+*/
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 /* import gsap from 'gsap';*/
@@ -73,7 +77,7 @@ document.addEventListener("dragstart", function( event ) {
     dragged = event.target;
     // make it virtually invisible
     event.target.style.opacity = 0.01;
-    if(event.target.className.includes("cardWrapper")){/* poner condicion enrgy*/
+    if(event.target.className.includes("cardWrapper")){
         document.getElementById("ply_board").classList.add("highlightTarget");
         /*plyEnergies*/
         if(plyEnergies == 2){
@@ -116,18 +120,6 @@ document.getElementById("ply_board").addEventListener("dragover", function( even
     
 }, false);
 
-document.getElementById("ply_board").addEventListener("dragenter", function( event ) {
-    
-    /* document.getElementById("ply_board").style.background = "red";*/
-
-}, false);
-
-document.getElementById("ply_board").addEventListener("dragleave", function( event ) {
-    
-    // reset background of potential drop target when the draggable element leaves it
-    document.getElementById("ply_board").style.background = "";
-}, false);
-
 document.getElementById("ply_board").addEventListener("drop", function( event ) {
     // prevent default action (open as link for some elements)
     event.preventDefault();
@@ -163,7 +155,10 @@ document.getElementById("ply_board").addEventListener("drop", function( event ) 
             ReactDOM.render(<SketchPlayerCard name={dragged.dataset.name}
                 atk={dragged.dataset.atk} lifepoints={dragged.dataset.lifepoints}
                 condition={dragged.dataset.condition} 
-            />, lastplychild); /* pasar condition*/
+                size = {dragged.dataset.size}
+                rarity = {dragged.dataset.rarity}
+                type = {dragged.dataset.type} /* cost not needed*/
+            />, lastplychild);
 
             sortCards("ply");
             /* plyEnergies--;*/
@@ -452,11 +447,11 @@ async function drawCard(who){/* call destroyegg if plydeck.length==0*/
         /*ifplydeck.length==0 call destroy egg and dont fetch */
         let response = await fetch(`/api/get_card/${plydeck.pop()}`);
         let card = await response.json();
-        /* Adds wrapper to cards to achieve nice hidden effect in hand*/
+        /* Adds wrapper to cards to achieve hidden effect in hand*/
         var parentEl = document.getElementById("ply_hand");
         var div1 = document.createElement("div");
         div1.classList.add("cardWrapper");
-        /* ACA PONERLE OTRA CLASE PARA LAS EVENT CARDS Y NO RESALTAR PLYBOARD*/
+        
         div1.draggable = true;
 
         div1.dataset.name=card.name;
@@ -464,12 +459,24 @@ async function drawCard(who){/* call destroyegg if plydeck.length==0*/
         div1.dataset.lifepoints=card.life_points;
         div1.dataset.cost=card.cost;
         div1.dataset.condition = card.condition_text;
+        div1.dataset.size = card.size;
+        div1.dataset.rarity = card.rarity;
+        div1.dataset.type = card.card_type;
         
         parentEl.appendChild(div1);
         const lastchild = document.getElementById("ply_hand").lastElementChild;
         drawDeck("ply");
 
-        ReactDOM.render(<SketchHandCard name={card.name}/>, lastchild);
+        ReactDOM.render(<SketchHandCard name={card.name}
+             atk={card.attack}
+             lifepoints={card.life_points}
+             condition={card.condition_text}
+             rarity={card.rarity}
+             size={card.size}
+             type={card.type}
+             cost={card.cost}
+
+             />, lastchild);
 
         sortCards("ply");
         
@@ -513,7 +520,12 @@ function SketchHandCard(props){
         const classes = 'border cardinHand navbarcolor blackbg font1w';
         return <React.Fragment>
                 <div className={classes}>
-                    {props.name}
+                    <div>Atk: {props.atk} Cost: {props.cost} LP: {props.lifepoints}</div>
+                    <div><b>{props.name}</b></div>
+                    <div>R: {props.rarity}</div>
+                    <div>{props.condition}</div>
+                    <div>Type: {props.type} Size: {props.size} </div>
+                    
                 </div>
             </React.Fragment>
 }
@@ -537,7 +549,10 @@ class SketchPlayerCard extends React.Component{
             cardname: "",
             condition: "",
             classes: "cardplayedPly",
-            can_attack: false
+            can_attack: false,
+            rarity: "",
+            size: "",
+            type: ""
         }
         this.handleDragStart = this.handleDragStart.bind(this);
         this.handleDragEnd = this.handleDragEnd.bind(this);
@@ -554,6 +569,9 @@ class SketchPlayerCard extends React.Component{
     	this.setState({life_points: this.props.lifepoints});
         this.setState({atk: this.props.atk});
         this.setState({cardname: this.props.name});
+        this.setState({rarity: this.props.rarity});
+        this.setState({size: this.props.size});
+        this.setState({type: this.props.type});
         this.setState({condition: this.props.condition}, function(){this.attack1Turn()});
 
         gsap.fromTo(ReactDOM.findDOMNode(this), {scaleX: 1.2, scaleY: 1.2},{duration: 1, scaleY: 1, scaleX: 1});
@@ -561,7 +579,7 @@ class SketchPlayerCard extends React.Component{
 
     /* Passes attacking info to data handler*/
     handleDragStart(){
-        handleAttacks.getAttack(this.state.atk, "ca");
+        handleAttacks.getAttack(this.state.atk, this.state.type);
         handleAttacks.showValues();
 
         let oppCards = document.getElementsByClassName("cardplayedOpp");
@@ -648,6 +666,7 @@ class SketchPlayerCard extends React.Component{
                 <div>Atk:{this.state.atk} -------- LP:{this.state.life_points}</div>
                 <div><b>{this.state.cardname}</b></div>
                 <div>{this.state.condition}</div>
+                <div>Size: {this.state.size}</div>
                 <input className="inputTurnply" onInput={this.handleturnStart} />
                 <input className="inputsleepply" onInput={this.handlesleepcard} />
 
@@ -669,6 +688,9 @@ class SketchOppCard extends React.Component{
             cardname: "",
             classes: "cardplayedOpp",
             condition: "",
+            rarity: "",
+            type: "",
+            size: "",
             can_attack: false
         }
         this.attack1Turn = this.attack1Turn.bind(this);
@@ -685,6 +707,8 @@ class SketchOppCard extends React.Component{
     	this.setState({life_points: this.props.lifepoints});
         this.setState({atk: this.props.atk});
         this.setState({cardname: this.props.name});
+        this.setState({type: this.props.type});
+        this.setState({size: this.props.size});
         this.setState({condition: this.props.condition}, function(){this.attack1Turn()});
 
         gsap.fromTo(ReactDOM.findDOMNode(this), {scaleX: 1.2, scaleY: 1.2},{duration: 1, scaleY: 1, scaleX: 1});
@@ -701,7 +725,7 @@ class SketchOppCard extends React.Component{
         this.setState({can_attack: false});
     }
     handleDragStart(){
-        handleAttacks.getAttack(this.state.atk, "ca");
+        handleAttacks.getAttack(this.state.atk, this.state.type);
         handleAttacks.showValues();
     }
     
@@ -747,11 +771,12 @@ class SketchOppCard extends React.Component{
                 onDrop={this.handleDrop}
                 onDragStart={this.handleDragStart}
                 data-can_attack={this.state.can_attack}
-
                 >
                     <div>{this.state.can_attack ? 'Go' : 'zZzZ'}</div>
                     Atk: {this.state.atk} LP: {this.state.life_points}
                     <b>{this.state.cardname}</b>
+                    <div>Type:{this.state.type}</div>
+                    <div>{this.state.size}</div>
                     <input className="inputTurnopp" onInput={this.handleturnStart} />
                     <input className="inputsleepopp" onInput={this.handlesleepcard} />  
                 </div>
@@ -775,7 +800,6 @@ async function cpuAi(){
             pickrandom = Math.floor(Math.random()*opphand.length);
             if(opphand[pickrandom].cost <= oppEnergies){/* Card can be played*/
                 cardtoPlay = opphand.splice(pickrandom, 1);
-                console.log(cardtoPlay[0]);
                 let cardDiscard = document.getElementById("opp_hand").lastElementChild;
                 document.getElementById("opp_hand").removeChild(cardDiscard);
                 sortCards("opp");
@@ -796,7 +820,8 @@ async function cpuAi(){
                 
                 ReactDOM.render(<SketchOppCard name={cardtoPlay[0].name}
                     atk={cardtoPlay[0].atk} lifepoints={cardtoPlay[0].lifepoints}
-                     condition={cardtoPlay[0].condition} 
+                     condition={cardtoPlay[0].condition} type={cardtoPlay[0].type}
+                     size = {cardtoPlay[0].size}
                 />, lastoppchild);
 
                 if(oppEnergies == 1){
@@ -829,24 +854,20 @@ async function cpuAi(){
     let oppDinos = document.getElementsByClassName("cardplayedOpp");
     let plyDinos = document.getElementsByClassName("cardplayedPly");
   
-    /* Checkear si puede atacar*/
     if(oppDinos.length > 0){
-        console.log("oppdinos > 0");
         for(let i=0; i<oppDinos.length; i++){
             console.log(`checking dino ${i}`);
             if(oppDinos[i].dataset.can_attack == "true"){/* Ready to attack*/
-                console.log(`dino ${i} can attack`)
+                console.log(`dino ${i} can attack`);
                 await(sleep(1500));
                 if(Math.random() > 0.5){/* Attack a player's dino */
                     if(plyDinos.length > 0){
 
-                        /* Make opp card draggable before calling function*/
                         oppDinos[i].draggable = true;
                         gsap.fromTo(oppDinos[i], {scaleX: 1.4, scaleY: 1.4},{duration: 1.3, scaleY: 1, scaleX: 1});
                         await(sleep(1700))
                         triggerDragAndDrop(oppDinos[i], plyDinos[Math.floor(Math.random()*plyDinos.length)]);
                         oppDinos[i].draggable = false;
-                        /* Make opp card undraggable*/
                     }
                     else{
                         gsap.fromTo(oppDinos[i], {scaleX: 1.4, scaleY: 1.4},{duration: 1.3, scaleY: 1, scaleX: 1});
@@ -869,10 +890,10 @@ async function cpuAi(){
     turnHandler("ply");
     return;
 }
-
+/* function for triggering mouse events*/
 function triggerDragAndDrop(selectorDrag, selectorDrop) {
-	console.log("enterd d$d fn");
-    // function for triggering mouse events
+	console.log("enterd d&d fn");
+    
     var fireMouseEvent = function (type, elem, centerX, centerY) {
         var evt = document.createEvent('MouseEvents')
         evt.initMouseEvent(
