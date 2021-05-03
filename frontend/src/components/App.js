@@ -293,11 +293,11 @@ function drawDeck(who){
 
 /*---Each player draw 5 cards to begin. */
 async function startGame() {
-    /* 
+    
     placeDeck("opp");
     await sleep(2500);
     placeDeck("ply");
-    await sleep(2500);*/
+    await sleep(2500);
 
     const diff_chosen = document.getElementById("startbutton").dataset.difficulty;
     console.log(`gonna fetch oppdeck ${diff_chosen}`);
