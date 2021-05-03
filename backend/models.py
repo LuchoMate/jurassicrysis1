@@ -42,6 +42,7 @@ class Card(models.Model):
     cost = models.PositiveSmallIntegerField(default=1, 
         validators=[MaxValueValidator(2, 'Maximum 2 energy cost')])
     card_type = models.CharField(max_length=2, choices=type_choices, default='ca')
+    weak = models.CharField(max_length=2, choices=type_choices, default='ca')
     rarity = models.CharField(max_length=2, choices=rarity_choices, default='co')
     size = models.CharField(max_length=2, choices=size_choices, default='sm')
     condition_text = models.CharField(max_length=50, blank=True)

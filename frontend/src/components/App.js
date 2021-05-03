@@ -157,7 +157,9 @@ document.getElementById("ply_board").addEventListener("drop", function( event ) 
                 condition={dragged.dataset.condition} 
                 size = {dragged.dataset.size}
                 rarity = {dragged.dataset.rarity}
-                type = {dragged.dataset.type} /* cost not needed*/
+                type = {dragged.dataset.type}
+                weak = {dragged.dataset.weak}
+                 /* cost not needed*/
             />, lastplychild);
 
             sortCards("ply");
@@ -462,6 +464,7 @@ async function drawCard(who){/* call destroyegg if plydeck.length==0*/
         div1.dataset.size = card.size;
         div1.dataset.rarity = card.rarity;
         div1.dataset.type = card.card_type;
+        div1.dataset.weak = card.weak;
         
         parentEl.appendChild(div1);
         const lastchild = document.getElementById("ply_hand").lastElementChild;
@@ -473,7 +476,7 @@ async function drawCard(who){/* call destroyegg if plydeck.length==0*/
              condition={card.condition_text}
              rarity={card.rarity}
              size={card.size}
-             type={card.type}
+             type={card.card_type}
              cost={card.cost}
 
              />, lastchild);
@@ -503,6 +506,8 @@ async function drawCard(who){/* call destroyegg if plydeck.length==0*/
         cardToAdd.rarity = card.rarity;
         cardToAdd.size = card.size;
         cardToAdd.condition = card.condition_text;
+        cardToAdd.weak = card.weak;
+
         /* console.log(cardToAdd);*/
         opphand.push(cardToAdd);
         console.log(`hand.length after push: ${opphand.length}`);
@@ -552,7 +557,8 @@ class SketchPlayerCard extends React.Component{
             can_attack: false,
             rarity: "",
             size: "",
-            type: ""
+            type: "",
+            weak: "",
         }
         this.handleDragStart = this.handleDragStart.bind(this);
         this.handleDragEnd = this.handleDragEnd.bind(this);
@@ -562,6 +568,7 @@ class SketchPlayerCard extends React.Component{
         this.attack1Turn = this.attack1Turn.bind(this);
         this.handleturnStart = this.handleturnStart.bind(this);
         this.handlesleepcard = this.handlesleepcard.bind(this);
+        this.handleDamage = this.handleDamage.bind(this);
         this.handleDestroyed = this.handleDestroyed.bind(this);
     }
 
@@ -572,6 +579,7 @@ class SketchPlayerCard extends React.Component{
         this.setState({rarity: this.props.rarity});
         this.setState({size: this.props.size});
         this.setState({type: this.props.type});
+        this.setState({weak: this.props.weak});
         this.setState({condition: this.props.condition}, function(){this.attack1Turn()});
 
         gsap.fromTo(ReactDOM.findDOMNode(this), {scaleX: 1.2, scaleY: 1.2},{duration: 1, scaleY: 1, scaleX: 1});
@@ -616,11 +624,21 @@ class SketchPlayerCard extends React.Component{
         }
     }
 
+    handleDamage(){
+        let atkCalc = handleAttacks.returnAttack();
+        if(handleAttacks.returnDinoType() == this.state.weak){
+            atkCalc++;
+            console.log("WEAK +1 DMG!")
+        }
+        this.setState({ life_points: this.state.life_points - atkCalc}, function(){this.handleDestroyed()});
+
+    }
+
     handleDrop(){
     	event.preventDefault();
         if(dragged.className.includes("cardplayedOpp")){
             console.log("being attacked!");
-            this.setState({ life_points: this.state.life_points - handleAttacks.returnAttack()}, function(){this.handleDestroyed()});
+            
 
             /* That card cannot attack again this turn*/
             var evento = new Event('input', {
@@ -628,6 +646,8 @@ class SketchPlayerCard extends React.Component{
                 cancelable: true,
                 });
             dragged.getElementsByClassName("inputsleepopp")[0].dispatchEvent(evento);
+        
+            this.handleDamage();
         }	   
     }
 
@@ -690,6 +710,7 @@ class SketchOppCard extends React.Component{
             condition: "",
             rarity: "",
             type: "",
+            weak: "",
             size: "",
             can_attack: false
         }
@@ -700,6 +721,7 @@ class SketchOppCard extends React.Component{
         this.handleDragStart = this.handleDragStart.bind(this);
         this.handleDragOver = this.handleDragOver.bind(this);
         this.handleDrop = this.handleDrop.bind(this);
+        this.handleDamage = this.handleDamage.bind(this);
         this.handleDestroyed = this.handleDestroyed.bind(this);
     }
 
@@ -708,6 +730,7 @@ class SketchOppCard extends React.Component{
         this.setState({atk: this.props.atk});
         this.setState({cardname: this.props.name});
         this.setState({type: this.props.type});
+        this.setState({weak: this.props.weak});
         this.setState({size: this.props.size});
         this.setState({condition: this.props.condition}, function(){this.attack1Turn()});
 
@@ -741,14 +764,14 @@ class SketchOppCard extends React.Component{
     handleDrop(){
     	event.preventDefault();
     	console.log("being attacked!");
-        this.setState({ life_points: this.state.life_points - handleAttacks.returnAttack()}, function(){this.handleDestroyed()});
-
         /* That card cannot attack again this turn*/
         var evento = new Event('input', {
             bubbles: true,
             cancelable: true,
             });
         dragged.getElementsByClassName("inputsleepply")[0].dispatchEvent(evento);
+        this.handleDamage();
+    
     }
 
     handleDestroyed(){
@@ -761,6 +784,16 @@ class SketchOppCard extends React.Component{
             parent.parentNode.removeChild(parent);
         
         }
+    }
+
+    handleDamage(){
+        let atkCalc = handleAttacks.returnAttack();
+        if(handleAttacks.returnDinoType() == this.state.weak){
+            atkCalc++;
+            console.log("WEAK +1 DMG!")
+        }
+        this.setState({ life_points: this.state.life_points - atkCalc}, function(){this.handleDestroyed()});
+
     }
 
     render(){
@@ -821,7 +854,7 @@ async function cpuAi(){
                 ReactDOM.render(<SketchOppCard name={cardtoPlay[0].name}
                     atk={cardtoPlay[0].atk} lifepoints={cardtoPlay[0].lifepoints}
                      condition={cardtoPlay[0].condition} type={cardtoPlay[0].type}
-                     size = {cardtoPlay[0].size}
+                     size = {cardtoPlay[0].size} weak ={cardtoPlay[0].weak}
                 />, lastoppchild);
 
                 if(oppEnergies == 1){
