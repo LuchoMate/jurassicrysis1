@@ -647,6 +647,10 @@ class SketchPlayerCard extends React.Component{
             atkCalc--;
             console.log("Scaled: -1 dmg!")
         }
+        if(handleAttacks.atkCondition.includes("Fierce") && (this.state.size == "me" || this.state.size == "la")){
+            console.log("Fierce +1 dmg");
+            atkCalc++;
+        }
         this.setState({ life_points: this.state.life_points - atkCalc}, function(){this.handleDestroyed()});
 
     }
@@ -663,7 +667,7 @@ class SketchPlayerCard extends React.Component{
             dragged.getElementsByClassName("inputsleepopp")[0].dispatchEvent(evento);
 
             if(this.state.condition.includes("Poisonous")){
-                console.log("return 1 dmg");
+                console.log("poisonous dmg");
                 var evento = new Event('input', {
                     bubbles: true,
                     cancelable: true,
@@ -835,7 +839,15 @@ class SketchOppCard extends React.Component{
         let atkCalc = handleAttacks.returnAttack();
         if(handleAttacks.returnDinoType() == this.state.weak){
             atkCalc++;
-            console.log("WEAK +1 DMG!")
+            console.log("WEAK +1 DMG!");
+        }
+        if(handleAttacks.atkCondition.includes("Fierce") && (this.state.size == "me" || this.state.size == "la")){
+            console.log("Fierce atk+1");
+            atkCalc++;
+        }
+        if(this.state.condition.includes("Scaled")){
+            atkCalc--;
+            console.log("Scaled: -1 dmg!")
         }
         this.setState({ life_points: this.state.life_points - atkCalc}, function(){this.handleDestroyed()});
 
@@ -855,6 +867,7 @@ class SketchOppCard extends React.Component{
                     Atk: {this.state.atk} LP: {this.state.life_points}
                     <b>{this.state.cardname}</b>
                     <div>Type:{this.state.type}</div>
+                    <div>{this.state.condition}</div>
                     <div>{this.state.size}</div>
                     <input className="inputTurnopp" onInput={this.handleturnStart} />
                     <input className="inputsleepopp" onInput={this.handlesleepcard} />
