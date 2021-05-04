@@ -44,11 +44,13 @@ class attackData {
     constructor() {
         this.atkValue = 0;
         this.atkDinoType = "";
+        this.atkCondition = "";
     }
 
-    getAttack(attackPoints, dinoType) {
+    getAttack(attackPoints, dinoType, condition) {
         this.atkValue = attackPoints;
         this.atkDinoType = dinoType;
+        this.atkCondition = condition;
     }
 
     returnAttack() {
@@ -57,9 +59,14 @@ class attackData {
     returnDinoType(){
     	return this.atkDinoType;
     }
+    returnCondition(){
+        return this.atkCondition
+    }
+
     showValues(){
     	console.log(this.atkValue);
         console.log(this.atkDinoType);
+        console.log(this.atkCondition);
     }
 
 }
@@ -180,6 +187,12 @@ document.getElementById("ply_board").addEventListener("drop", function( event ) 
 function destroyEgg(who){
     if(who == "opp"){
         oppEggs--;
+        if(handleAttacks.atkCondition.includes("Predator")){
+            console.log("extra egg destroyed")
+            oppEggs--
+            const lastegg = document.getElementById("opp_eggs").lastElementChild;
+            lastegg.parentNode.removeChild(lastegg);
+        }
         const lastegg = document.getElementById("opp_eggs").lastElementChild;
         lastegg.parentNode.removeChild(lastegg);
         console.log(`oppeggs: ${oppEggs}`);
@@ -293,11 +306,11 @@ function drawDeck(who){
 
 /*---Each player draw 5 cards to begin. */
 async function startGame() {
-    
+    /* 
     placeDeck("opp");
     await sleep(2500);
     placeDeck("ply");
-    await sleep(2500);
+    await sleep(2500);*/
 
     const diff_chosen = document.getElementById("startbutton").dataset.difficulty;
     console.log(`gonna fetch oppdeck ${diff_chosen}`);
@@ -570,6 +583,7 @@ class SketchPlayerCard extends React.Component{
         this.handlesleepcard = this.handlesleepcard.bind(this);
         this.handleDamage = this.handleDamage.bind(this);
         this.handleDestroyed = this.handleDestroyed.bind(this);
+        this.take1dmgply = this.take1dmgply.bind(this);
     }
 
     componentDidMount(){
@@ -587,7 +601,7 @@ class SketchPlayerCard extends React.Component{
 
     /* Passes attacking info to data handler*/
     handleDragStart(){
-        handleAttacks.getAttack(this.state.atk, this.state.type);
+        handleAttacks.getAttack(this.state.atk, this.state.type, this.state.condition);
         handleAttacks.showValues();
 
         let oppCards = document.getElementsByClassName("cardplayedOpp");
@@ -597,9 +611,8 @@ class SketchPlayerCard extends React.Component{
 
         document.getElementById("opp_eggs").classList.add("highlightTarget");
 
-
     }
-
+    
     handleDragEnd(){
         let oppCards = document.getElementsByClassName("cardplayedOpp");
         for(let i=0; i< oppCards.length ; i++){
@@ -630,6 +643,10 @@ class SketchPlayerCard extends React.Component{
             atkCalc++;
             console.log("WEAK +1 DMG!")
         }
+        if(this.state.condition.includes("Scaled")){
+            atkCalc--;
+            console.log("Scaled: -1 dmg!")
+        }
         this.setState({ life_points: this.state.life_points - atkCalc}, function(){this.handleDestroyed()});
 
     }
@@ -638,15 +655,22 @@ class SketchPlayerCard extends React.Component{
     	event.preventDefault();
         if(dragged.className.includes("cardplayedOpp")){
             console.log("being attacked!");
-            
-
-            /* That card cannot attack again this turn*/
-            var evento = new Event('input', {
+             /* That card cannot attack again this turn*/
+             var evento = new Event('input', {
                 bubbles: true,
                 cancelable: true,
                 });
             dragged.getElementsByClassName("inputsleepopp")[0].dispatchEvent(evento);
-        
+
+            if(this.state.condition.includes("Poisonous")){
+                console.log("return 1 dmg");
+                var evento = new Event('input', {
+                    bubbles: true,
+                    cancelable: true,
+                    });
+                dragged.getElementsByClassName("inputTake1dmgopp")[0].dispatchEvent(evento);
+                
+            }
             this.handleDamage();
         }	   
     }
@@ -670,6 +694,11 @@ class SketchPlayerCard extends React.Component{
         this.setState({can_attack: false});
     }
 
+    take1dmgply(){
+        this.setState({ life_points: this.state.life_points - 1}, function(){this.handleDestroyed()});
+
+    }
+
     render(){
         
     	return(
@@ -680,6 +709,7 @@ class SketchPlayerCard extends React.Component{
             onDragOver={this.handleDragOver}
             onDrop={this.handleDrop}
             draggable={this.state.can_attack ? true : false}
+            data-condition={this.state.condition}
             style={{cursor: this.state.can_attack ? 'grab' : 'none'}}
             >
                 <div>{this.state.can_attack ? 'Go' : 'zZzZ'}</div>
@@ -689,6 +719,7 @@ class SketchPlayerCard extends React.Component{
                 <div>Size: {this.state.size}</div>
                 <input className="inputTurnply" onInput={this.handleturnStart} />
                 <input className="inputsleepply" onInput={this.handlesleepcard} />
+                <input className="inputTake1dmgply" onInput={this.take1dmgply} />
 
             </div>
         </React.Fragment>
@@ -717,6 +748,7 @@ class SketchOppCard extends React.Component{
         this.attack1Turn = this.attack1Turn.bind(this);
         this.handleturnStart = this.handleturnStart.bind(this);
         this.handlesleepcard = this.handlesleepcard.bind(this);
+        this.take1dmgopp = this.take1dmgopp.bind(this);
 
         this.handleDragStart = this.handleDragStart.bind(this);
         this.handleDragOver = this.handleDragOver.bind(this);
@@ -748,8 +780,12 @@ class SketchOppCard extends React.Component{
         this.setState({can_attack: false});
     }
     handleDragStart(){
-        handleAttacks.getAttack(this.state.atk, this.state.type);
+        handleAttacks.getAttack(this.state.atk, this.state.type, this.state.condition);
         handleAttacks.showValues();
+    }
+
+    take1dmgopp(){
+        this.setState({ life_points: this.state.life_points - 1}, function(){this.handleDestroyed()});
     }
     
     handleturnStart(){
@@ -764,12 +800,21 @@ class SketchOppCard extends React.Component{
     handleDrop(){
     	event.preventDefault();
     	console.log("being attacked!");
-        /* That card cannot attack again this turn*/
         var evento = new Event('input', {
             bubbles: true,
             cancelable: true,
             });
         dragged.getElementsByClassName("inputsleepply")[0].dispatchEvent(evento);
+
+        if(this.state.condition.includes("Poisonous")){
+            var evento = new Event('input', {
+                bubbles: true,
+                cancelable: true,
+                });
+            dragged.getElementsByClassName("inputTake1dmgply")[0].dispatchEvent(evento);
+        }
+        /* That card cannot attack again this turn*/
+        
         this.handleDamage();
     
     }
@@ -804,6 +849,7 @@ class SketchOppCard extends React.Component{
                 onDrop={this.handleDrop}
                 onDragStart={this.handleDragStart}
                 data-can_attack={this.state.can_attack}
+                data-condition={this.state.condition}
                 >
                     <div>{this.state.can_attack ? 'Go' : 'zZzZ'}</div>
                     Atk: {this.state.atk} LP: {this.state.life_points}
@@ -811,7 +857,9 @@ class SketchOppCard extends React.Component{
                     <div>Type:{this.state.type}</div>
                     <div>{this.state.size}</div>
                     <input className="inputTurnopp" onInput={this.handleturnStart} />
-                    <input className="inputsleepopp" onInput={this.handlesleepcard} />  
+                    <input className="inputsleepopp" onInput={this.handlesleepcard} />
+                    <input className="inputTake1dmgopp" onInput={this.take1dmgopp} />  
+  
                 </div>
             </React.Fragment>
       );
@@ -906,12 +954,18 @@ async function cpuAi(){
                         gsap.fromTo(oppDinos[i], {scaleX: 1.4, scaleY: 1.4},{duration: 1.3, scaleY: 1, scaleX: 1});
                         await(sleep(1700))
                         destroyEgg("ply");
+                        if(oppDinos[i].dataset.condition.includes("Predator")){
+                            destroyEgg("ply");
+                        }
                     }
                 } 
                 else{
                     gsap.fromTo(oppDinos[i], {scaleX: 1.4, scaleY: 1.4},{duration: 1.3, scaleY: 1, scaleX: 1});
                     await(sleep(1700))
-                    destroyEgg("ply"); 
+                    destroyEgg("ply");
+                    if(oppDinos[i].dataset.condition.includes("Predator")){
+                        destroyEgg("ply");
+                    } 
                 }
              
             }
@@ -923,7 +977,7 @@ async function cpuAi(){
     turnHandler("ply");
     return;
 }
-/* function for triggering mouse events*/
+/* function for triggering drag and drop event*/
 function triggerDragAndDrop(selectorDrag, selectorDrop) {
 	console.log("enterd d&d fn");
     
@@ -985,7 +1039,6 @@ function triggerDragAndDrop(selectorDrag, selectorDrop) {
 
   return true
 }
-
 
 /* Arrange cards in players hand*/
 function sortCards(who) {
