@@ -236,6 +236,8 @@ document.getElementById("opp_eggs").addEventListener("drop", function(event) {
     }
 });
 
+
+
 /*------Start button calls startGame------ */
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -603,24 +605,16 @@ class SketchPlayerCard extends React.Component{
     handleDragStart(){
         handleAttacks.getAttack(this.state.atk, this.state.type, this.state.condition);
         handleAttacks.showValues();
-
-        let oppCards = document.getElementsByClassName("cardplayedOpp");
-        for(let i=0; i< oppCards.length ; i++){
-            oppCards[i].classList.add("highlightTarget");
-        }
-
+        
         document.getElementById("opp_eggs").classList.add("highlightTarget");
 
     }
-    
-    handleDragEnd(){
-        let oppCards = document.getElementsByClassName("cardplayedOpp");
-        for(let i=0; i< oppCards.length ; i++){
-            oppCards[i].classList.remove("highlightTarget");
-        }
-        document.getElementById("opp_eggs").classList.remove("highlightTarget");
-    }
 
+    handleDragEnd(){
+        document.getElementById("opp_eggs").classList.remove("highlightTarget");
+
+    }
+    
     handleDragOver(){
         event.preventDefault();
     }
@@ -709,8 +703,8 @@ class SketchPlayerCard extends React.Component{
             <React.Fragment>
             <div className={this.state.classes} 
             onDragStart={this.handleDragStart}
-            onDragEnd={this.handleDragEnd}
             onDragOver={this.handleDragOver}
+            onDragEnd={this.handleDragEnd}
             onDrop={this.handleDrop}
             draggable={this.state.can_attack ? true : false}
             data-condition={this.state.condition}
@@ -755,6 +749,8 @@ class SketchOppCard extends React.Component{
         this.take1dmgopp = this.take1dmgopp.bind(this);
 
         this.handleDragStart = this.handleDragStart.bind(this);
+        this.handleDragEnter = this.handleDragEnter.bind(this);
+        this.handleDragExit = this.handleDragExit.bind(this);
         this.handleDragOver = this.handleDragOver.bind(this);
         this.handleDrop = this.handleDrop.bind(this);
         this.handleDamage = this.handleDamage.bind(this);
@@ -788,6 +784,15 @@ class SketchOppCard extends React.Component{
         handleAttacks.showValues();
     }
 
+    handleDragEnter(){
+        this.setState({classes: "cardplayedOpp highlightTarget"});
+    }
+
+    handleDragExit(){
+    	this.setState({classes: "cardplayedOpp"});
+    }
+    
+
     take1dmgopp(){
         this.setState({ life_points: this.state.life_points - 1}, function(){this.handleDestroyed()});
     }
@@ -803,23 +808,28 @@ class SketchOppCard extends React.Component{
 
     handleDrop(){
     	event.preventDefault();
-    	console.log("being attacked!");
-        var evento = new Event('input', {
-            bubbles: true,
-            cancelable: true,
-            });
-        dragged.getElementsByClassName("inputsleepply")[0].dispatchEvent(evento);
-
-        if(this.state.condition.includes("Poisonous")){
-            var evento = new Event('input', {
+        this.setState({classes: "cardplayedOpp"});
+        if(dragged.className.includes("cardplayedPly")){
+                console.log("being attacked!");
+                var evento = new Event('input', {
                 bubbles: true,
                 cancelable: true,
                 });
-            dragged.getElementsByClassName("inputTake1dmgply")[0].dispatchEvent(evento);
+            dragged.getElementsByClassName("inputsleepply")[0].dispatchEvent(evento);
+
+            if(this.state.condition.includes("Poisonous")){
+                console.log("poisonous dmg");
+                var evento = new Event('input', {
+                    bubbles: true,
+                    cancelable: true,
+                    });
+                dragged.getElementsByClassName("inputTake1dmgply")[0].dispatchEvent(evento);
+            }
+            /* That card cannot attack again this turn*/
+            
+            this.handleDamage();
         }
-        /* That card cannot attack again this turn*/
-        
-        this.handleDamage();
+    	
     
     }
 
@@ -860,6 +870,8 @@ class SketchOppCard extends React.Component{
                 onDragOver={this.handleDragOver}
                 onDrop={this.handleDrop}
                 onDragStart={this.handleDragStart}
+                onDragEnter={this.handleDragEnter}
+                onDragLeave={this.handleDragExit}
                 data-can_attack={this.state.can_attack}
                 data-condition={this.state.condition}
                 >

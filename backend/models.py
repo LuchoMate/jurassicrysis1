@@ -45,7 +45,8 @@ class Card(models.Model):
     weak = models.CharField(max_length=2, choices=type_choices, default='ca')
     rarity = models.CharField(max_length=2, choices=rarity_choices, default='co')
     size = models.CharField(max_length=2, choices=size_choices, default='sm')
-    condition_text = models.CharField(max_length=50, blank=True)
+    condition_text = models.CharField(max_length=120, blank=True)
+    event_effect = models.CharField(max_length=70, blank=True)
     
 
     def __str__(self):
