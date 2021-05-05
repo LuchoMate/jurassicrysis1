@@ -84,7 +84,7 @@ document.addEventListener("dragstart", function( event ) {
     dragged = event.target;
     // make it virtually invisible
     event.target.style.opacity = 0.01;
-    if(event.target.className.includes("cardWrapper")){
+    if(event.target.className.includes("cardWrapper") && dragged.dataset.type != "ev"){
         document.getElementById("ply_board").classList.add("highlightTarget");
         /*plyEnergies*/
         if(plyEnergies == 2){
@@ -104,18 +104,45 @@ document.addEventListener("dragstart", function( event ) {
                 document.getElementById("plyEng1").classList.add("invalidBorder");
             }
         }
+ 
+    }
 
-        
+    if(dragged.className.includes("cardWrapper") && dragged.dataset.type =="ev"){
+        document.getElementById("ply_event").classList.add("highlightTarget");
+
+        if(plyEnergies == 2){
+            if(event.target.dataset.cost == 1){
+                document.getElementById("plyEng2").classList.add("highlightEnergy");
+            }
+            if(event.target.dataset.cost == 2){
+                document.getElementById("plyEng2").classList.add("highlightEnergy");
+                document.getElementById("plyEng1").classList.add("highlightEnergy");
+            }
+        }
+        if(plyEnergies == 1){
+            if(event.target.dataset.cost == 1){
+                document.getElementById("plyEng1").classList.add("highlightEnergy");
+            }
+            if(event.target.dataset.cost == 2){
+                document.getElementById("plyEng1").classList.add("invalidBorder");
+            }
+        }
+
     }
 }, false);
 
 document.addEventListener("dragend", function( event ) {
     // reset the transparency
     event.target.style.opacity = "";
-    if(event.target.className.includes("cardWrapper")){
+    if(event.target.className.includes("cardWrapper")  && dragged.dataset.type != "ev"){
         document.getElementById("ply_board").classList.remove("highlightTarget");
         document.getElementById("plyEng1").classList.remove("highlightEnergy");
         document.getElementById("plyEng2").classList.remove("highlightEnergy");
+        document.getElementById("plyEng1").classList.remove("invalidBorder");
+        document.getElementById("plyEng2").classList.remove("invalidBorder");
+    }
+    if(dragged.className.includes("cardWrapper") && dragged.dataset.type =="ev"){
+        document.getElementById("ply_event").classList.remove("highlightTarget");
         document.getElementById("plyEng1").classList.remove("invalidBorder");
         document.getElementById("plyEng2").classList.remove("invalidBorder");
     }
@@ -133,7 +160,7 @@ document.getElementById("ply_board").addEventListener("drop", function( event ) 
     // move dragged elem to the selected drop target
     document.getElementById("ply_board").classList.remove("highlightTarget");
     /* Allows only cards from hand*/
-    if(dragged.className.includes("cardWrapper")){
+    if(dragged.className.includes("cardWrapper") && dragged.dataset.type != "ev"){
         if(dragged.dataset.cost <= plyEnergies){/* Allow*/
             document.getElementById("plyEng1").classList.remove("highlightEnergy");
             document.getElementById("plyEng2").classList.remove("highlightEnergy");
@@ -173,7 +200,7 @@ document.getElementById("ply_board").addEventListener("drop", function( event ) 
             /* plyEnergies--;*/
             console.log(`Energy left: ${plyEnergies}`);
         }
-        else{/* Now allow*/
+        else{/* Not allow*/
             const wrong = new Audio('/static/frontend/sounds/wrong.wav');
             wrong.loop = false;
             wrong.play();
@@ -480,24 +507,39 @@ async function drawCard(who){/* call destroyegg if plydeck.length==0*/
         div1.dataset.rarity = card.rarity;
         div1.dataset.type = card.card_type;
         div1.dataset.weak = card.weak;
+        div1.dataset.event = card.event_effect;
         
         parentEl.appendChild(div1);
         const lastchild = document.getElementById("ply_hand").lastElementChild;
         drawDeck("ply");
 
-        ReactDOM.render(<SketchHandCard name={card.name}
-             atk={card.attack}
-             lifepoints={card.life_points}
-             condition={card.condition_text}
-             rarity={card.rarity}
-             size={card.size}
-             type={card.card_type}
-             cost={card.cost}
+        if(card.card_type != "ev"){
+            ReactDOM.render(<SketchHandCard name={card.name}
+                atk={card.attack}
+                lifepoints={card.life_points}
+                condition={card.condition_text}
+                rarity={card.rarity}
+                size={card.size}
+                type={card.card_type}
+                cost={card.cost}
+   
+                />, lastchild);
+   
+        }
 
-             />, lastchild);
+        else{
+            ReactDOM.render(<SketchEventHand name={card.name}
+                condition={card.condition_text}
+                rarity={card.rarity}
+                type={card.card_type}
+                cost={card.cost}
+                eventtext={card.event_effect}
 
+            />, lastchild)
+
+        }
         sortCards("ply");
-        
+
     }
     else {
         
@@ -1125,3 +1167,114 @@ function draggableHand(onoff){
     }
   
 }
+
+/* ---Handling Event cards-----*/
+
+function SketchEventHand(props){
+    const classes = 'border cardinHand navbarcolor blackbg font1w';
+    return <React.Fragment>
+            <div className={classes}>
+                Cost: {props.cost}
+                <div><b>{props.name}</b></div>
+                <div>R: {props.rarity}</div>
+                <div>{props.condition}</div>
+                <div>Type: {props.type}</div>
+                
+            </div>
+        </React.Fragment>
+}
+
+class SketchEventBoard extends React.Component{
+    constructor(props){
+        super(props);
+        this.state = {
+            classes: "cardplayedPly",
+        }
+    }
+
+    componentDidMount(){
+        gsap.fromTo(ReactDOM.findDOMNode(this), {scaleX: 1.2, scaleY: 1.2},{duration: 1, scaleY: 1, scaleX: 1});
+
+        setTimeout(function(){
+        gsap.to(document.querySelector("#ply_event div"), {opacity: 0, duration: 0.7});
+        }, 4000);
+
+        setTimeout(function(){ console.log("unmounting");
+        ReactDOM.unmountComponentAtNode(document.getElementById("ply_event"));
+        }, 5000);
+    }
+
+    
+    render(){
+        return(<React.Fragment>
+            <div className={this.state.classes}>
+                
+                <div><b>{this.props.name}</b></div>
+                <div>R: {this.props.rarity}</div>
+                <div>Type: {this.props.type}</div>
+                
+            </div>
+        </React.Fragment>
+
+        );  
+    }
+}
+
+
+
+
+document.getElementById("ply_event").addEventListener("dragover", function( event ) {
+    // prevent default to allow drop
+    event.preventDefault();
+    
+}, false);
+
+document.getElementById("ply_event").addEventListener("drop", function( event ) {
+    // prevent default to allow drop
+    event.preventDefault();
+
+    if(dragged.className.includes("cardWrapper") && dragged.dataset.type =="ev"){
+        document.getElementById("ply_event").classList.remove("highlightTarget");
+        if(dragged.dataset.cost <= plyEnergies){/* Allow*/
+            document.getElementById("plyEng1").classList.remove("highlightEnergy");
+            document.getElementById("plyEng2").classList.remove("highlightEnergy");
+            if(plyEnergies == 2){
+                if(dragged.dataset.cost == 1){
+                    document.getElementById("plyEng2").style.visibility = 'hidden';
+    
+                }
+                if(dragged.dataset.cost == 2){
+                    document.getElementById("plyEng2").style.visibility = 'hidden';
+                    document.getElementById("plyEng1").style.visibility = 'hidden';
+                }
+            }
+
+            if(plyEnergies == 1){
+                document.getElementById("plyEng1").style.visibility = 'hidden';
+
+            }
+            
+            plyEnergies = plyEnergies - dragged.dataset.cost;
+            dragged.parentNode.removeChild(dragged);
+            
+            ReactDOM.render(<SketchEventBoard name={dragged.dataset.name}
+                rarity = {dragged.dataset.rarity}
+                type = {dragged.dataset.type}
+            />, document.getElementById("ply_event"));
+
+            sortCards("ply");
+            /* plyEnergies--;*/
+            console.log(`Energy left: ${plyEnergies}`);
+        }
+        else{/* Not allow*/
+            const wrong = new Audio('/static/frontend/sounds/wrong.wav');
+            wrong.loop = false;
+            wrong.play();
+            console.log("No energy!")
+        } 
+    }
+    
+
+}, false);
+
+
