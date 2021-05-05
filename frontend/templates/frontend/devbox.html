@@ -53,7 +53,8 @@
             </div>
 
             <div class="ingameBoard forestbg">
-                    <div id="opp_event" class="position singlecardbox oppeventbox persp100 border">
+                    <div id="opp_event" class="position singlecardbox oppeventbox persp100 border radius10 blackTransparent flexcontainer">
+                        <span class="caesarfont navbarcolor">Event</span>
                     </div>
 
                     <div id ='opp_board' class="position oppboard perspTop">
@@ -87,10 +88,11 @@
                             style="border-top: 1px solid green; position: absolute; top: 50%; width: 95%; opacity: 0.5;">
                     </div>
 
-                    <div id="ply_event" class="position plyevent persp100 border">
+                    <div id="ply_event" class="position plyevent persp100 border flexcontainer blackTransparent radius10">
+                        <span class="caesarfont navbarcolor">Event</span>
                     </div>
 
-                    <div id ='ply_board' class="position plyboard perspTop">
+                    <div id ='ply_board' class="position plyboard perspTop radius10">
                        
                     </div>
 
@@ -137,8 +139,8 @@
             </div>
 
             <div class="plyEnergy position flexcontainer noEvents" style="visibility: hidden;">
-                <div class="textalign height90" id="plyEng1"><img src="{% static 'frontend/images/icons/energy.png' %}" alt="" class="height90"></div>
-                <div class="textalign height90" id="plyEng2"><img src="{% static 'frontend/images/icons/energy.png' %}" alt="" class="height90"></div>
+                <div class="textalign height90 radius10" id="plyEng1"><img src="{% static 'frontend/images/icons/energy.png' %}" alt="" class="height90"></div>
+                <div class="textalign height90 radius10" id="plyEng2"><img src="{% static 'frontend/images/icons/energy.png' %}" alt="" class="height90"></div>
 
             </div>
 

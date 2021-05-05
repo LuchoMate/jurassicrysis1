@@ -4,7 +4,6 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-/* import gsap from 'gsap';*/
 
 /*---------Utilities----------*/
 /*Removes element from dom*/
@@ -37,7 +36,7 @@ let plyEggs = 10;
 let currentTurn = "";
 let turnNumber = 1;
 
-/*Class to communicate attacks data between components */
+/*Object to communicate attacks data between components */
 
 class attackData {
 
@@ -109,6 +108,7 @@ document.addEventListener("dragstart", function( event ) {
 
     if(dragged.className.includes("cardWrapper") && dragged.dataset.type =="ev"){
         document.getElementById("ply_event").classList.add("highlightTarget");
+        handleAttacks.getAttack(0, "", "");
 
         if(plyEnergies == 2){
             if(event.target.dataset.cost == 1){
@@ -145,6 +145,8 @@ document.addEventListener("dragend", function( event ) {
         document.getElementById("ply_event").classList.remove("highlightTarget");
         document.getElementById("plyEng1").classList.remove("invalidBorder");
         document.getElementById("plyEng2").classList.remove("invalidBorder");
+        document.getElementById("plyEng1").classList.remove("highlightEnergy");
+        document.getElementById("plyEng2").classList.remove("highlightEnergy");
     }
 }, false);
 
@@ -209,7 +211,7 @@ document.getElementById("ply_board").addEventListener("drop", function( event ) 
     }
 }, false);
 
-/* ---Enemy eggs----*/
+
 
 function destroyEgg(who){
     if(who == "opp"){
@@ -241,6 +243,26 @@ function destroyEgg(who){
     }
 }
 
+function restoreEgg(who){
+    if(who=="ply"){
+        if(plyEggs < 10){
+            console.log("restoring ply egg");
+            plyEggs ++;
+            document.getElementById("plyEggsCounter").innerHTML = plyEggs;
+        }
+    }
+
+    else{
+        if(oppEggs < 10){
+            console.log("restoring opp egg");
+            oppEggs++;
+            console.log(`oppeggs: ${oppEggs}`);
+            /* hacer la logica de colocar otro egg al grid*/
+        }
+    }
+}
+
+/* ---Enemy eggs----*/
 document.getElementById("opp_eggs").addEventListener("dragover", function( event ) {
     // prevent default to allow drop
     event.preventDefault();
@@ -565,7 +587,6 @@ async function drawCard(who){/* call destroyegg if plydeck.length==0*/
         cardToAdd.condition = card.condition_text;
         cardToAdd.weak = card.weak;
 
-        /* console.log(cardToAdd);*/
         opphand.push(cardToAdd);
         console.log(`hand.length after push: ${opphand.length}`);
 
@@ -628,6 +649,9 @@ class SketchPlayerCard extends React.Component{
         this.handleDamage = this.handleDamage.bind(this);
         this.handleDestroyed = this.handleDestroyed.bind(this);
         this.take1dmgply = this.take1dmgply.bind(this);
+        this.gain1Atk = this.gain1Atk.bind(this);
+        this.restore1Lp = this.restore1Lp.bind(this);
+        this.logAtk = this.logAtk.bind(this);
     }
 
     componentDidMount(){
@@ -720,7 +744,6 @@ class SketchPlayerCard extends React.Component{
         if(this.state.condition.includes("Agile")){/* first turn attack*/
             this.setState({can_attack: true});
         }
-      
     }
 
     /* Set cards ready to attack at the beginning of turn */
@@ -739,6 +762,19 @@ class SketchPlayerCard extends React.Component{
 
     }
 
+    gain1Atk(){
+        this.setState({ atk: parseInt(this.state.atk, 10) + 1});
+    }
+
+    logAtk(){
+        console.log(`my attack is now ${this.state.atk}`)
+    }
+
+    restore1Lp(){
+        this.setState({life_points: parseInt(this.state.life_points, 10) + 1});
+        console.log("Restore 1 lp")
+    }
+
     render(){
         
     	return(
@@ -753,14 +789,15 @@ class SketchPlayerCard extends React.Component{
             style={{cursor: this.state.can_attack ? 'grab' : 'none'}}
             >
                 <div>{this.state.can_attack ? 'Go' : 'zZzZ'}</div>
-                <div>Atk:{this.state.atk} -------- LP:{this.state.life_points}</div>
+                <div>Atk:{this.state.atk} ------ LP:{this.state.life_points}</div>
                 <div><b>{this.state.cardname}</b></div>
                 <div>{this.state.condition}</div>
                 <div>Size: {this.state.size}</div>
                 <input className="inputTurnply" onInput={this.handleturnStart} />
                 <input className="inputsleepply" onInput={this.handlesleepcard} />
                 <input className="inputTake1dmgply" onInput={this.take1dmgply} />
-
+                <input className="inputGain1atkply" onInput={this.gain1Atk}/>
+                <input className="inputrestore1Lpply" onInput={this.restore1Lp} />
             </div>
         </React.Fragment>
       );
@@ -998,6 +1035,7 @@ async function cpuAi(){
     }
 
     /* Attemps to attack player's cards or eggs*/
+    /* */
 
     let oppDinos = document.getElementsByClassName("cardplayedOpp");
     let plyDinos = document.getElementsByClassName("cardplayedPly");
@@ -1188,20 +1226,20 @@ class SketchEventBoard extends React.Component{
     constructor(props){
         super(props);
         this.state = {
-            classes: "cardplayedPly",
+            classes: "cardplayedplyEvent",
         }
     }
 
     componentDidMount(){
-        gsap.fromTo(ReactDOM.findDOMNode(this), {scaleX: 1.2, scaleY: 1.2},{duration: 1, scaleY: 1, scaleX: 1});
+        gsap.fromTo(ReactDOM.findDOMNode(this), {scaleX: 1.2, scaleY: 1.2},{duration: 0.5, scaleY: 1, scaleX: 1});
 
         setTimeout(function(){
         gsap.to(document.querySelector("#ply_event div"), {opacity: 0, duration: 0.7});
-        }, 4000);
+        }, 2000);
 
-        setTimeout(function(){ console.log("unmounting");
+        setTimeout(function(){ 
         ReactDOM.unmountComponentAtNode(document.getElementById("ply_event"));
-        }, 5000);
+        }, 3200);
     }
 
     
@@ -1219,9 +1257,6 @@ class SketchEventBoard extends React.Component{
         );  
     }
 }
-
-
-
 
 document.getElementById("ply_event").addEventListener("dragover", function( event ) {
     // prevent default to allow drop
@@ -1262,8 +1297,9 @@ document.getElementById("ply_event").addEventListener("drop", function( event ) 
                 type = {dragged.dataset.type}
             />, document.getElementById("ply_event"));
 
+            
             sortCards("ply");
-            /* plyEnergies--;*/
+            handlePlyEvent(dragged.dataset.event);
             console.log(`Energy left: ${plyEnergies}`);
         }
         else{/* Not allow*/
@@ -1276,5 +1312,232 @@ document.getElementById("ply_event").addEventListener("drop", function( event ) 
     
 
 }, false);
+
+/* --handles output of event cards for player--*/
+async function handlePlyEvent(eventTexto){
+    await(sleep(1000));
+
+    if(eventTexto.split("destroyegg").length - 1 > 0){
+        for(let i= 0; i< eventTexto.split("destroyegg").length - 1 ; i++){
+          console.log("destroy opp egg");
+          destroyEgg("opp");
+          await(sleep(1000));
+        }
+    }
+
+    if(eventTexto.split("restoreegg").length - 1 > 0){
+        for(let i= 0; i< eventTexto.split("restoreegg").length - 1 ; i++){
+            restoreEgg("ply");
+            await(sleep(1000));
+        }
+    }
+
+    if(eventTexto.split("drawcard").length - 1 > 0){
+        for(let i= 0; i< eventTexto.split("drawcard").length - 1 ; i++){
+          console.log("draw card");
+          drawCard("ply");
+          await(sleep(1200));
+        }
+    }
+
+    if(eventTexto.split("1damage").length - 1 > 0){
+        for(let i= 0; i< eventTexto.split("1damage").length - 1 ; i++){
+          console.log("1 dmg");
+          let oppDinos = document.getElementsByClassName("cardplayedOpp");
+          if(oppDinos.length > 0){
+            var evento = new Event('input', {
+                bubbles: true,
+                cancelable: true,
+            });
+            oppDinos[Math.floor(Math.random()*oppDinos.length)].getElementsByClassName("inputTake1dmgopp")[0].dispatchEvent(evento);
+            await(sleep(1000));
+          }
+
+          
+        }
+    }
+
+    if(eventTexto.split("2damage").length - 1 > 0){
+        for(let i= 0; i< eventTexto.split("2damage").length - 1 ; i++){
+          console.log("2 dmg");
+          let oppDinos = document.getElementsByClassName("cardplayedOpp");
+          if(oppDinos.length > 0){
+            var evento = new Event('input', {
+                bubbles: true,
+                cancelable: true,
+            });
+
+            let randomNum = Math.random();
+            oppDinos[Math.floor(randomNum*oppDinos.length)].getElementsByClassName("inputTake1dmgopp")[0].dispatchEvent(evento);
+            oppDinos[Math.floor(randomNum*oppDinos.length)].getElementsByClassName("inputTake1dmgopp")[0].dispatchEvent(evento);
+
+            await(sleep(1000));
+
+          }
+
+        }
+    }
+
+    if(eventTexto.split("3damage").length - 1 > 0){
+        for(let i= 0; i< eventTexto.split("3damage").length - 1 ; i++){
+          console.log("3 dmg");
+          let oppDinos = document.getElementsByClassName("cardplayedOpp");
+          if(oppDinos.length > 0){
+            var evento = new Event('input', {
+                bubbles: true,
+                cancelable: true,
+            });
+
+            let randomNum = Math.random();
+            oppDinos[Math.floor(randomNum*oppDinos.length)].getElementsByClassName("inputTake1dmgopp")[0].dispatchEvent(evento);
+            oppDinos[Math.floor(randomNum*oppDinos.length)].getElementsByClassName("inputTake1dmgopp")[0].dispatchEvent(evento);
+            oppDinos[Math.floor(randomNum*oppDinos.length)].getElementsByClassName("inputTake1dmgopp")[0].dispatchEvent(evento);
+
+            await(sleep(1000));
+          }
+ 
+        }
+    }
+
+    if(eventTexto.split("4damage").length - 1 > 0){
+        for(let i= 0; i< eventTexto.split("4damage").length - 1 ; i++){
+          console.log("4 dmg");
+          let oppDinos = document.getElementsByClassName("cardplayedOpp");
+          if(oppDinos.length > 0){
+            var evento = new Event('input', {
+                bubbles: true,
+                cancelable: true,
+            });
+
+            let randomNum = Math.random();
+            oppDinos[Math.floor(randomNum*oppDinos.length)].getElementsByClassName("inputTake1dmgopp")[0].dispatchEvent(evento);
+            oppDinos[Math.floor(randomNum*oppDinos.length)].getElementsByClassName("inputTake1dmgopp")[0].dispatchEvent(evento);
+            oppDinos[Math.floor(randomNum*oppDinos.length)].getElementsByClassName("inputTake1dmgopp")[0].dispatchEvent(evento);
+            oppDinos[Math.floor(randomNum*oppDinos.length)].getElementsByClassName("inputTake1dmgopp")[0].dispatchEvent(evento);
+
+            await(sleep(1000));
+
+          }
+
+        }
+    }
+
+    if(eventTexto.split("2atk").length - 1 > 0){
+        console.log("gain 2 atk");
+
+        for(let i= 0; i< eventTexto.split("2atk").length - 1 ; i++){
+            let plyDinos = document.getElementsByClassName("cardplayedPly");
+            if(plyDinos.length > 0){
+
+                var evento = new Event('input', {
+                    bubbles: true,
+                    cancelable: true,
+                });
+
+                let randomNum = Math.random();
+                plyDinos[Math.floor(randomNum*plyDinos.length)].getElementsByClassName("inputGain1atkply")[0].dispatchEvent(evento);
+                plyDinos[Math.floor(randomNum*plyDinos.length)].getElementsByClassName("inputGain1atkply")[0].dispatchEvent(evento);
+
+                await(sleep(1000));
+            }
+        }
+    }
+
+    if(eventTexto.split("3atk").length - 1 > 0){
+        console.log("gain 3 atk");
+
+        for(let i= 0; i< eventTexto.split("3atk").length - 1 ; i++){
+            let plyDinos = document.getElementsByClassName("cardplayedPly");
+            console.log(`plydinolength: ${plyDinos.length}`)
+            if(plyDinos.length > 0){
+
+                var evento = new Event('input', {
+                    bubbles: true,
+                    cancelable: true,
+                });
+
+                let randomNum = Math.random();
+                console.log(`random: ${randomNum}`)
+                console.log(`choose dino: ${Math.floor(randomNum*plyDinos.length)}`)
+                plyDinos[Math.floor(randomNum*plyDinos.length)].getElementsByClassName("inputGain1atkply")[0].dispatchEvent(evento);
+                plyDinos[Math.floor(randomNum*plyDinos.length)].getElementsByClassName("inputGain1atkply")[0].dispatchEvent(evento);
+                plyDinos[Math.floor(randomNum*plyDinos.length)].getElementsByClassName("inputGain1atkply")[0].dispatchEvent(evento);
+
+                await(sleep(1000));
+            }
+        }
+    }
+    
+    if(eventTexto.split("2restore").length - 1 > 0){
+        console.log("restore 2")
+        for(let i= 0; i< eventTexto.split("2restore").length - 1 ; i++){
+            let plyDinos = document.getElementsByClassName("cardplayedPly");
+            if(plyDinos.length > 0){
+                var evento = new Event('input', {
+                    bubbles: true,
+                    cancelable: true,
+                });
+                let randomNum = Math.random();
+                plyDinos[Math.floor(randomNum*plyDinos.length)].getElementsByClassName("inputrestore1Lpply")[0].dispatchEvent(evento);
+                plyDinos[Math.floor(randomNum*plyDinos.length)].getElementsByClassName("inputrestore1Lpply")[0].dispatchEvent(evento);
+                await(sleep(1000));
+            }
+
+        }
+    }
+
+    if(eventTexto.split("3restore").length - 1 > 0){
+        console.log("restore 3")
+        for(let i= 0; i< eventTexto.split("3restore").length - 1 ; i++){
+            let plyDinos = document.getElementsByClassName("cardplayedPly");
+            if(plyDinos.length > 0){
+                var evento = new Event('input', {
+                    bubbles: true,
+                    cancelable: true,
+                });
+                let randomNum = Math.random();
+                plyDinos[Math.floor(randomNum*plyDinos.length)].getElementsByClassName("inputrestore1Lpply")[0].dispatchEvent(evento);
+                plyDinos[Math.floor(randomNum*plyDinos.length)].getElementsByClassName("inputrestore1Lpply")[0].dispatchEvent(evento);
+                plyDinos[Math.floor(randomNum*plyDinos.length)].getElementsByClassName("inputrestore1Lpply")[0].dispatchEvent(evento);
+
+                await(sleep(1000));
+            }
+
+        }
+    }
+
+    if(eventTexto.split("1restoreall").length - 1 > 0){
+        console.log("restore 1 all")
+        let plyDinos = document.getElementsByClassName("cardplayedPly");
+        if(plyDinos.length > 0){
+            for(let i=0; i< plyDinos.length; i++){
+                var evento = new Event('input', {
+                    bubbles: true,
+                    cancelable: true,
+                });
+                plyDinos[i].getElementsByClassName("inputrestore1Lpply")[0].dispatchEvent(evento);
+                await(sleep(300));
+            }
+        }
+    }
+
+    if(eventTexto.split("2restoreall").length - 1 > 0){
+        console.log("restore 2 all")
+        let plyDinos = document.getElementsByClassName("cardplayedPly");
+        if(plyDinos.length > 0){
+            for(let i=0; i< plyDinos.length; i++){
+                var evento = new Event('input', {
+                    bubbles: true,
+                    cancelable: true,
+                });
+                plyDinos[i].getElementsByClassName("inputrestore1Lpply")[0].dispatchEvent(evento);
+                plyDinos[i].getElementsByClassName("inputrestore1Lpply")[0].dispatchEvent(evento);
+
+                await(sleep(300));
+            }
+        }
+    }
+
+}
 
 
