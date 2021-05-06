@@ -915,6 +915,15 @@ animation-iteration-count: infinite;
     @extend .font1w;
 }
 
+.cardplayeoppEvent{
+    @extend .border;
+    @extend .cardplayed;
+    @extend .transform10;
+    @extend .navbarcolor;
+    @extend .blackbg;
+    @extend .font1w; 
+}
+
 .cardplayedOpp {
     @extend .border;
     @extend .cardplayed;
@@ -953,6 +962,14 @@ animation-iteration-count: infinite;
 }
 
 .inputrestore1Lpply{
+    display: none;
+}
+
+.inputGain1atkopp{
+    display: none;
+}
+
+.inputrestore1Lpopp{
     display: none;
 }
 

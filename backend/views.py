@@ -71,7 +71,7 @@ def api_opp_deck(request, difficulty):
         random.shuffle(deck)
         shuffled = {"shuffled": deck}
     elif difficulty == "hard":
-        deck = [3,3,5,5,6,6,18,18,19,19,34,34,35,35,51,51,52,52,53,53]
+        deck = [6,6,9,9,12,12,24,24,27,27,36,36,70,70,71,71,72,72,73,73]
         random.shuffle(deck)
         shuffled = {"shuffled": deck}
     else:
