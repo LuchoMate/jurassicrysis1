@@ -616,18 +616,45 @@ async function drawCard(who){/* call destroyegg if plydeck.length==0*/
     }
 }
 
-/* Sketches player's hand card inside wrapper div*/
-
+/* Sketches Dino card in Hand*/
 function SketchHandCard(props){
-        const classes = 'border cardinHand navbarcolor blackbg font1w';
+        const classhand = 'cardinHand';
+        const interiorcard = `interiorcard${props.type}`;
+        const attackTag = 'attackTag flexallcenter';
+        const costTag = 'costTag flexallcenter';
+        const energyTag = 'energyTag flexallcenter';
+        const lifepointsTag = 'lifepointsTag flexallcenter';
+        const nameTag = `namediv namediv${props.rarity} flexallcenter`;
+        const dinopicTag = 'dinopicDiv';
+        const imgTag = 'height100 width100';
+        const conditionTag = 'conditionTag flexallcenter';
+        const rarityTag = 'rarityTag flexallcenter';
+        const sizeTag = 'sizeTag flexallcenter';
+
         return <React.Fragment>
-                <div className={classes}>
-                    <div>Atk: {props.atk} Cost: {props.cost} LP: {props.lifepoints}</div>
-                    <div><b>{props.name}</b></div>
-                    <div>R: {props.rarity}</div>
-                    <div>{props.condition}</div>
-                    <div>Type: {props.type} Size: {props.size} </div>
+                <div className={classhand}>
                     
+                    <div className={interiorcard}>
+                        <div className={attackTag}>{props.atk}</div>
+                        <div className={costTag}>
+                            {(function() {
+                                if (props.cost == 1) {
+                                    return <div className={energyTag}></div>;
+                                } else {
+                                    return <React.Fragment><div className={energyTag}></div>
+                                    <div className={energyTag}></div></React.Fragment>;
+                                }
+                                })()}
+                        </div>
+                        <div className={lifepointsTag}>{props.lifepoints}</div>
+                        <div className={nameTag}>{props.name}</div>
+                        <div className={dinopicTag}><img src={`/static/frontend/images/cards/${props.name}.PNG`} className={imgTag}/></div>
+                        <div className={conditionTag}>{props.condition}</div>
+                        <div className={rarityTag}>{props.rarity}</div>
+                        <div className={sizeTag}>{props.size}</div>
+
+                    </div>
+                     
                 </div>
             </React.Fragment>
 }
@@ -1275,17 +1302,36 @@ function draggableHand(onoff){
 /* ---Handling Event cards-----*/
 
 function SketchEventHand(props){
-    const classes = 'border cardinHand navbarcolor blackbg font1w';
+    
+    const classhand = 'cardinHand';
+    const interiorcard = `interiorcard${props.type}`;
+    const costTag = 'costTag flexallcenter';
+    const energyTag = 'energyTag flexallcenter';
+    const nameTag = `namediv namediv${props.rarity} flexallcenter`;
+    const dinopicTag = 'dinopicDiv';
+    const imgTag = 'height100 width100';
+    const conditionTagEv = 'conditionTagEv flexallcenter';
+    
     return <React.Fragment>
-            <div className={classes}>
-                Cost: {props.cost}
-                <div><b>{props.name}</b></div>
-                <div>R: {props.rarity}</div>
-                <div>{props.condition}</div>
-                <div>Type: {props.type}</div>
-                
-            </div>
-        </React.Fragment>
+                <div className={classhand}>
+                    <div className={interiorcard}>
+                        <div className={costTag}>
+                            {(function() {
+                                if (props.cost == 1) {
+                                    return <div className={energyTag}></div>;
+                                } else {
+                                    return <React.Fragment><div className={energyTag}></div>
+                                    <div className={energyTag}></div></React.Fragment>;
+                                }
+                                })()}
+                        </div>
+                        <div className={nameTag}>{props.name}</div>
+                        <div className={dinopicTag}><img src={`/static/frontend/images/cards/${props.name}.PNG`} className={imgTag}/></div>
+                        <div className={conditionTagEv}>{props.condition}</div>
+                    </div>
+                     
+                </div>
+            </React.Fragment>
 }
 
 class SketchEventBoard extends React.Component{

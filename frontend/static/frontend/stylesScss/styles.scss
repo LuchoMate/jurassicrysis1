@@ -1192,6 +1192,12 @@ box-shadow: 3px 3px antiquewhite
     box-shadow: 2px 2px #888888;
 }
 
+.flexallcenter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .cardinHand {
     flex: 0 0 50px;
     height: 22vh;
@@ -1199,9 +1205,207 @@ box-shadow: 3px 3px antiquewhite
     width: 7vw;
     min-width: 7vw; 
     border-radius: 5px;
-    overflow: hidden;
+    border: 1px solid gold;
+    /*overflow: hidden;*/
     transition: transform .25s;
+}
 
+.interiorcardca{
+    background-image: url("images/cardsbg/cabg.jpg");
+    background-repeat: no-repeat, repeat;
+    background-position: center;
+    background-size: cover;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    border-radius: 5px;
+}
+
+.interiorcardhe{
+    background-image: url("images/cardsbg/hebg.jpg");
+    background-repeat: no-repeat, repeat;
+    background-position: center;
+    background-size: cover;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    border-radius: 5px;
+}
+
+.interiorcardaq{
+    background-image: url("images/cardsbg/aqbg.jpg");
+    background-repeat: no-repeat, repeat;
+    background-position: center;
+    background-size: cover;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    border-radius: 5px;
+}
+
+.interiorcardfl{
+    background-image: url("images/cardsbg/flbg.jpg");
+    background-repeat: no-repeat, repeat;
+    background-position: center;
+    background-size: cover;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    border-radius: 5px;
+}
+
+.interiorcardev{
+    background-image: url("images/cardsbg/evbg.jpg");
+    background-repeat: no-repeat, repeat;
+    background-position: center;
+    background-size: cover;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    border-radius: 5px;
+}
+
+.attackTag{
+    position: absolute;
+    top: 3%;
+    left: 2%;
+    background-image: linear-gradient(MediumSlateBlue, MidnightBlue);
+    color: antiquewhite;
+    border: 1px solid gold;
+    width: 20%;
+    height: 10%;
+    border-radius: 0 50% 50% 50%;   
+}
+
+.costTag {
+    position: absolute;
+    top: 3%;
+    left: 28%;
+    height: 10%;
+    width: 40%;
+}
+
+.energyTag{
+    height: 100%;
+    width: 40%;
+    background-image: url("images/icons/energycard.png");
+    background-repeat: no-repeat, repeat;
+    background-position: center;
+    background-size: cover;
+}
+
+.lifepointsTag {
+    position: absolute;
+    top: 3%;
+    right: 2%;
+    background-image: linear-gradient(Crimson, Maroon);
+    color: antiquewhite;
+    border-radius: 50% 0% 50% 50%;
+    border: 1px solid gold;
+    width: 20%;
+    height: 10%;
+}
+
+.namediv{
+    position: absolute;
+    width: 95%;
+    height: 8%;
+    top: 15%;
+    left: 1.5%;
+    border: 2px solid silver;
+    border-radius: 10px;
+    color: black;
+    font-style: bold;
+    font-size: small;
+    font-family: 'Pangolin';
+}
+
+.namedivex{
+    background-image: linear-gradient(GoldenRod, Gold);
+}
+
+.namedivsc{
+    background-image: linear-gradient(SkyBlue, DodgerBlue);
+}
+.namedivco{
+    background-image: linear-gradient(Silver, White);
+}
+
+.dinopicDiv{
+    position: absolute;
+    border: 3px solid gray;
+    background: gray;
+    border-radius: 10px;
+    width: 90%;
+    height: 40%;
+    top: 26%;
+    left: 4%;
+    pointer-events: none;
+}
+
+.height100{
+    height: 100%;
+}
+.width100{
+    width: 100%;
+}
+
+.conditionTag{
+    position: absolute;
+    width: 95%;
+    height: 7%;
+    top: 70%;
+    left: 1.5%;
+    border: 2px solid silver;
+    border-radius: 10px;
+    background-image: url("images/icons/conditiontag.jpeg");
+    color: black;
+    font-style: italic;
+    font-size: x-small; 
+    
+}
+
+.conditionTagEv{
+    position: absolute;
+    width: 95%;
+    height: 25%;
+    top: 70%;
+    left: 1.5%;
+    border: 2px solid silver;
+    border-radius: 10px;
+    background-image: url("images/icons/conditiontag.jpeg");
+    color: black;
+    font-size: xx-small;
+    text-align: justify;
+    padding: 2px;
+    line-height: 80%;
+}
+
+.rarityTag{
+    color: black;
+    position: absolute;
+    width: 30%;
+    height: 15%;
+    left: 3%;
+    bottom: 3%;
+    border-radius: 100% 0 0 100% / 50%;
+    border: 1px solid gold;
+    background-image: linear-gradient(to right, SteelBlue , white);
+    font-size: small;
+}
+
+.sizeTag{
+    position: absolute;
+    color: black;
+    align-items: center;
+    width: 30%;
+    height: 15%;
+    right: 3%;
+    bottom: 3%;
+    border-radius: 0 100% 100% 0 / 50%;
+    border: 1px solid gold;
+    background-image: linear-gradient(to right, white, SteelBlue );
+    font-size: small;
 }
 
 .cardWrapper {
