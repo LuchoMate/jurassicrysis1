@@ -337,12 +337,12 @@ function placeDeck(who){
 
     if(who=="opp"){
         var tl = gsap.timeline();
-        tl.from("#opp_deck div", {left: "200%", stagger: 0.1});
+        tl.from("#opp_deck", {left: "200%", duration: 2});
     }
 
     else{
         var tl = gsap.timeline();
-        tl.from("#ply_deck div", {left: "200%", stagger: 0.1});
+        tl.from("#ply_deck", {left: "200%", duration: 2});
     }
    
 }
@@ -375,7 +375,7 @@ function drawDeck(who){
 
 /*---Each player draw 5 cards to begin. */
 async function startGame() {
-    /* 
+     /* 
     placeDeck("opp");
     await sleep(2500);
     placeDeck("ply");
@@ -616,6 +616,8 @@ async function drawCard(who){/* call destroyegg if plydeck.length==0*/
     }
 }
 
+/* dinocardhand*/
+
 /* Sketches Dino card in Hand*/
 function SketchHandCard(props){
         const classhand = 'cardinHand';
@@ -628,8 +630,8 @@ function SketchHandCard(props){
         const dinopicTag = 'dinopicDiv';
         const imgTag = 'height100 width100';
         const conditionTag = 'conditionTag flexallcenter';
-        const rarityTag = 'rarityTag flexallcenter';
         const sizeTag = 'sizeTag flexallcenter';
+        const sizeImg = 'height100 width100 clipsize';
 
         return <React.Fragment>
                 <div className={classhand}>
@@ -650,20 +652,21 @@ function SketchHandCard(props){
                         <div className={nameTag}>{props.name}</div>
                         <div className={dinopicTag}><img src={`/static/frontend/images/cards/${props.name}.PNG`} className={imgTag}/></div>
                         <div className={conditionTag}>{props.condition}</div>
-                        <div className={rarityTag}>{props.rarity}</div>
-                        <div className={sizeTag}>{props.size}</div>
+                        <div className={sizeTag}><img src={`/static/frontend/images/icons/size${props.size}.PNG`} className={sizeImg}/></div>
 
                     </div>
                      
                 </div>
             </React.Fragment>
 }
+/* <div className='interiorDeck interiorDeckOpp'>*/
 /* Sketches opp's hand card inside wrapper div*/
 function SketchHandOpp() {
     
-    const classes = 'border cardinHand navbarcolor blackbg font1w';
+    
     return <React.Fragment>
-            <div className={classes}>
+            <div className='cardinhandOpp'>
+                <div className='interiorhandOpp'></div>
             </div>
         </React.Fragment>
 }
@@ -677,7 +680,6 @@ class SketchPlayerCard extends React.Component{
             atk: 0,
             cardname: "",
             condition: "",
-            classes: "cardplayedPly",
             can_attack: false,
             rarity: "",
             size: "",
@@ -709,12 +711,19 @@ class SketchPlayerCard extends React.Component{
         this.setState({type: this.props.type});
         this.setState({weak: this.props.weak});
         this.setState({condition: this.props.condition}, function(){this.attack1Turn()});
+        
+        const dinocry = new Audio(`/static/frontend/sounds/cards/${this.props.name}.wav`);
+        dinocry.loop = false;
+        dinocry.play();
 
         gsap.fromTo(ReactDOM.findDOMNode(this), {scaleX: 1.2, scaleY: 1.2},{duration: 1, scaleY: 1, scaleX: 1});
     }
 
     /* Passes attacking info to data handler*/
     handleDragStart(){
+        const dinoattack = new Audio(`/static/frontend/sounds/attacks/${this.state.size}_attack.wav`);
+        dinoattack.loop = false;
+        dinoattack.play();
         handleAttacks.getAttack(this.state.atk, this.state.type, this.state.condition);
         handleAttacks.showValues();
         
@@ -734,12 +743,21 @@ class SketchPlayerCard extends React.Component{
     handleDestroyed(){
     	console.log(`my hp is now: ${this.state.life_points}`);
         if(this.state.life_points <= 0){
+            const dinodestroyed = new Audio(`/static/frontend/sounds/destroyed/${this.state.size}_destroyed.wav`);
+            dinodestroyed.loop = false;
+            dinodestroyed.play();
+
             console.log("Executed with impunity!!");
             const thisNode = ReactDOM.findDOMNode(this);
             const parent = thisNode.parentNode;
             ReactDOM.unmountComponentAtNode(thisNode.parentNode);
             parent.parentNode.removeChild(parent);
         
+        }
+        else{
+            const dinodamage = new Audio(`/static/frontend/sounds/damage/${this.state.size}_damage.wav`);
+            dinodamage.loop = false;
+            dinodamage.play();
         }
     }
 
@@ -822,10 +840,23 @@ class SketchPlayerCard extends React.Component{
     }
 
     render(){
+
+        const classplayed = 'cardplayedPly';
+        const interiorcard = `interiorcard${this.state.type}`;
+        const attackTag = 'attackTag flexallcenter';
+        const costTag = 'costTag flexallcenter navbarcolor';
+        const lifepointsTag = 'lifepointsTag flexallcenter';
+        const nameTag = `namediv namediv${this.state.rarity} flexallcenter`;
+        const dinopicTag = 'dinopicDiv';
+        const imgTag = 'height100 width100';
+        const conditionTag = 'conditionTag flexallcenter';
+        const sizeTag = 'sizeTag flexallcenter';
+        const sizeImg = 'height100 width100 clipsize';
+
         
     	return(
             <React.Fragment>
-            <div className={this.state.classes} 
+            <div className={classplayed} 
             onDragStart={this.handleDragStart}
             onDragOver={this.handleDragOver}
             onDragEnd={this.handleDragEnd}
@@ -833,12 +864,22 @@ class SketchPlayerCard extends React.Component{
             draggable={this.state.can_attack ? true : false}
             data-condition={this.state.condition}
             style={{cursor: this.state.can_attack ? 'grab' : 'none'}}
-            >
-                <div>{this.state.can_attack ? 'Go' : 'zZzZ'}</div>
-                <div>Atk:{this.state.atk} ------ LP:{this.state.life_points}</div>
-                <div><b>{this.state.cardname}</b></div>
-                <div>{this.state.condition}</div>
-                <div>Size: {this.state.size}</div>
+            >   
+                
+                <div className={interiorcard}>
+                    <div className={attackTag}>{this.state.atk}</div>
+                    <div className={costTag}>
+                        {this.state.can_attack ? 'Go' : 'zZzZ'}
+                    </div>
+                    <div className={lifepointsTag}>{this.state.life_points}</div>
+                    <div className={nameTag}>{this.state.cardname}</div>
+                    <div className={dinopicTag}><img src={`/static/frontend/images/cards/${this.state.cardname}.PNG`} className={imgTag}/></div>
+                    <div className={conditionTag}>{this.state.condition}</div>
+                    <div className={sizeTag}><img src={`/static/frontend/images/icons/size${this.state.size}.PNG`} className={sizeImg}/></div>
+
+                </div>
+
+
                 <input className="inputTurnply" onInput={this.handleturnStart} />
                 <input className="inputsleepply" onInput={this.handlesleepcard} />
                 <input className="inputTake1dmgply" onInput={this.take1dmgply} />
@@ -857,10 +898,10 @@ class SketchOppCard extends React.Component{
     constructor(props){
         super(props);
         this.state = {
+            classes: "cardplayedOpp",
             life_points: 0,
             atk: 0,
             cardname: "",
-            classes: "cardplayedOpp",
             condition: "",
             rarity: "",
             type: "",
@@ -888,10 +929,15 @@ class SketchOppCard extends React.Component{
     	this.setState({life_points: this.props.lifepoints});
         this.setState({atk: this.props.atk});
         this.setState({cardname: this.props.name});
+        this.setState({rarity: this.props.rarity});
         this.setState({type: this.props.type});
         this.setState({weak: this.props.weak});
         this.setState({size: this.props.size});
         this.setState({condition: this.props.condition}, function(){this.attack1Turn()});
+
+        const dinocry = new Audio(`/static/frontend/sounds/cards/${this.props.name}.wav`);
+        dinocry.loop = false;
+        dinocry.play();
 
         gsap.fromTo(ReactDOM.findDOMNode(this), {scaleX: 1.2, scaleY: 1.2},{duration: 1, scaleY: 1, scaleX: 1});
     }
@@ -936,6 +982,7 @@ class SketchOppCard extends React.Component{
     handleDrop(){
     	event.preventDefault();
         this.setState({classes: "cardplayedOpp"});
+        document.getElementById("opp_eggs").classList.remove("highlightTarget");
         if(dragged.className.includes("cardplayedPly")){
                 console.log("being attacked!");
                 var evento = new Event('input', {
@@ -963,12 +1010,21 @@ class SketchOppCard extends React.Component{
     handleDestroyed(){
     	console.log(`my hp is now: ${this.state.life_points}`);
         if(this.state.life_points <= 0){
+            const dinodestroyed = new Audio(`/static/frontend/sounds/destroyed/${this.state.size}_destroyed.wav`);
+            dinodestroyed.loop = false;
+            dinodestroyed.play();
+
             console.log("Executed with impunity!!");
             const thisNode = ReactDOM.findDOMNode(this);
             const parent = thisNode.parentNode;
             ReactDOM.unmountComponentAtNode(thisNode.parentNode);
             parent.parentNode.removeChild(parent);
         
+        }
+        else{
+            const dinodamage = new Audio(`/static/frontend/sounds/damage/${this.state.size}_damage.wav`);
+            dinodamage.loop = false;
+            dinodamage.play();
         }
     }
 
@@ -1000,6 +1056,18 @@ class SketchOppCard extends React.Component{
     }
 
     render(){
+
+        const interiorcard = `interiorcard${this.state.type}`;
+        const attackTag = 'attackTag flexallcenter';
+        const costTag = 'costTag flexallcenter navbarcolor';
+        const lifepointsTag = 'lifepointsTag flexallcenter';
+        const nameTag = `namediv namediv${this.state.rarity} flexallcenter`;
+        const dinopicTag = 'dinopicDiv';
+        const imgTag = 'height100 width100';
+        const conditionTag = 'conditionTag flexallcenter';
+        const sizeTag = 'sizeTag flexallcenter';
+        const sizeImg = 'height100 width100 clipsize';
+
     	return(
             <React.Fragment>
                 <div className={this.state.classes} 
@@ -1010,13 +1078,22 @@ class SketchOppCard extends React.Component{
                 onDragLeave={this.handleDragExit}
                 data-can_attack={this.state.can_attack}
                 data-condition={this.state.condition}
+                data-size={this.state.size}
                 >
-                    <div>{this.state.can_attack ? 'Go' : 'zZzZ'}</div>
-                    Atk: {this.state.atk} LP: {this.state.life_points}
-                    <b>{this.state.cardname}</b>
-                    <div>Type:{this.state.type}</div>
-                    <div>{this.state.condition}</div>
-                    <div>{this.state.size}</div>
+                    <div className={interiorcard} onDragEnter={this.handleDragEnter}
+                onDragLeave={this.handleDragExit}>
+                        <div className={attackTag}>{this.state.atk}</div>
+                        <div className={costTag}>
+                            {this.state.can_attack ? 'Go' : 'zZzZ'}
+                        </div>
+                        <div className={lifepointsTag}>{this.state.life_points}</div>
+                        <div className={nameTag}>{this.state.cardname}</div>
+                        <div className={dinopicTag}><img src={`/static/frontend/images/cards/${this.state.cardname}.PNG`} className={imgTag}/></div>
+                        <div className={conditionTag}>{this.state.condition}</div>
+                        <div className={sizeTag}><img src={`/static/frontend/images/icons/size${this.state.size}.PNG`} className={sizeImg}/></div>
+
+                    </div>
+
                     <input className="inputTurnopp" onInput={this.handleturnStart} />
                     <input className="inputsleepopp" onInput={this.handlesleepcard} />
                     <input className="inputTake1dmgopp" onInput={this.take1dmgopp} />
@@ -1051,16 +1128,31 @@ async function cpuAi(){
 
                 /* Dino Card*/
                 if(cardtoPlay[0].type != "ev"){
-                   
+                   /* simulates playing a dino card*/
                     let divCreate = document.createElement("div");
-                    divCreate.classList.add('border', 'cardinHand', 'blackbg', 'position');
+                    divCreate.classList.add('borderDeckSimulate');
                     document.getElementById("boarddiv").appendChild(divCreate);
+                    let divinterior = document.createElement("div");
+                    divinterior.classList.add('interiorDeck');
+                    divinterior.classList.add('interiorDeckOpp');
+                    divCreate.appendChild(divinterior);
+                    let iconcard = document.createElement("div");
+                    iconcard.classList.add('dinoIconCard');
+                    divinterior.appendChild(iconcard);
+                    let imgdino = document.createElement("img");
+                    imgdino.src = '/static/frontend/images/icons/jcdinohead.png';
+                    imgdino.classList.add("height100");
+                    iconcard.appendChild(imgdino);
+                    let jclogotext = document.createElement("div");
+                    jclogotext.classList.add("jclogotext");
+                    jclogotext.innerHTML = 'Jurassicrysis';
+                    divinterior.appendChild(jclogotext);
 
                     const drawsound = new Audio('/static/frontend/sounds/drawcard.mp3');
                     drawsound.loop = false;
                     drawsound.play();
                     
-                    /* simulates playing a dino card*/
+                    /* animates playing card*/
                     gsap.fromTo(divCreate, {top: '0%', left: '50%'},{xPercent:-50, yPercent:-50, left:"50%", top:"38%", duration: 0.8, ease: "power1.out"});
                     await(sleep(2200));
                     divCreate.parentNode.removeChild(divCreate);
@@ -1074,14 +1166,31 @@ async function cpuAi(){
                         atk={cardtoPlay[0].atk} lifepoints={cardtoPlay[0].lifepoints}
                         condition={cardtoPlay[0].condition} type={cardtoPlay[0].type}
                         size = {cardtoPlay[0].size} weak ={cardtoPlay[0].weak}
+                        rarity = {cardtoPlay[0].rarity}
                     />, lastoppchild);
                 }
                 /* Event card*/
                 else{
                     console.log("gonna play ev card")
+                    /* simulates playing a card*/
                     let divCreate = document.createElement("div");
-                    divCreate.classList.add('border', 'cardinHand', 'blackbg', 'position');
+                    divCreate.classList.add('borderDeckSimulate');
                     document.getElementById("boarddiv").appendChild(divCreate);
+                    let divinterior = document.createElement("div");
+                    divinterior.classList.add('interiorDeck');
+                    divinterior.classList.add('interiorDeckOpp');
+                    divCreate.appendChild(divinterior);
+                    let iconcard = document.createElement("div");
+                    iconcard.classList.add('dinoIconCard');
+                    divinterior.appendChild(iconcard);
+                    let imgdino = document.createElement("img");
+                    imgdino.src = '/static/frontend/images/icons/jcdinohead.png';
+                    imgdino.classList.add("height100");
+                    iconcard.appendChild(imgdino);
+                    let jclogotext = document.createElement("div");
+                    jclogotext.classList.add("jclogotext");
+                    jclogotext.innerHTML = 'Jurassicrysis';
+                    divinterior.appendChild(jclogotext);
 
                     const drawsound = new Audio('/static/frontend/sounds/drawcard.mp3');
                     drawsound.loop = false;
@@ -1095,6 +1204,7 @@ async function cpuAi(){
                     ReactDOM.render(<SketchEventBoardOpp name={cardtoPlay[0].name}
                         rarity = {cardtoPlay[0].rarity}
                         type = {cardtoPlay[0].type}
+                        condition={cardtoPlay[0].condition}
                     />, document.getElementById("opp_event"));
 
                     await(sleep(1800));
@@ -1138,9 +1248,16 @@ async function cpuAi(){
             console.log(`checking dino ${i}`);
             if(oppDinos[i].dataset.can_attack == "true"){/* Ready to attack*/
                 console.log(`dino ${i} can attack`);
+                
+
                 await(sleep(1500));
                 if(Math.random() > 0.5){/* Attack a player's dino */
+        
                     if(plyDinos.length > 0){
+
+                        const dinoattack = new Audio(`/static/frontend/sounds/attacks/${oppDinos[i].dataset.size}_attack.wav`);
+                        dinoattack.loop = false;
+                        dinoattack.play();
 
                         oppDinos[i].draggable = true;
                         gsap.fromTo(oppDinos[i], {scaleX: 1.4, scaleY: 1.4},{duration: 1.3, scaleY: 1, scaleX: 1});
@@ -1149,6 +1266,10 @@ async function cpuAi(){
                         oppDinos[i].draggable = false;
                     }
                     else{
+                        const dinoattack = new Audio(`/static/frontend/sounds/attacks/${oppDinos[i].dataset.size}_attack.wav`);
+                        dinoattack.loop = false;
+                        dinoattack.play();
+
                         gsap.fromTo(oppDinos[i], {scaleX: 1.4, scaleY: 1.4},{duration: 1.3, scaleY: 1, scaleX: 1});
                         await(sleep(1700))
                         destroyEgg("ply");
@@ -1158,6 +1279,10 @@ async function cpuAi(){
                     }
                 } 
                 else{
+                        const dinoattack = new Audio(`/static/frontend/sounds/attacks/${oppDinos[i].dataset.size}_attack.wav`);
+                        dinoattack.loop = false;
+                        dinoattack.play();
+                        
                     gsap.fromTo(oppDinos[i], {scaleX: 1.4, scaleY: 1.4},{duration: 1.3, scaleY: 1, scaleX: 1});
                     await(sleep(1700))
                     destroyEgg("ply");
@@ -1356,12 +1481,20 @@ class SketchEventBoard extends React.Component{
 
     
     render(){
+        const interiorcard = `interiorcard${this.props.type}`;
+        const nameTag = `namediv namediv${this.props.rarity} flexallcenter`;
+        const dinopicTag = 'dinopicDiv';
+        const imgTag = 'height100 width100';
+        const conditionTagEv = 'conditionTagEv flexallcenter';
+
         return(<React.Fragment>
             <div className={this.state.classes}>
                 
-                <div><b>{this.props.name}</b></div>
-                <div>R: {this.props.rarity}</div>
-                <div>Type: {this.props.type}</div>
+                <div className={interiorcard}>
+                    <div className={nameTag}>{this.props.name}</div>
+                    <div className={dinopicTag}><img src={`/static/frontend/images/cards/${this.props.name}.PNG`} className={imgTag}/></div>
+                    <div className={conditionTagEv}>{this.props.condition}</div>
+                </div>
                 
             </div>
         </React.Fragment>
@@ -1407,6 +1540,7 @@ document.getElementById("ply_event").addEventListener("drop", function( event ) 
             ReactDOM.render(<SketchEventBoard name={dragged.dataset.name}
                 rarity = {dragged.dataset.rarity}
                 type = {dragged.dataset.type}
+                condition = {dragged.dataset.condition}
             />, document.getElementById("ply_event"));
 
             
@@ -1689,7 +1823,6 @@ class SketchEventBoardOpp extends React.Component{
     }
 
     componentDidMount(){
-        console.log("mounted opp ev")
         gsap.fromTo(ReactDOM.findDOMNode(this), {scaleX: 1.2, scaleY: 1.2},{duration: 0.5, scaleY: 1, scaleX: 1});
 
         setTimeout(function(){
@@ -1703,17 +1836,26 @@ class SketchEventBoardOpp extends React.Component{
 
     
     render(){
+
+        const interiorcard = `interiorcard${this.props.type}`;
+        const nameTag = `namediv namediv${this.props.rarity} flexallcenter`;
+        const dinopicTag = 'dinopicDiv';
+        const imgTag = 'height100 width100';
+        const conditionTagEv = 'conditionTagEv flexallcenter';
+
         return(<React.Fragment>
             <div className={this.state.classes}>
                 
-                <div><b>{this.props.name}</b></div>
-                <div>R: {this.props.rarity}</div>
-                <div>Type: {this.props.type}</div>
+                <div className={interiorcard}>
+                    <div className={nameTag}>{this.props.name}</div>
+                    <div className={dinopicTag}><img src={`/static/frontend/images/cards/${this.props.name}.PNG`} className={imgTag}/></div>
+                    <div className={conditionTagEv}>{this.props.condition}</div>
+                </div>
                 
             </div>
         </React.Fragment>
 
-        );  
+        );   
     }
 }
 

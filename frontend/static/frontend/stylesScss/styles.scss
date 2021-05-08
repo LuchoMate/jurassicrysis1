@@ -412,6 +412,11 @@ h6 {
     display: grid;
     grid-template-columns: 20% 20% 20% 20% 20% ;
     grid-template-rows: 50% 50% ;
+    background-image: url("images/eggs/oppnest.png");
+    background-repeat: no-repeat, repeat;
+    background-position: center;
+    background-size: cover;
+    /* */
 }
 
 /* ----opp eggs animation------*/
@@ -785,6 +790,7 @@ animation-iteration-count: infinite;
     @extend .flexcontainer;
     height: 20vh; width: 70vw;
     top: 2%; left: 15%;
+    align-items: center;
     
 }
 
@@ -802,7 +808,8 @@ animation-iteration-count: infinite;
     @extend .flexcontainer;
     height: 20vh; width: 70vw;
     top: 52%;
-    left: 15%;  
+    left: 15%; 
+    align-items: center; 
 }
 
 .plydeck {
@@ -854,11 +861,23 @@ animation-iteration-count: infinite;
 .plyTurnPos {
     top: 53%;
     left: 40%;
+    background-repeat: no-repeat, repeat;
+    background-position: center;
+    background-size: cover;
+    background-image: url("images/icons/backcardply.jpg");
+    border: 10px solid gold;
+    border-radius: 20px;
 }
 
 .oppturnPos {
     top: 30%;
     left: 33%;
+    background-repeat: no-repeat, repeat;
+    background-position: center;
+    background-size: cover;
+    background-image: url("images/icons/backcardopp.jpg");
+    border: 10px solid gold;
+    border-radius: 20px;
 }
 
 .inputTurnply {
@@ -1147,19 +1166,37 @@ box-shadow: 3px 3px antiquewhite
 
 /* Cards styles*/
 
-.cardplayedPly {
-    @extend .border;
-    @extend .cardplayed;
-    @extend .transform10;
-    @extend .navbarcolor;
-    @extend .blackbg;
-    @extend .font1w;
+#opp_event {
+    border: 3px solid wheat;
+    border-style: dashed;
+    background-image: url("images/cardsbg/evbg.jpg");
+    background-repeat: no-repeat, repeat;
+    background-position: center;
+    background-size: cover;
+}
 
+#ply_event{
+    @extend #opp_event;
+
+}
+
+.cardplayedPly{
+    @extend .transform10;
+    flex: 0 0 50px;
+    height: 20vh;
+    min-height: 21vh;
+    margin: 5px; 
+    width: 7vw;
+    min-width: 7vw; 
+    border-radius: 5px;
+    border: 2px solid gold;
+    transition: transform .25s;
+    
 }
 
 .cardplayedplyEvent{
     @extend .border;
-    @extend .cardplayed;
+    @extend .cardplayedDeck;
     @extend .transform10;
     @extend .navbarcolor;
     @extend .blackbg;
@@ -1168,7 +1205,7 @@ box-shadow: 3px 3px antiquewhite
 
 .cardplayeoppEvent{
     @extend .border;
-    @extend .cardplayed;
+    @extend .cardplayedDeck;
     @extend .transform10;
     @extend .navbarcolor;
     @extend .blackbg;
@@ -1176,21 +1213,80 @@ box-shadow: 3px 3px antiquewhite
 }
 
 .cardplayedOpp {
-    @extend .border;
-    @extend .cardplayed;
-    @extend .transform10;
-    @extend .navbarcolor;
-    @extend .blackbg;
-    @extend .font1w;
+   @extend .cardplayedPly;
 }
 
-.cardplayed {
+.cardplayedDeck {
     height: 18vh; 
     width: 6.5vw; 
     margin: 5px;
     border-radius: 5px;
     box-shadow: 2px 2px #888888;
+    border: 1px solid gold;
 }
+
+.borderDeck{
+    @extend .flexallcenter;
+    height: 100%;
+    width: 100%;
+    border-radius: 5px;
+    background-image: linear-gradient(white, gold);
+}
+
+.borderDeckSimulate {
+    position: absolute;
+    @extend .flexallcenter;
+    border-radius: 5px;
+    background-image: linear-gradient(white, gold);
+    width: 7vw;
+    height: 20vh;
+}
+
+.interiorDeck{
+    background-repeat: no-repeat, repeat;
+    background-position: center;
+    background-size: cover;
+    height: 95%;
+    width: 90%;
+    position: absolute;
+    border-radius: 5px;
+}
+
+.interiorDeckOpp{
+    background-image: url("images/icons/backcardopp.jpg");
+
+}
+
+.interiorDeckPly{
+    background-image: url("images/icons/backcardply.jpg");
+
+}
+
+.dinoIconCard{
+    @extend .flexallcenter;
+    position: absolute;
+    top: 20%;
+    left: 2%;
+    width: 95%;
+    height: 40%;
+    border-radius: 50%;
+    border: 1px solid white;
+    background: gold;
+    
+}
+
+.jclogotext{
+    @extend .flexallcenter;
+    @extend .caesarfont;
+    color: antiquewhite;
+    position: absolute;
+    top: 70%;
+    left: 2%;
+    width: 95%;
+    height: 15%;
+    font-size: x-small; 
+}
+
 
 .flexallcenter {
     display: flex;
@@ -1205,9 +1301,31 @@ box-shadow: 3px 3px antiquewhite
     width: 7vw;
     min-width: 7vw; 
     border-radius: 5px;
-    border: 1px solid gold;
+    border: 2px solid gold;
     /*overflow: hidden;*/
     transition: transform .25s;
+}
+
+.cardinhandOpp {
+    flex: 0 0 50px;
+    height: 22vh;
+    min-height: 22vh; 
+    width: 7vw;
+    min-width: 7vw; 
+    border-radius: 5px;
+    border: 5px solid gold;
+    transition: transform .25s;  
+}
+
+.interiorhandOpp {
+    background-image: url("images/icons/backcardopp.jpg");
+    background-repeat: no-repeat, repeat;
+    background-position: center;
+    background-size: cover;
+    height: 86%;
+    width: 90%;
+    position: absolute;
+    border-radius: 5px;
 }
 
 .interiorcardca{
@@ -1307,6 +1425,7 @@ box-shadow: 3px 3px antiquewhite
 }
 
 .namediv{
+    white-space: nowrap;
     position: absolute;
     width: 95%;
     height: 8%;
@@ -1333,9 +1452,10 @@ box-shadow: 3px 3px antiquewhite
 
 .dinopicDiv{
     position: absolute;
-    border: 3px solid gray;
+    border: 3px solid wheat;
+    border-style: ridge;
+    border-radius: 2px;
     background: gray;
-    border-radius: 10px;
     width: 90%;
     height: 40%;
     top: 26%;
@@ -1381,31 +1501,20 @@ box-shadow: 3px 3px antiquewhite
     line-height: 80%;
 }
 
-.rarityTag{
-    color: black;
+.sizeTag{
     position: absolute;
     width: 30%;
     height: 15%;
-    left: 3%;
+    left: 35%;
     bottom: 3%;
-    border-radius: 100% 0 0 100% / 50%;
+    border-radius: 100%;
     border: 1px solid gold;
-    background-image: linear-gradient(to right, SteelBlue , white);
+    background-color: white;
     font-size: small;
 }
 
-.sizeTag{
-    position: absolute;
-    color: black;
-    align-items: center;
-    width: 30%;
-    height: 15%;
-    right: 3%;
-    bottom: 3%;
-    border-radius: 0 100% 100% 0 / 50%;
-    border: 1px solid gold;
-    background-image: linear-gradient(to right, white, SteelBlue );
-    font-size: small;
+.clipsize {
+    clip-path: circle(50% at 50% 50%);
 }
 
 .cardWrapper {
