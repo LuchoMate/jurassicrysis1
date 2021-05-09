@@ -859,26 +859,50 @@ animation-iteration-count: infinite;
 }
 
 .plyTurnPos {
-    top: 53%;
-    left: 40%;
+    top: 28%;
+    left: 26%;
+}
+
+.plyturnbg{
     background-repeat: no-repeat, repeat;
     background-position: center;
     background-size: cover;
     background-image: url("images/icons/backcardply.jpg");
-    border: 10px solid gold;
+    border: 5px solid gold;
     border-radius: 20px;
+    position: absolute;
+    height: 20vh;
+    white-space: nowrap;
 }
 
 .oppturnPos {
-    top: 30%;
-    left: 33%;
+    top: 28%;
+    left: 26%;
+}
+    
+.oppturnbg {
     background-repeat: no-repeat, repeat;
     background-position: center;
     background-size: cover;
     background-image: url("images/icons/backcardopp.jpg");
-    border: 10px solid gold;
+    border: 5px solid gold;
     border-radius: 20px;
+    position: absolute;
+    height: 20vh;
+    white-space: nowrap;
 }
+
+.bothturndinoicon {
+    @extend .flexallcenter;
+    flex-wrap: nowrap;
+    height: 50vh;
+    width: 50vw;
+    background-image: url("images/icons/oppturnbg.png");
+    background-repeat: no-repeat, repeat;
+    background-position: center;
+    background-size: cover;
+}
+
 
 .inputTurnply {
     display: none;
@@ -1531,6 +1555,29 @@ box-shadow: 3px 3px antiquewhite
 
 .cardWrapperOpp:last-child {
     overflow: visible;
+}
+
+@keyframes zzanim {
+    
+    50%{
+        opacity: 0;
+    }
+
+    100%{
+        opacity: 1;
+    }
+}
+
+.sleepanimation {
+
+    animation: zzanim 2.5s infinite linear;
+    background-image: url("images/icons/zzz.png");
+    background-repeat: no-repeat, repeat;
+    background-position: center;
+    background-size: cover;
+    height: 3vw;
+    width: 3vw;
+
 }
 
 

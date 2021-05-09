@@ -222,6 +222,10 @@ document.getElementById("ply_board").addEventListener("drop", function( event ) 
 
 function destroyEgg(who){
     if(who == "opp"){
+        const destroyedegg = new Audio('/static/frontend/sounds/destroyed/egg_destroyed.wav');
+        destroyedegg.loop = false;
+        destroyedegg.play();
+
         oppEggs--;
         if(oppEggs <= 0){
             console.log("you win")
@@ -244,6 +248,10 @@ function destroyEgg(who){
     }
 
     else{
+        const destroyedegg = new Audio('/static/frontend/sounds/destroyed/egg_destroyed.wav');
+        destroyedegg.loop = false;
+        destroyedegg.play();
+        
         plyEggs--;
         console.log(`plyeggs: ${plyEggs}`);
         document.getElementById("plyEggsCounter").innerHTML = plyEggs;
@@ -852,8 +860,8 @@ class SketchPlayerCard extends React.Component{
         const conditionTag = 'conditionTag flexallcenter';
         const sizeTag = 'sizeTag flexallcenter';
         const sizeImg = 'height100 width100 clipsize';
+        const zztag = 'sleepanimation flexallcenter';
 
-        
     	return(
             <React.Fragment>
             <div className={classplayed} 
@@ -869,7 +877,7 @@ class SketchPlayerCard extends React.Component{
                 <div className={interiorcard}>
                     <div className={attackTag}>{this.state.atk}</div>
                     <div className={costTag}>
-                        {this.state.can_attack ? 'Go' : 'zZzZ'}
+                        {this.state.can_attack ? '' : <div className={zztag}></div>}
                     </div>
                     <div className={lifepointsTag}>{this.state.life_points}</div>
                     <div className={nameTag}>{this.state.cardname}</div>
@@ -1059,7 +1067,7 @@ class SketchOppCard extends React.Component{
 
         const interiorcard = `interiorcard${this.state.type}`;
         const attackTag = 'attackTag flexallcenter';
-        const costTag = 'costTag flexallcenter navbarcolor';
+        const costTag = 'costTag flexallcenter';
         const lifepointsTag = 'lifepointsTag flexallcenter';
         const nameTag = `namediv namediv${this.state.rarity} flexallcenter`;
         const dinopicTag = 'dinopicDiv';
@@ -1067,6 +1075,7 @@ class SketchOppCard extends React.Component{
         const conditionTag = 'conditionTag flexallcenter';
         const sizeTag = 'sizeTag flexallcenter';
         const sizeImg = 'height100 width100 clipsize';
+        const zztag = 'sleepanimation'
 
     	return(
             <React.Fragment>
@@ -1084,7 +1093,7 @@ class SketchOppCard extends React.Component{
                 onDragLeave={this.handleDragExit}>
                         <div className={attackTag}>{this.state.atk}</div>
                         <div className={costTag}>
-                            {this.state.can_attack ? 'Go' : 'zZzZ'}
+                            {this.state.can_attack ? '' : <div className={zztag}></div>}
                         </div>
                         <div className={lifepointsTag}>{this.state.life_points}</div>
                         <div className={nameTag}>{this.state.cardname}</div>

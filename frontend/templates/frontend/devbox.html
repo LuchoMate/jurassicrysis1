@@ -411,7 +411,7 @@
             </div>
 
             <div class="position startdiv">
-                <div class="flip-turn-front pulse margin10 caesarfont flexallcenter padding10" id="startbutton" data-difficulty="hard" data-firstturn="opp" style="cursor: pointer; font-size: 3vw;">Start</div>
+                <div class="flip-turn-front pulse margin10 caesarfont flexallcenter padding10" id="startbutton" data-difficulty="hard" data-firstturn="ply" style="cursor: pointer; font-size: 3vw;">Start</div>
             </div>
 
             <div class="plyEnergy position flexcontainer noEvents" style="visibility: hidden;">
@@ -420,14 +420,21 @@
 
             </div>
 
-            <div id="ply_turn" class="position flexcontainer textalign plyTurnPos padding10" style="z-index: 11; opacity: 0; display: none;">
+            <div id="ply_turn" class="position plyTurnPos" style="z-index: 11; opacity: 0; display: none;">
+                <div class="bothturndinoicon">
+                    <div class="plyturnbg flexallcenter">
+                        <h1 class="caesarfont navbarcolor font10vh flexcontainer aligncenter glow margin10">Your Turn</h1>
+                    </div>
 
-                <h1 class="caesarfont navbarcolor font10vh flexcontainer aligncenter glow">Your Turn</h1>
+                </div>
             </div>
 
-            <div id="opp_turn" class="position flexcontainer textalign oppturnPos padding10" style="z-index: 13; opacity: 0; display: none;">
-
-                <h1 class="caesarfont navbarcolor font10vh flexcontainer aligncenter glow">Opponent's Turn</h1>
+            <div id="opp_turn" class="position oppturnPos" style="z-index: 13; opacity: 0; display: none;">
+                <div class="bothturndinoicon">
+                    <div class="oppturnbg flexallcenter padding10">
+                        <h1 class="caesarfont navbarcolor font10vh flexcontainer aligncenter glow margin10">Opponent's Turn</h1>
+                    </div>
+                </div>
             </div>
                 
         </div>
