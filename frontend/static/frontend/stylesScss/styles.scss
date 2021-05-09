@@ -1580,4 +1580,32 @@ box-shadow: 3px 3px antiquewhite
 
 }
 
+.readyanimation {
+    animation: zzanim 2.5s infinite linear;
+    background-image: url("images/icons/swords.png");
+    background-repeat: no-repeat, repeat;
+    background-position: center;
+    background-size: cover;
+    height: 3vw;
+    width: 3vw; 
+}
+
+.attackbgIcon {
+    @extend .caesarfont;
+    @extend .font10vh;
+    background-image: url("images/icons/attackbgicon.png");
+    background-repeat: no-repeat, repeat;
+    background-position: center;
+    background-size: cover;
+    position: absolute;
+    width: 20vh;
+    height: 20vh;
+    color: red;
+    -webkit-text-stroke: 2px white;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    
+}
+
 

@@ -222,6 +222,19 @@ document.getElementById("ply_board").addEventListener("drop", function( event ) 
 
 function destroyEgg(who){
     if(who == "opp"){
+
+        const thisNode = document.getElementById("opp_eggs");
+        let pos = thisNode.getBoundingClientRect();
+        const center1X = Math.floor((pos.left + pos.right) / 2.2);
+        const center1Y = Math.floor(pos.top);
+        const dmgDisplay = document.createElement("div");
+        dmgDisplay.classList.add("attackbgIcon");
+        dmgDisplay.style.top = center1Y+'px';
+        dmgDisplay.style.left = center1X+'px';
+        document.body.appendChild(dmgDisplay);
+        gsap.to(dmgDisplay, {opacity: 0, duration: 1.3, ease: "slow(0.9, 0.4, false)"});
+        setTimeout(() => {dmgDisplay.parentNode.removeChild(dmgDisplay);}, 1300);
+
         const destroyedegg = new Audio('/static/frontend/sounds/destroyed/egg_destroyed.wav');
         destroyedegg.loop = false;
         destroyedegg.play();
@@ -248,6 +261,19 @@ function destroyEgg(who){
     }
 
     else{
+
+        const thisNode = document.getElementById("ply_eggs");
+        let pos = thisNode.getBoundingClientRect();
+        const center1X = Math.floor(pos.left);
+        const center1Y = Math.floor(pos.top);
+        const dmgDisplay = document.createElement("div");
+        dmgDisplay.classList.add("attackbgIcon");
+        dmgDisplay.style.top = center1Y+'px';
+        dmgDisplay.style.left = center1X+'px';
+        document.body.appendChild(dmgDisplay);
+        gsap.to(dmgDisplay, {opacity: 0, duration: 1.3, ease: "slow(0.9, 0.4, false)"});
+        setTimeout(() => {dmgDisplay.parentNode.removeChild(dmgDisplay);}, 1300);
+
         const destroyedegg = new Audio('/static/frontend/sounds/destroyed/egg_destroyed.wav');
         destroyedegg.loop = false;
         destroyedegg.play();
@@ -280,10 +306,20 @@ function restoreEgg(who){
 
     else{
         if(oppEggs < 10){
+            
+            let eggdiv = document.createElement("div");
+            eggdiv.classList.add("textalign");
+            document.getElementById("opp_eggs").appendChild(eggdiv);
+            let eggimg = document.createElement("img");
+            eggimg.src = '/static/frontend/images/eggs/opp_egg.png';
+            eggimg.classList.add("height90");
+            eggimg.draggable = false;
+            eggdiv.appendChild(eggimg);
+
             console.log("restoring opp egg");
             oppEggs++;
             console.log(`oppeggs: ${oppEggs}`);
-            /* hacer la logica de colocar otro egg al grid*/
+            
         }
     }
 }
@@ -708,6 +744,8 @@ class SketchPlayerCard extends React.Component{
         this.gain1Atk = this.gain1Atk.bind(this);
         this.restore1Lp = this.restore1Lp.bind(this);
         this.logAtk = this.logAtk.bind(this);
+        this.destroyMe = this.destroyMe.bind(this);
+        this.animateDmg = this.animateDmg.bind(this);
     }
 
     componentDidMount(){
@@ -755,18 +793,44 @@ class SketchPlayerCard extends React.Component{
             dinodestroyed.loop = false;
             dinodestroyed.play();
 
-            console.log("Executed with impunity!!");
-            const thisNode = ReactDOM.findDOMNode(this);
-            const parent = thisNode.parentNode;
-            ReactDOM.unmountComponentAtNode(thisNode.parentNode);
-            parent.parentNode.removeChild(parent);
-        
+            const thisNode = ReactDOM.findDOMNode(this);            
+            var tl = gsap.timeline();
+            tl.to(thisNode, {rotation: 540, duration: 0.5})
+            tl.to(thisNode, {scaleY: 0, scaleX: 0, duration: 0.4})
+            setTimeout(() => {this.destroyMe()}, 1100);
+
         }
         else{
             const dinodamage = new Audio(`/static/frontend/sounds/damage/${this.state.size}_damage.wav`);
             dinodamage.loop = false;
             dinodamage.play();
         }
+    }
+
+    destroyMe(){
+        console.log("Executed with impunity!!");
+        const thisNode = ReactDOM.findDOMNode(this);
+        const parent = thisNode.parentNode;
+        ReactDOM.unmountComponentAtNode(thisNode.parentNode);
+        parent.parentNode.removeChild(parent);  
+    }
+
+    animateDmg(dmg){
+        console.log("entered animate dmg");
+        console.log(`dmg will be ${dmg}`);
+        const thisNode = ReactDOM.findDOMNode(this);
+        let pos = thisNode.getBoundingClientRect();
+        const center1X = Math.floor(pos.left);
+        const center1Y = Math.floor(pos.top);
+        const dmgDisplay = document.createElement("div");
+        dmgDisplay.classList.add("attackbgIcon");
+        dmgDisplay.style.top = center1Y+'px';
+        dmgDisplay.style.left = center1X+'px';
+        dmgDisplay.innerHTML = dmg;
+        document.body.appendChild(dmgDisplay);
+        gsap.to(dmgDisplay, {opacity: 0, duration: 1.3, ease: "slow(0.9, 0.4, false)"});
+        setTimeout(() => {dmgDisplay.parentNode.removeChild(dmgDisplay);}, 1300);
+
     }
 
     handleDamage(){
@@ -783,6 +847,7 @@ class SketchPlayerCard extends React.Component{
             console.log("Fierce +1 dmg");
             atkCalc++;
         }
+        this.animateDmg(atkCalc);
         this.setState({ life_points: this.state.life_points - atkCalc}, function(){this.handleDestroyed()});
 
     }
@@ -861,6 +926,7 @@ class SketchPlayerCard extends React.Component{
         const sizeTag = 'sizeTag flexallcenter';
         const sizeImg = 'height100 width100 clipsize';
         const zztag = 'sleepanimation flexallcenter';
+        const readytag = 'readyanimation';
 
     	return(
             <React.Fragment>
@@ -877,7 +943,7 @@ class SketchPlayerCard extends React.Component{
                 <div className={interiorcard}>
                     <div className={attackTag}>{this.state.atk}</div>
                     <div className={costTag}>
-                        {this.state.can_attack ? '' : <div className={zztag}></div>}
+                        {this.state.can_attack ? <div className={readytag}></div> : <div className={zztag}></div>}
                     </div>
                     <div className={lifepointsTag}>{this.state.life_points}</div>
                     <div className={nameTag}>{this.state.cardname}</div>
@@ -898,8 +964,6 @@ class SketchPlayerCard extends React.Component{
       );
     }
 }
-
-
 
 /* Sketches card played by opponent on board*/
 class SketchOppCard extends React.Component{
@@ -931,6 +995,8 @@ class SketchOppCard extends React.Component{
         this.handleDrop = this.handleDrop.bind(this);
         this.handleDamage = this.handleDamage.bind(this);
         this.handleDestroyed = this.handleDestroyed.bind(this);
+        this.destroyMe = this.destroyMe.bind(this);
+        this.animateDmg = this.animateDmg.bind(this);
     }
 
     componentDidMount(){
@@ -1012,7 +1078,6 @@ class SketchOppCard extends React.Component{
             this.handleDamage();
         }
     	
-    
     }
 
     handleDestroyed(){
@@ -1022,18 +1087,26 @@ class SketchOppCard extends React.Component{
             dinodestroyed.loop = false;
             dinodestroyed.play();
 
-            console.log("Executed with impunity!!");
-            const thisNode = ReactDOM.findDOMNode(this);
-            const parent = thisNode.parentNode;
-            ReactDOM.unmountComponentAtNode(thisNode.parentNode);
-            parent.parentNode.removeChild(parent);
-        
+            const thisNode = ReactDOM.findDOMNode(this);            
+            var tl = gsap.timeline();
+            tl.to(thisNode, {rotation: 540, duration: 0.5})
+            tl.to(thisNode, {scaleY: 0, scaleX: 0, duration: 0.4})
+            setTimeout(() => {this.destroyMe()}, 1100);
+
         }
         else{
             const dinodamage = new Audio(`/static/frontend/sounds/damage/${this.state.size}_damage.wav`);
             dinodamage.loop = false;
             dinodamage.play();
         }
+    }
+
+    destroyMe(){
+        console.log("Executed with impunity!!");
+        const thisNode = ReactDOM.findDOMNode(this);
+        const parent = thisNode.parentNode;
+        ReactDOM.unmountComponentAtNode(thisNode.parentNode);
+        parent.parentNode.removeChild(parent);  
     }
 
     handleDamage(){
@@ -1050,7 +1123,26 @@ class SketchOppCard extends React.Component{
             atkCalc--;
             console.log("Scaled: -1 dmg!")
         }
+        this.animateDmg(atkCalc);
         this.setState({ life_points: this.state.life_points - atkCalc}, function(){this.handleDestroyed()});
+
+    }
+
+    animateDmg(dmg){
+
+        const thisNode = ReactDOM.findDOMNode(this);
+        let pos = thisNode.getBoundingClientRect();
+        const center1X = Math.floor(pos.left);
+        const center1Y = Math.floor(pos.top);
+        const dmgDisplay = document.createElement("div");
+        dmgDisplay.classList.add("attackbgIcon");
+        dmgDisplay.style.top = center1Y+'px';
+        dmgDisplay.style.left = center1X+'px';
+        dmgDisplay.innerHTML = dmg;
+        document.body.appendChild(dmgDisplay);
+        gsap.to(dmgDisplay, {opacity: 0, duration: 1.3, ease: "slow(0.9, 0.4, false)"});
+
+        setTimeout(() => {dmgDisplay.parentNode.removeChild(dmgDisplay);}, 1300);
 
     }
 
@@ -1075,7 +1167,8 @@ class SketchOppCard extends React.Component{
         const conditionTag = 'conditionTag flexallcenter';
         const sizeTag = 'sizeTag flexallcenter';
         const sizeImg = 'height100 width100 clipsize';
-        const zztag = 'sleepanimation'
+        const zztag = 'sleepanimation';
+        const readytag = 'readyanimation';
 
     	return(
             <React.Fragment>
@@ -1093,7 +1186,7 @@ class SketchOppCard extends React.Component{
                 onDragLeave={this.handleDragExit}>
                         <div className={attackTag}>{this.state.atk}</div>
                         <div className={costTag}>
-                            {this.state.can_attack ? '' : <div className={zztag}></div>}
+                            {this.state.can_attack ? <div className={readytag}></div> : <div className={zztag}></div>}
                         </div>
                         <div className={lifepointsTag}>{this.state.life_points}</div>
                         <div className={nameTag}>{this.state.cardname}</div>
@@ -1259,7 +1352,7 @@ async function cpuAi(){
                 console.log(`dino ${i} can attack`);
                 
 
-                await(sleep(1500));
+                await(sleep(1800));
                 if(Math.random() > 0.5){/* Attack a player's dino */
         
                     if(plyDinos.length > 0){
@@ -1616,6 +1709,7 @@ async function handlePlyEvent(eventTexto){
         for(let i= 0; i< eventTexto.split("2damage").length - 1 ; i++){
           console.log("2 dmg");
           let oppDinos = document.getElementsByClassName("cardplayedOpp");
+          const oppDinossaveLength = oppDinos.length;
           if(oppDinos.length > 0){
             var evento = new Event('input', {
                 bubbles: true,
@@ -1623,14 +1717,16 @@ async function handlePlyEvent(eventTexto){
             });
 
             let randomNum = Math.random();
-            if(oppDinos[Math.floor(randomNum*oppDinos.length)]){
-                oppDinos[Math.floor(randomNum*oppDinos.length)].getElementsByClassName("inputTake1dmgopp")[0].dispatchEvent(evento);
-
+            for(let i=0; i<2; i++){
+                if(oppDinos[Math.floor(randomNum*oppDinos.length)] && (oppDinos.length == oppDinossaveLength)){/* Prevents dmg to jump to other dinos*/
+                    oppDinos[Math.floor(randomNum*oppDinos.length)].getElementsByClassName("inputTake1dmgopp")[0].dispatchEvent(evento);
+                    await(sleep(300));
+                }
+                else{
+                    break;
+                }
             }
-            if(oppDinos[Math.floor(randomNum*oppDinos.length)]){
-                oppDinos[Math.floor(randomNum*oppDinos.length)].getElementsByClassName("inputTake1dmgopp")[0].dispatchEvent(evento);
-
-            }
+            
             await(sleep(1000));
 
           }
@@ -1642,6 +1738,7 @@ async function handlePlyEvent(eventTexto){
         for(let i= 0; i< eventTexto.split("3damage").length - 1 ; i++){
           console.log("3 dmg");
           let oppDinos = document.getElementsByClassName("cardplayedOpp");
+          const oppDinossaveLength = oppDinos.length;
           if(oppDinos.length > 0){
             var evento = new Event('input', {
                 bubbles: true,
@@ -1649,19 +1746,16 @@ async function handlePlyEvent(eventTexto){
             });
 
             let randomNum = Math.random();
-            if(oppDinos[Math.floor(randomNum*oppDinos.length)]){
-                oppDinos[Math.floor(randomNum*oppDinos.length)].getElementsByClassName("inputTake1dmgopp")[0].dispatchEvent(evento);
-
+            for(let i=0; i<3; i++){
+                if(oppDinos[Math.floor(randomNum*oppDinos.length)] && (oppDinos.length == oppDinossaveLength)){/* Prevents dmg to jump to other dinos*/
+                    oppDinos[Math.floor(randomNum*oppDinos.length)].getElementsByClassName("inputTake1dmgopp")[0].dispatchEvent(evento);
+                    await(sleep(300));
+                }
+                else{
+                    break;
+                }
             }
-            if(oppDinos[Math.floor(randomNum*oppDinos.length)]){
-                oppDinos[Math.floor(randomNum*oppDinos.length)].getElementsByClassName("inputTake1dmgopp")[0].dispatchEvent(evento);
-
-            }
-            if(oppDinos[Math.floor(randomNum*oppDinos.length)]){
-                oppDinos[Math.floor(randomNum*oppDinos.length)].getElementsByClassName("inputTake1dmgopp")[0].dispatchEvent(evento);
-
-            }
-
+            
             await(sleep(1000));
           }
  
@@ -1672,6 +1766,7 @@ async function handlePlyEvent(eventTexto){
         for(let i= 0; i< eventTexto.split("4damage").length - 1 ; i++){
           console.log("4 dmg");
           let oppDinos = document.getElementsByClassName("cardplayedOpp");
+          const oppDinossaveLength = oppDinos.length;
           if(oppDinos.length > 0){
             var evento = new Event('input', {
                 bubbles: true,
@@ -1679,25 +1774,16 @@ async function handlePlyEvent(eventTexto){
             });
 
             let randomNum = Math.random();
-            if(oppDinos[Math.floor(randomNum*oppDinos.length)]){
-                oppDinos[Math.floor(randomNum*oppDinos.length)].getElementsByClassName("inputTake1dmgopp")[0].dispatchEvent(evento);
-
+            for(let i=0; i<4; i++){
+                if(oppDinos[Math.floor(randomNum*oppDinos.length)] && (oppDinos.length == oppDinossaveLength)){/* Prevents dmg to jump to other dinos*/
+                    oppDinos[Math.floor(randomNum*oppDinos.length)].getElementsByClassName("inputTake1dmgopp")[0].dispatchEvent(evento);
+                    await(sleep(300));
+                }
+                else{
+                    break;
+                }
             }
-            if(oppDinos[Math.floor(randomNum*oppDinos.length)]){
-                oppDinos[Math.floor(randomNum*oppDinos.length)].getElementsByClassName("inputTake1dmgopp")[0].dispatchEvent(evento);
-
-            }
-            if(oppDinos[Math.floor(randomNum*oppDinos.length)]){
-                oppDinos[Math.floor(randomNum*oppDinos.length)].getElementsByClassName("inputTake1dmgopp")[0].dispatchEvent(evento);
-
-            }
-            if(oppDinos[Math.floor(randomNum*oppDinos.length)]){
-                oppDinos[Math.floor(randomNum*oppDinos.length)].getElementsByClassName("inputTake1dmgopp")[0].dispatchEvent(evento);
-
-            }
-
             await(sleep(1000));
-
           }
 
         }
@@ -1894,7 +1980,6 @@ async function handleOppEvent(eventTexto){
           await(sleep(1200));
         }
     }
-
     
     if(eventTexto.split("1damage").length - 1 > 0){
         for(let i= 0; i< eventTexto.split("1damage").length - 1 ; i++){
@@ -1915,6 +2000,7 @@ async function handleOppEvent(eventTexto){
         for(let i= 0; i< eventTexto.split("2damage").length - 1 ; i++){
           console.log("2 dmg");
           let plyDinos = document.getElementsByClassName("cardplayedPly");
+          const plyDinossaveLength = plyDinos.length;
           if(plyDinos.length > 0){
             var evento = new Event('input', {
                 bubbles: true,
@@ -1922,14 +2008,16 @@ async function handleOppEvent(eventTexto){
             });
 
             let randomNum = Math.random();
-            if(plyDinos[Math.floor(randomNum*plyDinos.length)]){
-                plyDinos[Math.floor(randomNum*plyDinos.length)].getElementsByClassName("inputTake1dmgply")[0].dispatchEvent(evento);
-
+            for(let i=0; i<2; i++){
+                if(plyDinos[Math.floor(randomNum*plyDinos.length)] && (plyDinos.length == plyDinossaveLength)){/* Prevents dmg to jump to other dinos*/
+                    plyDinos[Math.floor(randomNum*plyDinos.length)].getElementsByClassName("inputTake1dmgply")[0].dispatchEvent(evento);
+                    await(sleep(300));
+                }
+                else{
+                    break;
+                }
             }
-            if(plyDinos[Math.floor(randomNum*plyDinos.length)]){
-                plyDinos[Math.floor(randomNum*plyDinos.length)].getElementsByClassName("inputTake1dmgply")[0].dispatchEvent(evento);
-
-            }
+            
             await(sleep(1000));
 
           }
@@ -1941,6 +2029,7 @@ async function handleOppEvent(eventTexto){
         for(let i= 0; i< eventTexto.split("3damage").length - 1 ; i++){
           console.log("3 dmg");
           let plyDinos = document.getElementsByClassName("cardplayedPly");
+          const plyDinossaveLength = plyDinos.length;
           if(plyDinos.length > 0){
             var evento = new Event('input', {
                 bubbles: true,
@@ -1948,17 +2037,14 @@ async function handleOppEvent(eventTexto){
             });
 
             let randomNum = Math.random();
-            if(plyDinos[Math.floor(randomNum*plyDinos.length)]){
-                plyDinos[Math.floor(randomNum*plyDinos.length)].getElementsByClassName("inputTake1dmgPly")[0].dispatchEvent(evento);
-
-            }
-            if(plyDinos[Math.floor(randomNum*plyDinos.length)]){
-                plyDinos[Math.floor(randomNum*plyDinos.length)].getElementsByClassName("inputTake1dmgPly")[0].dispatchEvent(evento);
-
-            }
-            if(plyDinos[Math.floor(randomNum*plyDinos.length)]){
-                plyDinos[Math.floor(randomNum*plyDinos.length)].getElementsByClassName("inputTake1dmgPly")[0].dispatchEvent(evento);
-
+            for(let i=0; i<3; i++){
+                if(plyDinos[Math.floor(randomNum*plyDinos.length)] && (plyDinos.length == plyDinossaveLength)){/* Prevents dmg to jump to other dinos*/
+                    plyDinos[Math.floor(randomNum*plyDinos.length)].getElementsByClassName("inputTake1dmgply")[0].dispatchEvent(evento);
+                    await(sleep(300));
+                }
+                else{
+                    break;
+                }
             }
 
             await(sleep(1000));
@@ -1971,6 +2057,7 @@ async function handleOppEvent(eventTexto){
         for(let i= 0; i< eventTexto.split("4damage").length - 1 ; i++){
           console.log("4 dmg");
           let plyDinos = document.getElementsByClassName("cardplayedPly");
+          const plyDinossaveLength = plyDinos.length;
           if(plyDinos.length > 0){
             var evento = new Event('input', {
                 bubbles: true,
@@ -1978,21 +2065,14 @@ async function handleOppEvent(eventTexto){
             });
 
             let randomNum = Math.random();
-            if(plyDinos[Math.floor(randomNum*plyDinos.length)]){
-                plyDinos[Math.floor(randomNum*plyDinos.length)].getElementsByClassName("inputTake1dmgply")[0].dispatchEvent(evento);
-
-            }
-            if(plyDinos[Math.floor(randomNum*plyDinos.length)]){
-                plyDinos[Math.floor(randomNum*plyDinos.length)].getElementsByClassName("inputTake1dmgply")[0].dispatchEvent(evento);
-
-            }
-            if(plyDinos[Math.floor(randomNum*plyDinos.length)]){
-                plyDinos[Math.floor(randomNum*plyDinos.length)].getElementsByClassName("inputTake1dmgply")[0].dispatchEvent(evento);
-
-            }
-            if(plyDinos[Math.floor(randomNum*plyDinos.length)]){
-                plyDinos[Math.floor(randomNum*plyDinos.length)].getElementsByClassName("inputTake1dmgply")[0].dispatchEvent(evento);
-
+            for(let i=0; i<4; i++){
+                if(plyDinos[Math.floor(randomNum*plyDinos.length)] && (plyDinos.length == plyDinossaveLength)){/* Prevents dmg to jump to other dinos*/
+                    plyDinos[Math.floor(randomNum*plyDinos.length)].getElementsByClassName("inputTake1dmgply")[0].dispatchEvent(evento);
+                    await(sleep(300));
+                }
+                else{
+                    break;
+                }
             }
             await(sleep(1000));
           }
