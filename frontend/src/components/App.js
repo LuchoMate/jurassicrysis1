@@ -450,7 +450,7 @@ async function startGame() {
     await sleep(2500);*/
 
     /* background music*/
-    const bgmusic = new Audio(`/static/frontend/sounds/music/bg${Math.floor(Math.random()*7)}.mp3`);
+    const bgmusic = new Audio(`/static/frontend/sounds/music/bg${Math.floor(Math.random()*6)}.mp3`);
     bgmusic.loop = true;
     bgmusic.volume = 0.3;
     bgmusic.play();
@@ -2413,8 +2413,6 @@ async function handleOppEvent(eventTexto){
                 gsap.to(restorediv, {opacity: 0, duration: 1.3, ease: "slow(0.9, 0.4, false)"});
                 setTimeout(() => {restorediv.parentNode.removeChild(restorediv);}, 1100);
 
-                plyDinos[i].getElementsByClassName("inputrestore1Lpply")[0].dispatchEvent(evento);
-                await(sleep(300));
                 oppDinos[i].getElementsByClassName("inputrestore1Lpopp")[0].dispatchEvent(evento);
                 await(sleep(300));
             }
