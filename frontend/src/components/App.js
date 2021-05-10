@@ -299,6 +299,18 @@ function restoreEgg(who){
     if(who=="ply"){
         if(plyEggs < 10){
             console.log("restoring ply egg");
+            const thisNode = document.getElementById("ply_eggs");
+            let pos = thisNode.getBoundingClientRect();
+            const center1X = Math.floor(pos.left);
+            const center1Y = Math.floor(pos.top);
+            const restorediv = document.createElement("div");
+            restorediv.classList.add("restorebgIcon");
+            restorediv.style.top = center1Y+'px';
+            restorediv.style.left = center1X+'px';
+            document.body.appendChild(restorediv);
+            gsap.to(restorediv, {opacity: 0, duration: 1.3, ease: "slow(0.9, 0.4, false)"});
+            setTimeout(() => {restorediv.parentNode.removeChild(restorediv);}, 1300);
+
             plyEggs ++;
             document.getElementById("plyEggsCounter").innerHTML = plyEggs;
         }
@@ -306,6 +318,18 @@ function restoreEgg(who){
 
     else{
         if(oppEggs < 10){
+
+            const thisNode = document.getElementById("opp_eggs");
+            let pos = thisNode.getBoundingClientRect();
+            const center1X = Math.floor((pos.left + pos.right) / 2.2);
+            const center1Y = Math.floor(pos.top);
+            const restorediv = document.createElement("div");
+            restorediv.classList.add("restorebgIcon");
+            restorediv.style.top = center1Y+'px';
+            restorediv.style.left = center1X+'px';
+            document.body.appendChild(restorediv);
+            gsap.to(restorediv, {opacity: 0, duration: 1.3, ease: "slow(0.9, 0.4, false)"});
+            setTimeout(() => {restorediv.parentNode.removeChild(restorediv);}, 1300);
             
             let eggdiv = document.createElement("div");
             eggdiv.classList.add("textalign");
@@ -424,6 +448,11 @@ async function startGame() {
     await sleep(2500);
     placeDeck("ply");
     await sleep(2500);*/
+
+    const bgmusic = new Audio(`/static/frontend/sounds/music/bg${Math.floor(Math.random()*9)}.mp3`);
+    bgmusic.loop = true;
+    bgmusic.volume = 0.3;
+    bgmusic.play();
 
     const diff_chosen = document.getElementById("startbutton").dataset.difficulty;
     console.log(`gonna fetch oppdeck ${diff_chosen}`);
@@ -1375,9 +1404,7 @@ async function cpuAi(){
                         gsap.fromTo(oppDinos[i], {scaleX: 1.4, scaleY: 1.4},{duration: 1.3, scaleY: 1, scaleX: 1});
                         await(sleep(1700))
                         destroyEgg("ply");
-                        if(oppDinos[i].dataset.condition.includes("Predator")){
-                            destroyEgg("ply");
-                        }
+                        
                     }
                 } 
                 else{
@@ -1674,6 +1701,10 @@ async function handlePlyEvent(eventTexto){
     }
 
     if(eventTexto.split("restoreegg").length - 1 > 0){
+        const drawsound = new Audio('/static/frontend/sounds/restore.mp3');
+        drawsound.loop = false;
+        drawsound.play();
+
         for(let i= 0; i< eventTexto.split("restoreegg").length - 1 ; i++){
             restoreEgg("ply");
             await(sleep(500));
@@ -1791,7 +1822,12 @@ async function handlePlyEvent(eventTexto){
 
     if(eventTexto.split("2atk").length - 1 > 0){
         console.log("gain 2 atk");
-
+        if(document.getElementsByClassName("cardplayedPly").length > 0){
+            const drawsound = new Audio('/static/frontend/sounds/gainAttack.mp3');
+            drawsound.loop = false;
+            drawsound.play();
+        }
+        
         for(let i= 0; i< eventTexto.split("2atk").length - 1 ; i++){
             let plyDinos = document.getElementsByClassName("cardplayedPly");
             if(plyDinos.length > 0){
@@ -1802,6 +1838,20 @@ async function handlePlyEvent(eventTexto){
                 });
 
                 let randomNum = Math.random();
+
+                const thisNode = plyDinos[Math.floor(randomNum*plyDinos.length)];
+                let pos = thisNode.getBoundingClientRect();
+                const center1X = Math.floor(pos.left);
+                const center1Y = Math.floor(pos.top);
+                const attackdiv = document.createElement("div");
+                attackdiv.classList.add("gainattackIcon");
+                attackdiv.style.top = center1Y+'px';
+                attackdiv.style.left = center1X+'px';
+                attackdiv.innerHTML = "+2";
+                document.body.appendChild(attackdiv);
+                gsap.to(attackdiv, {opacity: 0, duration: 1.3, ease: "slow(0.9, 0.4, false)"});
+                setTimeout(() => {attackdiv.parentNode.removeChild(attackdiv);}, 1100);
+                
                 plyDinos[Math.floor(randomNum*plyDinos.length)].getElementsByClassName("inputGain1atkply")[0].dispatchEvent(evento);
                 plyDinos[Math.floor(randomNum*plyDinos.length)].getElementsByClassName("inputGain1atkply")[0].dispatchEvent(evento);
 
@@ -1812,7 +1862,11 @@ async function handlePlyEvent(eventTexto){
 
     if(eventTexto.split("3atk").length - 1 > 0){
         console.log("gain 3 atk");
-
+        if(document.getElementsByClassName("cardplayedPly").length > 0){
+            const drawsound = new Audio('/static/frontend/sounds/gainAttack.mp3');
+            drawsound.loop = false;
+            drawsound.play();
+        }
         for(let i= 0; i< eventTexto.split("3atk").length - 1 ; i++){
             let plyDinos = document.getElementsByClassName("cardplayedPly");
             console.log(`plydinolength: ${plyDinos.length}`)
@@ -1824,6 +1878,20 @@ async function handlePlyEvent(eventTexto){
                 });
 
                 let randomNum = Math.random();
+
+                const thisNode = plyDinos[Math.floor(randomNum*plyDinos.length)];
+                let pos = thisNode.getBoundingClientRect();
+                const center1X = Math.floor(pos.left);
+                const center1Y = Math.floor(pos.top);
+                const attackdiv = document.createElement("div");
+                attackdiv.classList.add("gainattackIcon");
+                attackdiv.style.top = center1Y+'px';
+                attackdiv.style.left = center1X+'px';
+                attackdiv.innerHTML = "+3";
+                document.body.appendChild(attackdiv);
+                gsap.to(attackdiv, {opacity: 0, duration: 1.3, ease: "slow(0.9, 0.4, false)"});
+                setTimeout(() => {attackdiv.parentNode.removeChild(attackdiv);}, 1100);
+
                 console.log(`random: ${randomNum}`)
                 console.log(`choose dino: ${Math.floor(randomNum*plyDinos.length)}`)
                 plyDinos[Math.floor(randomNum*plyDinos.length)].getElementsByClassName("inputGain1atkply")[0].dispatchEvent(evento);
@@ -1837,6 +1905,12 @@ async function handlePlyEvent(eventTexto){
     
     if(eventTexto.split("2restore").length - 1 > 0){
         console.log("restore 2")
+        if(document.getElementsByClassName("cardplayedPly").length > 0){
+            const drawsound = new Audio('/static/frontend/sounds/restore.mp3');
+            drawsound.loop = false;
+            drawsound.play();
+        }
+       
         for(let i= 0; i< eventTexto.split("2restore").length - 1 ; i++){
             let plyDinos = document.getElementsByClassName("cardplayedPly");
             if(plyDinos.length > 0){
@@ -1845,9 +1919,22 @@ async function handlePlyEvent(eventTexto){
                     cancelable: true,
                 });
                 let randomNum = Math.random();
+
+                const thisNode = plyDinos[Math.floor(randomNum*plyDinos.length)];
+                let pos = thisNode.getBoundingClientRect();
+                const center1X = Math.floor(pos.left);
+                const center1Y = Math.floor(pos.top);
+                const restorediv = document.createElement("div");
+                restorediv.classList.add("restorebgIcon");
+                restorediv.style.top = center1Y+'px';
+                restorediv.style.left = center1X+'px';
+                restorediv.innerHTML = "+2";
+                document.body.appendChild(restorediv);
+                gsap.to(restorediv, {opacity: 0, duration: 1.3, ease: "slow(0.9, 0.4, false)"});
+                setTimeout(() => {restorediv.parentNode.removeChild(restorediv);}, 1100);
                 plyDinos[Math.floor(randomNum*plyDinos.length)].getElementsByClassName("inputrestore1Lpply")[0].dispatchEvent(evento);
                 plyDinos[Math.floor(randomNum*plyDinos.length)].getElementsByClassName("inputrestore1Lpply")[0].dispatchEvent(evento);
-                await(sleep(1000));
+                await(sleep(1300));
             }
 
         }
@@ -1855,6 +1942,12 @@ async function handlePlyEvent(eventTexto){
 
     if(eventTexto.split("3restore").length - 1 > 0){
         console.log("restore 3")
+        if(document.getElementsByClassName("cardplayedPly").length > 0){
+            const drawsound = new Audio('/static/frontend/sounds/restore.mp3');
+            drawsound.loop = false;
+            drawsound.play();
+        }
+
         for(let i= 0; i< eventTexto.split("3restore").length - 1 ; i++){
             let plyDinos = document.getElementsByClassName("cardplayedPly");
             if(plyDinos.length > 0){
@@ -1863,11 +1956,25 @@ async function handlePlyEvent(eventTexto){
                     cancelable: true,
                 });
                 let randomNum = Math.random();
+
+                const thisNode = plyDinos[Math.floor(randomNum*plyDinos.length)];
+                let pos = thisNode.getBoundingClientRect();
+                const center1X = Math.floor(pos.left);
+                const center1Y = Math.floor(pos.top);
+                const restorediv = document.createElement("div");
+                restorediv.classList.add("restorebgIcon");
+                restorediv.style.top = center1Y+'px';
+                restorediv.style.left = center1X+'px';
+                restorediv.innerHTML = "+3";
+                document.body.appendChild(restorediv);
+                gsap.to(restorediv, {opacity: 0, duration: 1.3, ease: "slow(0.9, 0.4, false)"});
+                setTimeout(() => {restorediv.parentNode.removeChild(restorediv);}, 1100);
+
                 plyDinos[Math.floor(randomNum*plyDinos.length)].getElementsByClassName("inputrestore1Lpply")[0].dispatchEvent(evento);
                 plyDinos[Math.floor(randomNum*plyDinos.length)].getElementsByClassName("inputrestore1Lpply")[0].dispatchEvent(evento);
                 plyDinos[Math.floor(randomNum*plyDinos.length)].getElementsByClassName("inputrestore1Lpply")[0].dispatchEvent(evento);
 
-                await(sleep(1000));
+                await(sleep(1300));
             }
 
         }
@@ -1875,6 +1982,11 @@ async function handlePlyEvent(eventTexto){
 
     if(eventTexto.split("1restoreall").length - 1 > 0){
         console.log("restore 1 all")
+        if(document.getElementsByClassName("cardplayedPly").length > 0){
+            const drawsound = new Audio('/static/frontend/sounds/restore.mp3');
+            drawsound.loop = false;
+            drawsound.play();
+        }
         let plyDinos = document.getElementsByClassName("cardplayedPly");
         if(plyDinos.length > 0){
             for(let i=0; i< plyDinos.length; i++){
@@ -1882,6 +1994,19 @@ async function handlePlyEvent(eventTexto){
                     bubbles: true,
                     cancelable: true,
                 });
+
+                const thisNode = plyDinos[i];
+                let pos = thisNode.getBoundingClientRect();
+                const center1X = Math.floor(pos.left);
+                const center1Y = Math.floor(pos.top);
+                const restorediv = document.createElement("div");
+                restorediv.classList.add("restorebgIcon");
+                restorediv.style.top = center1Y+'px';
+                restorediv.style.left = center1X+'px';
+                restorediv.innerHTML = "+1";
+                document.body.appendChild(restorediv);
+                gsap.to(restorediv, {opacity: 0, duration: 1.3, ease: "slow(0.9, 0.4, false)"});
+                setTimeout(() => {restorediv.parentNode.removeChild(restorediv);}, 1100);
                 plyDinos[i].getElementsByClassName("inputrestore1Lpply")[0].dispatchEvent(evento);
                 await(sleep(300));
             }
@@ -1890,6 +2015,11 @@ async function handlePlyEvent(eventTexto){
 
     if(eventTexto.split("2restoreall").length - 1 > 0){
         console.log("restore 2 all")
+        if(document.getElementsByClassName("cardplayedPly").length > 0){
+            const drawsound = new Audio('/static/frontend/sounds/restore.mp3');
+            drawsound.loop = false;
+            drawsound.play();
+        }
         let plyDinos = document.getElementsByClassName("cardplayedPly");
         if(plyDinos.length > 0){
             for(let i=0; i< plyDinos.length; i++){
@@ -1897,6 +2027,20 @@ async function handlePlyEvent(eventTexto){
                     bubbles: true,
                     cancelable: true,
                 });
+
+                const thisNode = plyDinos[i];
+                let pos = thisNode.getBoundingClientRect();
+                const center1X = Math.floor(pos.left);
+                const center1Y = Math.floor(pos.top);
+                const restorediv = document.createElement("div");
+                restorediv.classList.add("restorebgIcon");
+                restorediv.style.top = center1Y+'px';
+                restorediv.style.left = center1X+'px';
+                restorediv.innerHTML = "+2";
+                document.body.appendChild(restorediv);
+                gsap.to(restorediv, {opacity: 0, duration: 1.3, ease: "slow(0.9, 0.4, false)"});
+                setTimeout(() => {restorediv.parentNode.removeChild(restorediv);}, 1100);
+
                 plyDinos[i].getElementsByClassName("inputrestore1Lpply")[0].dispatchEvent(evento);
                 plyDinos[i].getElementsByClassName("inputrestore1Lpply")[0].dispatchEvent(evento);
 
@@ -1967,6 +2111,10 @@ async function handleOppEvent(eventTexto){
     }
 
     if(eventTexto.split("restoreegg").length - 1 > 0){
+        const drawsound = new Audio('/static/frontend/sounds/restore.mp3');
+        drawsound.loop = false;
+        drawsound.play();
+
         for(let i= 0; i< eventTexto.split("restoreegg").length - 1 ; i++){
             restoreEgg("opp");
             await(sleep(500));
@@ -2082,7 +2230,12 @@ async function handleOppEvent(eventTexto){
 
     if(eventTexto.split("2atk").length - 1 > 0){
         console.log("gain 2 atk");
-
+        if(document.getElementsByClassName("cardplayedOpp").length > 0){
+            const drawsound = new Audio('/static/frontend/sounds/gainAttack.mp3');
+            drawsound.loop = false;
+            drawsound.play();
+        }
+        
         for(let i= 0; i< eventTexto.split("2atk").length - 1 ; i++){
             let oppDinos = document.getElementsByClassName("cardplayedOpp");
             if(oppDinos.length > 0){
@@ -2093,6 +2246,19 @@ async function handleOppEvent(eventTexto){
                 });
 
                 let randomNum = Math.random();
+
+                const thisNode = oppDinos[Math.floor(randomNum*oppDinos.length)];
+                let pos = thisNode.getBoundingClientRect();
+                const center1X = Math.floor(pos.left);
+                const center1Y = Math.floor(pos.top);
+                const attackdiv = document.createElement("div");
+                attackdiv.classList.add("gainattackIcon");
+                attackdiv.style.top = center1Y+'px';
+                attackdiv.style.left = center1X+'px';
+                attackdiv.innerHTML = "+2";
+                document.body.appendChild(attackdiv);
+                gsap.to(attackdiv, {opacity: 0, duration: 1.3, ease: "slow(0.9, 0.4, false)"});
+
                 oppDinos[Math.floor(randomNum*oppDinos.length)].getElementsByClassName("inputGain1atkopp")[0].dispatchEvent(evento);
                 oppDinos[Math.floor(randomNum*oppDinos.length)].getElementsByClassName("inputGain1atkopp")[0].dispatchEvent(evento);
 
@@ -2103,6 +2269,11 @@ async function handleOppEvent(eventTexto){
 
     if(eventTexto.split("3atk").length - 1 > 0){
         console.log("gain 3 atk");
+        if(document.getElementsByClassName("cardplayedOpp").length > 0){
+            const drawsound = new Audio('/static/frontend/sounds/gainAttack.mp3');
+            drawsound.loop = false;
+            drawsound.play();
+        }
 
         for(let i= 0; i< eventTexto.split("3atk").length - 1 ; i++){
             let oppDinos = document.getElementsByClassName("cardplayedOpp");
@@ -2114,8 +2285,18 @@ async function handleOppEvent(eventTexto){
                 });
 
                 let randomNum = Math.random();
-                console.log(`random: ${randomNum}`)
-                console.log(`choose dino: ${Math.floor(randomNum*plyDinos.length)}`)
+                const thisNode = oppDinos[Math.floor(randomNum*oppDinos.length)];
+                let pos = thisNode.getBoundingClientRect();
+                const center1X = Math.floor(pos.left);
+                const center1Y = Math.floor(pos.top);
+                const attackdiv = document.createElement("div");
+                attackdiv.classList.add("gainattackIcon");
+                attackdiv.style.top = center1Y+'px';
+                attackdiv.style.left = center1X+'px';
+                attackdiv.innerHTML = "+3";
+                document.body.appendChild(attackdiv);
+                gsap.to(attackdiv, {opacity: 0, duration: 1.3, ease: "slow(0.9, 0.4, false)"});
+
                 oppDinos[Math.floor(randomNum*oppDinos.length)].getElementsByClassName("inputGain1atkopp")[0].dispatchEvent(evento);
                 oppDinos[Math.floor(randomNum*oppDinos.length)].getElementsByClassName("inputGain1atkopp")[0].dispatchEvent(evento);
                 oppDinos[Math.floor(randomNum*oppDinos.length)].getElementsByClassName("inputGain1atkopp")[0].dispatchEvent(evento);
@@ -2127,6 +2308,12 @@ async function handleOppEvent(eventTexto){
     
     if(eventTexto.split("2restore").length - 1 > 0){
         console.log("restore 2")
+        if(document.getElementsByClassName("cardplayedOpp").length > 0){
+            const drawsound = new Audio('/static/frontend/sounds/restore.mp3');
+            drawsound.loop = false;
+            drawsound.play();
+        }
+        
         for(let i= 0; i< eventTexto.split("2restore").length - 1 ; i++){
             let oppDinos = document.getElementsByClassName("cardplayedOpp");
             if(oppDinos.length > 0){
@@ -2135,6 +2322,19 @@ async function handleOppEvent(eventTexto){
                     cancelable: true,
                 });
                 let randomNum = Math.random();
+
+                const thisNode = oppDinos[Math.floor(randomNum*oppDinos.length)];
+                let pos = thisNode.getBoundingClientRect();
+                const center1X = Math.floor(pos.left);
+                const center1Y = Math.floor(pos.top);
+                const restorediv = document.createElement("div");
+                restorediv.classList.add("restorebgIcon");
+                restorediv.style.top = center1Y+'px';
+                restorediv.style.left = center1X+'px';
+                restorediv.innerHTML = "+2";
+                document.body.appendChild(restorediv);
+                gsap.to(restorediv, {opacity: 0, duration: 1.3, ease: "slow(0.9, 0.4, false)"});
+
                 oppDinos[Math.floor(randomNum*oppDinos.length)].getElementsByClassName("inputrestore1Lpopp")[0].dispatchEvent(evento);
                 oppDinos[Math.floor(randomNum*oppDinos.length)].getElementsByClassName("inputrestore1Lpopp")[0].dispatchEvent(evento);
                 await(sleep(1000));
@@ -2145,6 +2345,12 @@ async function handleOppEvent(eventTexto){
 
     if(eventTexto.split("3restore").length - 1 > 0){
         console.log("restore 3")
+        if(document.getElementsByClassName("cardplayedOpp").length > 0){
+            const drawsound = new Audio('/static/frontend/sounds/restore.mp3');
+            drawsound.loop = false;
+            drawsound.play();
+        }
+
         for(let i= 0; i< eventTexto.split("3restore").length - 1 ; i++){
             let oppDinos = document.getElementsByClassName("cardplayedOpp");
             if(oppDinos.length > 0){
@@ -2153,6 +2359,19 @@ async function handleOppEvent(eventTexto){
                     cancelable: true,
                 });
                 let randomNum = Math.random();
+
+                const thisNode = oppDinos[Math.floor(randomNum*oppDinos.length)];
+                let pos = thisNode.getBoundingClientRect();
+                const center1X = Math.floor(pos.left);
+                const center1Y = Math.floor(pos.top);
+                const restorediv = document.createElement("div");
+                restorediv.classList.add("restorebgIcon");
+                restorediv.style.top = center1Y+'px';
+                restorediv.style.left = center1X+'px';
+                restorediv.innerHTML = "+3";
+                document.body.appendChild(restorediv);
+                gsap.to(restorediv, {opacity: 0, duration: 1.3, ease: "slow(0.9, 0.4, false)"});
+
                 oppDinos[Math.floor(randomNum*oppDinos.length)].getElementsByClassName("inputrestore1Lpopp")[0].dispatchEvent(evento);
                 oppDinos[Math.floor(randomNum*oppDinos.length)].getElementsByClassName("inputrestore1Lpopp")[0].dispatchEvent(evento);
                 oppDinos[Math.floor(randomNum*oppDinos.length)].getElementsByClassName("inputrestore1Lpopp")[0].dispatchEvent(evento);
@@ -2165,6 +2384,11 @@ async function handleOppEvent(eventTexto){
 
     if(eventTexto.split("1restoreall").length - 1 > 0){
         console.log("restore 1 all")
+        if(document.getElementsByClassName("cardplayedOpp").length > 0){
+            const drawsound = new Audio('/static/frontend/sounds/restore.mp3');
+            drawsound.loop = false;
+            drawsound.play();
+        }
         let oppDinos = document.getElementsByClassName("cardplayedOpp");
         if(oppDinos.length > 0){
             for(let i=0; i< oppDinos.length; i++){
@@ -2172,6 +2396,22 @@ async function handleOppEvent(eventTexto){
                     bubbles: true,
                     cancelable: true,
                 });
+
+                const thisNode = oppDinos[i];
+                let pos = thisNode.getBoundingClientRect();
+                const center1X = Math.floor(pos.left);
+                const center1Y = Math.floor(pos.top);
+                const restorediv = document.createElement("div");
+                restorediv.classList.add("restorebgIcon");
+                restorediv.style.top = center1Y+'px';
+                restorediv.style.left = center1X+'px';
+                restorediv.innerHTML = "+1";
+                document.body.appendChild(restorediv);
+                gsap.to(restorediv, {opacity: 0, duration: 1.3, ease: "slow(0.9, 0.4, false)"});
+                setTimeout(() => {restorediv.parentNode.removeChild(restorediv);}, 1100);
+
+                plyDinos[i].getElementsByClassName("inputrestore1Lpply")[0].dispatchEvent(evento);
+                await(sleep(300));
                 oppDinos[i].getElementsByClassName("inputrestore1Lpopp")[0].dispatchEvent(evento);
                 await(sleep(300));
             }
@@ -2180,6 +2420,11 @@ async function handleOppEvent(eventTexto){
 
     if(eventTexto.split("2restoreall").length - 1 > 0){
         console.log("restore 2 all")
+        if(document.getElementsByClassName("cardplayedOpp").length > 0){
+            const drawsound = new Audio('/static/frontend/sounds/restore.mp3');
+            drawsound.loop = false;
+            drawsound.play();
+        }
         let oppDinos = document.getElementsByClassName("cardplayedOpp");
         if(oppDinos.length > 0){
             for(let i=0; i< oppDinos.length; i++){
@@ -2187,6 +2432,20 @@ async function handleOppEvent(eventTexto){
                     bubbles: true,
                     cancelable: true,
                 });
+
+                const thisNode = oppDinos[i];
+                let pos = thisNode.getBoundingClientRect();
+                const center1X = Math.floor(pos.left);
+                const center1Y = Math.floor(pos.top);
+                const restorediv = document.createElement("div");
+                restorediv.classList.add("restorebgIcon");
+                restorediv.style.top = center1Y+'px';
+                restorediv.style.left = center1X+'px';
+                restorediv.innerHTML = "+2";
+                document.body.appendChild(restorediv);
+                gsap.to(restorediv, {opacity: 0, duration: 1.3, ease: "slow(0.9, 0.4, false)"});
+                setTimeout(() => {restorediv.parentNode.removeChild(restorediv);}, 1100);
+                
                 oppDinos[i].getElementsByClassName("inputrestore1Lpopp")[0].dispatchEvent(evento);
                 oppDinos[i].getElementsByClassName("inputrestore1Lpopp")[0].dispatchEvent(evento);
 

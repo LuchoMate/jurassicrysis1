@@ -1600,12 +1600,46 @@ box-shadow: 3px 3px antiquewhite
     position: absolute;
     width: 20vh;
     height: 20vh;
-    color: red;
-    -webkit-text-stroke: 2px white;
+    color: white;
+    -webkit-text-stroke: 2px red;
     display: flex;
     justify-content: center;
     align-items: flex-start;
     
+}
+
+.restorebgIcon {
+    @extend .caesarfont;
+    @extend .font10vh;
+    background-image: url("images/icons/restore.png");
+    background-repeat: no-repeat, repeat;
+    background-position: center;
+    background-size: cover;
+    position: absolute;
+    width: 15vh;
+    height: 15vh;
+    color: black;
+    -webkit-text-stroke: 2px white;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.gainattackIcon {
+    @extend .caesarfont;
+    @extend .font10vh;
+    background-image: url("images/icons/swords.png");
+    background-repeat: no-repeat, repeat;
+    background-position: center;
+    background-size: cover;
+    position: absolute;
+    width: 15vh;
+    height: 15vh;
+    color: blue;
+    -webkit-text-stroke: 2px white;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
 }
 
 
