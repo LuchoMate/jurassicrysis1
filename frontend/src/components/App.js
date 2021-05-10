@@ -449,10 +449,13 @@ async function startGame() {
     placeDeck("ply");
     await sleep(2500);*/
 
-    const bgmusic = new Audio(`/static/frontend/sounds/music/bg${Math.floor(Math.random()*9)}.mp3`);
+    /* background music*/
+    const bgmusic = new Audio(`/static/frontend/sounds/music/bg${Math.floor(Math.random()*7)}.mp3`);
     bgmusic.loop = true;
     bgmusic.volume = 0.3;
     bgmusic.play();
+
+    document.getElementById("rainanimated").style.display="block";
 
     const diff_chosen = document.getElementById("startbutton").dataset.difficulty;
     console.log(`gonna fetch oppdeck ${diff_chosen}`);
