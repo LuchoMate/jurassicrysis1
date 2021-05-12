@@ -377,7 +377,8 @@ h6 {
  /*-----Play page----------- */
 
 .maindiv {
-    border: 3px solid red;
+    border: 5px solid transparent;
+    border-image: url("images/wallpaper/leafborder.png") 30 round;
     position: absolute;
     top: 0;
     right: 0;
@@ -1484,8 +1485,9 @@ box-shadow: 3px 3px antiquewhite
     height: 40%;
     top: 26%;
     left: 4%;
-    pointer-events: none;
 }
+
+
 
 .height100{
     height: 100%;
@@ -1642,7 +1644,20 @@ box-shadow: 3px 3px antiquewhite
     align-items: flex-start;
 }
 
-/* Rain effect (credit: www.youtube.com/watch?v=UuGyvCYWI3I)*/
+.gethitIcon {
+    
+    background-image: url("images/icons/hit.png");
+    background-repeat: no-repeat, repeat;
+    background-position: center;
+    background-size: cover;
+    position: absolute;
+    width: 15vh;
+    height: 15vh;
+    
+}
+
+
+/* Rain effect (credit: https://www.youtube.com/channel/UCbwXnUipZsLfUckBPsC7Jog)*/
 
 .rain {
     height: 100vh;
@@ -1700,6 +1715,156 @@ box-shadow: 3px 3px antiquewhite
     }
     
 }
+
+@keyframes moveballoon {
+    10% {
+        transform: translateX(50%);
+        transform: translateY(30%);
+
+    }
+    80% {
+        transform: translateX(-50%);
+        transform: translateY(-40%);
+    }
+}
+
+.animballoon {
+    position: absolute;
+    animation: moveballoon;
+    animation-duration: 3s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+}
+
+.balloon1 {
+    @extend .animballoon;
+    left: 3%;
+    top: 20%;
+    animation-delay: 2s;
+}
+
+.balloon2 {
+   @extend .animballoon;
+   right: 5%;
+   bottom: 6%;
+   animation-delay: 3s;
+}
+
+.confetti1 {
+    @extend .animballoon;
+    right: 5%;
+    top: 6%;
+    animation-delay: 3.5s; 
+}
+
+.confetti2{
+    @extend .animballoon;
+    left: 5%;
+    bottom: 6%;
+    animation-delay: 4s; 
+}
+
+.confetti3{
+    @extend .animballoon;
+    left: 20%;
+    top: 3%;
+    animation-delay: 1s; 
+}
+
+.confetti4{
+    @extend .animballoon;
+    left: 37%;
+    top: 3%;
+    animation-delay: 2.2s; 
+}
+
+.confetti5{
+    @extend .animballoon;
+    left: 57%;
+    top: 3%;
+    animation-delay: 1.5s; 
+}
+
+.confetti6{
+    @extend .animballoon;
+    left: 79%;
+    top: 3%;
+    animation-delay: 2.8s; 
+}
+
+.youwinbg {
+    position: absolute;
+    z-index: 80;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    flex-direction: column;
+}
+
+.youwinimg {
+    background-image: url("images/wallpaper/youwinbg.jpg");
+}
+
+.winlosemessage {
+    position: absolute;
+    top: 15%;
+    left: 35%;
+    margin: 15px;
+    width: 30vw;
+}
+
+.winloseresults {
+    position: absolute;
+    top: 35%;
+    left: 30%;
+    margin: 10px;
+    border: 3px solid gold;
+    border-radius: 10px;
+    width: 40vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    
+    background-image: url("images/wallpaper/jungle2.jpg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+
+.youlosebg {
+    @extend .youwinbg;
+    background-image: url("images/wallpaper/youlosebg.jpg");
+    
+}
+
+.exitbutton {
+    width: 15vh;
+    height: 8vh;
+    cursor: pointer;
+    background-color: green;
+    color: white;
+    border-radius: 10px;
+    box-shadow: 3px 3px red;
+    margin: 10px;
+}
+
+.eventSpot {
+    position: absolute;
+    top: 5%;
+    left: 10%;
+    width: 17vw;
+    height: 20vh;
+    border: 5px solid black;
+    border-radius: 10px;
+}
+
+
 
 
 

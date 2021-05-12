@@ -21,6 +21,10 @@
             <div id="opp_hand" class='position opphand flexcontainer'>
                 
             </div>
+
+            <div class="eventSpot" id="eventimgContainer" style="display: none;">
+                <img id="eventimgSpot" class="height100 width100" src=""/>
+            </div>
         
             <div id='opp_eggs' class='position oppeggs'>
 
@@ -446,6 +450,71 @@
             <span><img src="{% static 'frontend/images/animated/ptero3.gif' %}" alt="ptero3" style="transform: rotate(180deg); transform: scaleX(-1);"></span><!--arriba-->
             <span>444444</span>
             
+        </div>
+
+        <div id="youwinscreen" class="youwinbg youwinimg" style="display: none;">
+            <div class="balloon1" style="height: 20vh;">
+                <img src="{% static 'frontend/images/animated/congrats.gif' %}" class="height90"/>
+            </div>
+            <div class="balloon2" style="height: 20vh;">
+                <img src="{% static 'frontend/images/animated/congrats.gif' %}" class="height90"/>
+            </div>
+
+            <div class="confetti3" style="height: 20vh;">
+                <img src="{% static 'frontend/images/animated/confetti.gif' %}" class="height90"/>
+            </div>
+            <div class="confetti4" style="height: 20vh;">
+                <img src="{% static 'frontend/images/animated/confetti.gif' %}" class="height90"/>
+            </div>
+            <div class="confetti5" style="height: 20vh;">
+                <img src="{% static 'frontend/images/animated/confetti.gif' %}" class="height90"/>
+            </div>
+            <div class="confetti6" style="height: 20vh;">
+                <img src="{% static 'frontend/images/animated/confetti.gif' %}" class="height90"/>
+            </div>
+
+            <div class="confetti1" style="height: 20vh;">
+                <img src="{% static 'frontend/images/animated/confetti.gif' %}" class="height90"/>
+            </div>
+            <div class="confetti2" style="height: 20vh;">
+                <img src="{% static 'frontend/images/animated/confetti.gif' %}" class="height90"/>
+            </div>
+            <div class="winlosemessage flexcontainer" id="winmessage">
+                <h1 class="caesarfont navbarcolor font10vh flexcontainer aligncenter glow margin10">You Win !</h1>
+            </div>
+            <div class="winloseresults">
+                <div id="youwinlevelup" class="caesarfont navbarcolor font5vh flexcontainer aligncenter">
+                    XP ++
+                </div>
+                <div id="youwindinocoins" class="caesarfont navbarcolor font5vh flexcontainer aligncenter">
+                    DinoCoins +3000
+                </div>
+                <div id="youwinexit" onclick="redirectHome()" class="font3w caesarfont flexcontainer textalign aligncenter pulse exitbutton">
+                    Exit
+                </div>
+            </div>
+            
+        </div>
+
+        <div id="youlosescreen" class="youlosebg flexallcenter" style="display: none;">
+            <div class="winlosemessage" id="losemessage">
+                <h1 class="caesarfont navbarcolor font10vh flexcontainer aligncenter glow margin10">You lose !</h1>
+            </div>
+            <div class="winloseresults">
+                
+                <div id="youlosedinocoins" class="caesarfont navbarcolor font5vh flexcontainer aligncenter">
+                    DinoCoins +500 
+                </div>
+                <div id="youloseexit" onclick="redirectHome()" class="font3w caesarfont flexcontainer textalign aligncenter pulse exitbutton">
+                    Exit
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="plytransition" style="display: none;">
+            <div class="jcbg"><div class="caesarfont flexcontainer" style="font-size: 10vh; color: black">Jurassicrysis</div></div>
         </div>
 
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.6.1/gsap.min.js"></script>
