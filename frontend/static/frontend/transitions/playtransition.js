@@ -262,7 +262,15 @@ function removeElement(element) {
     return function() {
         element.parentNode.removeChild(element);
     };
-  }
+}
+
+/* Play some audios on animations*/
+
+function plyanimsound(soundeffect){
+    const soundplay = new Audio(`/static/frontend/sounds/cards/${soundeffect}.wav`);
+    soundplay.loop = false;
+    soundplay.play();
+}
 
 /* ----Takes out rps and start game------*/
 
@@ -286,8 +294,10 @@ function boardIn(){
         display: 'none'
     })
     .call(removeElement(".difficultypage"))
+    .call(plyanimsound, ["Bambiraptor"])
     .from("#ply_eggs", {delay: 0.2, duration: 0.3, x: -1000, ease: "back.out(0.3)"})
     .from(".plyeggsCount", {duration: 0.5, opacity: 0})
+    .call(plyanimsound, ["Elopteryx"])
     .from("#opp_eggs", {duration: 0.5, x: 2000, ease: "back.out(0.3)" })
     .from("#gameboard", {duration: 1.2, y: -1000, ease: "back.out(0.8)"})
     .from("#startbutton", {opacity: 0, duration: 0.7});
@@ -296,6 +306,7 @@ function boardIn(){
 
 /* ----On page load functions-----*/
 
+
 difficultybg();
 pageIn();
 
@@ -303,6 +314,20 @@ pageIn();
 
 
 /*---------Quit button--------*/
+
+function openQuit(){
+    var tl = gsap.timeline();
+    tl.set("#quitconfirm", {display: 'block'})
+    tl.from("#quitconfirm", {opacity: 0, duration: 1})
+}
+
+function closeQuit(){
+    var tl = gsap.timeline();
+    tl.to("#quitconfirm", {opacity: 0, duration: 1})
+    tl.set("#quitconfirm", {display: 'none'})
+    tl.set("#quitconfirm", {opacity: 1})
+}
+
 function pageOut() {
     var tl = gsap.timeline();    
 

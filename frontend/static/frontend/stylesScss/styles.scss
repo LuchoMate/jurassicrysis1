@@ -399,6 +399,20 @@ h6 {
     left: 1%;
 }
 
+.quitconfirmclass {
+    @extend .position;
+    @extend .blackTransparent;
+    @extend .flexcontainer;
+    flex-direction: column;
+    border: 3px solid gold;
+    border-radius: 5px;
+    width: 13vw;
+    height: 15vh;
+    left: 1%;
+    top: 8%;
+
+}
+
 .opphand {
     top: -17%;
     left: 35%;

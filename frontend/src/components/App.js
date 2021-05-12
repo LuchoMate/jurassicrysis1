@@ -35,7 +35,7 @@ let oppEggs = 10;
 let plyEggs = 10;
 let currentTurn = "";
 let turnNumber = 1;
-const bgmusic = new Audio(`/static/frontend/sounds/music/bg${Math.floor(Math.random()*7)}.mp3`);
+const bgmusic = new Audio(`/static/frontend/sounds/music/bg${Math.floor(Math.random()*10)}.mp3`);
 bgmusic.loop = true;
 bgmusic.volume = 0.3;
 let gameOver = false;
@@ -417,11 +417,13 @@ function placeDeck(who){
 
     if(who=="opp"){
         var tl = gsap.timeline();
+        tl.set("#opp_deck", {display: 'block'})
         tl.from("#opp_deck", {left: "200%", duration: 2});
     }
 
     else{
         var tl = gsap.timeline();
+        tl.set("#ply_deck", {display: 'block'})
         tl.from("#ply_deck", {left: "200%", duration: 2});
     }
    
@@ -455,11 +457,11 @@ function drawDeck(who){
 
 /*---Each player draw 5 cards to begin. */
 async function startGame() {
-     /* 
+      
     placeDeck("opp");
     await sleep(2500);
     placeDeck("ply");
-    await sleep(2500);*/
+    await sleep(2500);
 
    /* music and rain effect*/
     bgmusic.play();
@@ -1447,7 +1449,7 @@ async function cpuAi(){
                 
 
                 await(sleep(1800));
-                if(Math.random() > 0.5){/* Attack a player's dino */
+                if(Math.random() > 0.4){/* Attack a player's dino */
         
                     if(plyDinos.length > 0){
 
@@ -2540,9 +2542,22 @@ async function handleOppEvent(eventTexto){
 
 }
 
+/* Handling win and lose situations*/
+
+function closeFullscreen() {
+    if (document.exitFullscreen) {
+      document.exitFullscreen();
+    } else if (document.webkitExitFullscreen) { /* Safari */
+      document.webkitExitFullscreen();
+    } else if (document.msExitFullscreen) { /* IE11 */
+      document.msExitFullscreen();
+    }
+  }
+
 function youWin(){
     bgmusic.volume = 0;
 
+    closeFullscreen();
     const winmusic = new Audio(`/static/frontend/sounds/music/youwin.mp3`);
     winmusic.loop = true;
     winmusic.volume = 0.7;
@@ -2568,10 +2583,9 @@ function youWin(){
     tl.from("#youwinexit", {duration: 2, opacity: 0})
 }
 
-/* Hacer quit button o ocupar el del otro script*/
-
 function youLose(){
     bgmusic.volume = 0;
+    closeFullscreen();
     const losemusic = new Audio(`/static/frontend/sounds/music/youlose.mp3`);
     losemusic.loop = true;
     losemusic.volume = 0.7;

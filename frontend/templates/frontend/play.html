@@ -12,145 +12,448 @@
 
     </head>
     <body class="overhidden">
+        <div class="rain" id="rainanimated" style="display: none;"></div>
         <div id="boarddiv" class="maindiv">
 
             <div id = 'root'></div>
    
-               <div class="position quitdiv btn btn-outline-danger btn-sm" onclick="redirectHome()">Quit</div>
-               <div id="opp_hand" class='position opphand flexcontainer'>
-                   
-               </div>
-           
-               <div id='opp_eggs' class='position oppeggs'>
-   
-                    <div class="textalign blackTransparent" style="border-radius: 10px;"><img src="{% static 'frontend/images/eggs/opp_egg.png' %}" alt="" class="height90"></div>
-                    <div class="textalign blackTransparent" style="border-radius: 10px;"><img src="{% static 'frontend/images/eggs/opp_egg.png' %}" alt="" class="height90"></div>
-                    <div class="textalign blackTransparent" style="border-radius: 10px;"><img src="{% static 'frontend/images/eggs/opp_egg.png' %}" alt="" class="height90"></div>
-                    <div class="textalign blackTransparent" style="border-radius: 10px;"><img src="{% static 'frontend/images/eggs/opp_egg.png' %}" alt="" class="height90"></div>
-                    <div class="textalign blackTransparent" style="border-radius: 10px;"><img src="{% static 'frontend/images/eggs/opp_egg.png' %}" alt="" class="height90"></div>
-                    <div class="textalign blackTransparent" style="border-radius: 10px;"><img src="{% static 'frontend/images/eggs/opp_egg.png' %}" alt="" class="height90"></div>
-                    <div class="textalign blackTransparent" style="border-radius: 10px;"><img src="{% static 'frontend/images/eggs/opp_egg.png' %}" alt="" class="height90"></div>
-                    <div class="textalign blackTransparent" style="border-radius: 10px;"><img src="{% static 'frontend/images/eggs/opp_egg.png' %}" alt="" class="height90"></div>
-                    <div class="textalign blackTransparent" style="border-radius: 10px;"><img src="{% static 'frontend/images/eggs/opp_egg.png' %}" alt="" class="height90"></div>
-                    <div class="textalign blackTransparent" style="border-radius: 10px;"><img src="{% static 'frontend/images/eggs/opp_egg.png' %}" alt="" class="height90"></div>
-               </div>
-   
-               <div class="oppEnergy position flexcontainer noEvents" style="visibility: hidden;">
-                    <div class="textalign height90" id="oppEng1"><img src="{% static 'frontend/images/icons/energy.png' %}" alt="" class="height90"></div>
-                    <div class="textalign height90" id="oppEng2"><img src="{% static 'frontend/images/icons/energy.png' %}" alt="" class="height90"></div>
-               </div>
+            <div class="position quitdiv btn btn-outline-danger btn-sm" onclick="openQuit()">Quit</div>
+            <div id="quitconfirm" class="quitconfirmclass" style="display: none;">
+                <div class="flexcontainer navbarcolor caesarfont"> Forfeit?</div>
+                <div class="flexcontainer">
+                    <div><button onclick="redirectHome()" type="button" class="btn btn-danger margin10">Yes</button></div>
+                    <div><button onclick="closeQuit()" type="button" class="btn btn-success margin10">No</button></div>
+                </div>
+            </div>
 
-               <div class="flip-turn" id="turnButton" style="cursor: pointer; display: none;">
-                    <div class="flip-turn-inner">
-                        <div class="flip-turn-front font3w caesarfont flexcontainer textalign aligncenter pulse">
-                            End Turn
+            <div id="opp_hand" class='position opphand flexcontainer'>
+                
+            </div>
+
+            <div class="eventSpot" id="eventimgContainer" style="display: none;">
+                <img id="eventimgSpot" class="height100 width100" src=""/>
+            </div>
+        
+            <div id='opp_eggs' class='position oppeggs'>
+
+                <div class="textalign" style="border-radius: 10px;"><img src="{% static 'frontend/images/eggs/opp_egg.png' %}" alt="" class="height90" draggable="false"></div>
+                <div class="textalign" style="border-radius: 10px;"><img src="{% static 'frontend/images/eggs/opp_egg.png' %}" alt="" class="height90" draggable="false"></div>
+                <div class="textalign" style="border-radius: 10px;"><img src="{% static 'frontend/images/eggs/opp_egg.png' %}" alt="" class="height90" draggable="false"></div>
+                <div class="textalign" style="border-radius: 10px;"><img src="{% static 'frontend/images/eggs/opp_egg.png' %}" alt="" class="height90" draggable="false"></div>
+                <div class="textalign" style="border-radius: 10px;"><img src="{% static 'frontend/images/eggs/opp_egg.png' %}" alt="" class="height90" draggable="false"></div>
+                <div class="textalign" style="border-radius: 10px;"><img src="{% static 'frontend/images/eggs/opp_egg.png' %}" alt="" class="height90" draggable="false"></div>
+                <div class="textalign" style="border-radius: 10px;"><img src="{% static 'frontend/images/eggs/opp_egg.png' %}" alt="" class="height90" draggable="false"></div>
+                <div class="textalign" style="border-radius: 10px;"><img src="{% static 'frontend/images/eggs/opp_egg.png' %}" alt="" class="height90" draggable="false"></div>
+                <div class="textalign" style="border-radius: 10px;"><img src="{% static 'frontend/images/eggs/opp_egg.png' %}" alt="" class="height90" draggable="false"></div>
+                <div class="textalign" style="border-radius: 10px;"><img src="{% static 'frontend/images/eggs/opp_egg.png' %}" alt="" class="height90" draggable="false"></div>
+
+            </div>
+
+            <div class="oppEnergy position flexcontainer noEvents" style="visibility: hidden;">
+                <div class="textalign height90" id="oppEng1"><img src="{% static 'frontend/images/icons/energy.png' %}" alt="" class="height90"></div>
+                <div class="textalign height90" id="oppEng2"><img src="{% static 'frontend/images/icons/energy.png' %}" alt="" class="height90"></div>
+            </div>
+
+            <div class="flip-turn" id="turnButton" style="cursor: pointer; display: none;">
+                <div class="flip-turn-inner">
+                  <div class="flip-turn-front font3w caesarfont flexcontainer textalign aligncenter pulse">
+                    End Turn
+                  </div>
+                  <div class="flip-turn-back font3w caesarfont flexcontainer textalign aligncenter">
+                    Wait Turn
+                  </div>
+                </div>
+            </div>
+
+            <div class="ingameBoard forestbg" id="gameboard">
+                    <div id="opp_event" class="position singlecardbox oppeventbox persp100 radius10 flexcontainer">
+                    </div>
+
+                    <div id ='opp_board' class="position oppboard perspTop">
+                    </div>
+
+                    <div id="opp_deck" class="position oppdeck persp_100" style="display: none;">
+
+                        <div class="transform10 position cardplayedDeck">
+                            <div class="borderDeck">
+                                <div class="interiorDeck interiorDeckOpp">
+                                    <div class="dinoIconCard"><img src="{% static 'frontend/images/icons/jcdinohead.png' %}" class="height100"></div>
+                                    <div class="jclogotext">Jurassicrysis</div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="flip-turn-back font3w caesarfont flexcontainer textalign aligncenter">
-                            Wait Turn
+                        <div class="transform10 position cardplayedDeck">
+                            <div class="borderDeck">
+                                <div class="interiorDeck interiorDeckOpp">
+                                    <div class="dinoIconCard"><img src="{% static 'frontend/images/icons/jcdinohead.png' %}" class="height100"></div>
+                                    <div class="jclogotext">Jurassicrysis</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="transform10 position cardplayedDeck">
+                            <div class="borderDeck">
+                                <div class="interiorDeck interiorDeckOpp">
+                                    <div class="dinoIconCard"><img src="{% static 'frontend/images/icons/jcdinohead.png' %}" class="height100"></div>
+                                    <div class="jclogotext">Jurassicrysis</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="transform10 position cardplayedDeck">
+                            <div class="borderDeck">
+                                <div class="interiorDeck interiorDeckOpp">
+                                    <div class="dinoIconCard"><img src="{% static 'frontend/images/icons/jcdinohead.png' %}" class="height100"></div>
+                                    <div class="jclogotext">Jurassicrysis</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="transform10 position cardplayedDeck">
+                            <div class="borderDeck">
+                                <div class="interiorDeck interiorDeckOpp">
+                                    <div class="dinoIconCard"><img src="{% static 'frontend/images/icons/jcdinohead.png' %}" class="height100"></div>
+                                    <div class="jclogotext">Jurassicrysis</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="transform10 position cardplayedDeck">
+                            <div class="borderDeck">
+                                <div class="interiorDeck interiorDeckOpp">
+                                    <div class="dinoIconCard"><img src="{% static 'frontend/images/icons/jcdinohead.png' %}" class="height100"></div>
+                                    <div class="jclogotext">Jurassicrysis</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="transform10 position cardplayedDeck">
+                            <div class="borderDeck">
+                                <div class="interiorDeck interiorDeckOpp">
+                                    <div class="dinoIconCard"><img src="{% static 'frontend/images/icons/jcdinohead.png' %}" class="height100"></div>
+                                    <div class="jclogotext">Jurassicrysis</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="transform10 position cardplayedDeck">
+                            <div class="borderDeck">
+                                <div class="interiorDeck interiorDeckOpp">
+                                    <div class="dinoIconCard"><img src="{% static 'frontend/images/icons/jcdinohead.png' %}" class="height100"></div>
+                                    <div class="jclogotext">Jurassicrysis</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="transform10 position cardplayedDeck">
+                            <div class="borderDeck">
+                                <div class="interiorDeck interiorDeckOpp">
+                                    <div class="dinoIconCard"><img src="{% static 'frontend/images/icons/jcdinohead.png' %}" class="height100"></div>
+                                    <div class="jclogotext">Jurassicrysis</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="transform10 position cardplayedDeck">
+                            <div class="borderDeck">
+                                <div class="interiorDeck interiorDeckOpp">
+                                    <div class="dinoIconCard"><img src="{% static 'frontend/images/icons/jcdinohead.png' %}" class="height100"></div>
+                                    <div class="jclogotext">Jurassicrysis</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="transform10 position cardplayedDeck">
+                            <div class="borderDeck">
+                                <div class="interiorDeck interiorDeckOpp">
+                                    <div class="dinoIconCard"><img src="{% static 'frontend/images/icons/jcdinohead.png' %}" class="height100"></div>
+                                    <div class="jclogotext">Jurassicrysis</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="transform10 position cardplayedDeck">
+                            <div class="borderDeck">
+                                <div class="interiorDeck interiorDeckOpp">
+                                    <div class="dinoIconCard"><img src="{% static 'frontend/images/icons/jcdinohead.png' %}" class="height100"></div>
+                                    <div class="jclogotext">Jurassicrysis</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="transform10 position cardplayedDeck">
+                            <div class="borderDeck">
+                                <div class="interiorDeck interiorDeckOpp">
+                                    <div class="dinoIconCard"><img src="{% static 'frontend/images/icons/jcdinohead.png' %}" class="height100"></div>
+                                    <div class="jclogotext">Jurassicrysis</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="transform10 position cardplayedDeck">
+                            <div class="borderDeck">
+                                <div class="interiorDeck interiorDeckOpp">
+                                    <div class="dinoIconCard"><img src="{% static 'frontend/images/icons/jcdinohead.png' %}" class="height100"></div>
+                                    <div class="jclogotext">Jurassicrysis</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="transform10 position cardplayedDeck">
+                            <div class="borderDeck">
+                                <div class="interiorDeck interiorDeckOpp">
+                                    <div class="dinoIconCard"><img src="{% static 'frontend/images/icons/jcdinohead.png' %}" class="height100"></div>
+                                    <div class="jclogotext">Jurassicrysis</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="transform10 position cardplayedDeck">
+                            <div class="borderDeck">
+                                <div class="interiorDeck interiorDeckOpp">
+                                    <div class="dinoIconCard"><img src="{% static 'frontend/images/icons/jcdinohead.png' %}" class="height100"></div>
+                                    <div class="jclogotext">Jurassicrysis</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="transform10 position cardplayedDeck">
+                            <div class="borderDeck">
+                                <div class="interiorDeck interiorDeckOpp">
+                                    <div class="dinoIconCard"><img src="{% static 'frontend/images/icons/jcdinohead.png' %}" class="height100"></div>
+                                    <div class="jclogotext">Jurassicrysis</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="transform10 position cardplayedDeck">
+                            <div class="borderDeck">
+                                <div class="interiorDeck interiorDeckOpp">
+                                    <div class="dinoIconCard"><img src="{% static 'frontend/images/icons/jcdinohead.png' %}" class="height100"></div>
+                                    <div class="jclogotext">Jurassicrysis</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="transform10 position cardplayedDeck">
+                            <div class="borderDeck">
+                                <div class="interiorDeck interiorDeckOpp">
+                                    <div class="dinoIconCard"><img src="{% static 'frontend/images/icons/jcdinohead.png' %}" class="height100"></div>
+                                    <div class="jclogotext">Jurassicrysis</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="transform10 position cardplayedDeck">
+                            <div class="borderDeck">
+                                <div class="interiorDeck interiorDeckOpp">
+                                    <div class="dinoIconCard"><img src="{% static 'frontend/images/icons/jcdinohead.png' %}" class="height100"></div>
+                                    <div class="jclogotext">Jurassicrysis</div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div id='middle line'
+                            style="border-top: 1px solid green; position: absolute; top: 50%; width: 95%; opacity: 0.5;">
+                    </div>
+
+                    <div id="ply_event" class="position plyevent persp100 flexcontainer radius10">
+                    </div>
+
+                    <div id ='ply_board' class="position plyboard perspTop radius10">
+                       
+                    </div>
+
+                    <div id="ply_deck" class="position plydeck persp_100" style="display: none;">
+                        <div class="transform10 position cardplayedDeck">
+                            <div class="borderDeck">
+                                <div class="interiorDeck interiorDeckPly">
+                                    <div class="dinoIconCard"><img src="{% static 'frontend/images/icons/jcdinohead.png' %}" class="height100"></div>
+                                    <div class="jclogotext">Jurassicrysis</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="transform10 position cardplayedDeck">
+                            <div class="borderDeck">
+                                <div class="interiorDeck interiorDeckPly">
+                                    <div class="dinoIconCard"><img src="{% static 'frontend/images/icons/jcdinohead.png' %}" class="height100"></div>
+                                    <div class="jclogotext">Jurassicrysis</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="transform10 position cardplayedDeck">
+                            <div class="borderDeck">
+                                <div class="interiorDeck interiorDeckPly">
+                                    <div class="dinoIconCard"><img src="{% static 'frontend/images/icons/jcdinohead.png' %}" class="height100"></div>
+                                    <div class="jclogotext">Jurassicrysis</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="transform10 position cardplayedDeck">
+                            <div class="borderDeck">
+                                <div class="interiorDeck interiorDeckPly">
+                                    <div class="dinoIconCard"><img src="{% static 'frontend/images/icons/jcdinohead.png' %}" class="height100"></div>
+                                    <div class="jclogotext">Jurassicrysis</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="transform10 position cardplayedDeck">
+                            <div class="borderDeck">
+                                <div class="interiorDeck interiorDeckPly">
+                                    <div class="dinoIconCard"><img src="{% static 'frontend/images/icons/jcdinohead.png' %}" class="height100"></div>
+                                    <div class="jclogotext">Jurassicrysis</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="transform10 position cardplayedDeck">
+                            <div class="borderDeck">
+                                <div class="interiorDeck interiorDeckPly">
+                                    <div class="dinoIconCard"><img src="{% static 'frontend/images/icons/jcdinohead.png' %}" class="height100"></div>
+                                    <div class="jclogotext">Jurassicrysis</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="transform10 position cardplayedDeck">
+                            <div class="borderDeck">
+                                <div class="interiorDeck interiorDeckPly">
+                                    <div class="dinoIconCard"><img src="{% static 'frontend/images/icons/jcdinohead.png' %}" class="height100"></div>
+                                    <div class="jclogotext">Jurassicrysis</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="transform10 position cardplayedDeck">
+                            <div class="borderDeck">
+                                <div class="interiorDeck interiorDeckPly">
+                                    <div class="dinoIconCard"><img src="{% static 'frontend/images/icons/jcdinohead.png' %}" class="height100"></div>
+                                    <div class="jclogotext">Jurassicrysis</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="transform10 position cardplayedDeck">
+                            <div class="borderDeck">
+                                <div class="interiorDeck interiorDeckPly">
+                                    <div class="dinoIconCard"><img src="{% static 'frontend/images/icons/jcdinohead.png' %}" class="height100"></div>
+                                    <div class="jclogotext">Jurassicrysis</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="transform10 position cardplayedDeck">
+                            <div class="borderDeck">
+                                <div class="interiorDeck interiorDeckPly">
+                                    <div class="dinoIconCard"><img src="{% static 'frontend/images/icons/jcdinohead.png' %}" class="height100"></div>
+                                    <div class="jclogotext">Jurassicrysis</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="transform10 position cardplayedDeck">
+                            <div class="borderDeck">
+                                <div class="interiorDeck interiorDeckPly">
+                                    <div class="dinoIconCard"><img src="{% static 'frontend/images/icons/jcdinohead.png' %}" class="height100"></div>
+                                    <div class="jclogotext">Jurassicrysis</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="transform10 position cardplayedDeck">
+                            <div class="borderDeck">
+                                <div class="interiorDeck interiorDeckPly">
+                                    <div class="dinoIconCard"><img src="{% static 'frontend/images/icons/jcdinohead.png' %}" class="height100"></div>
+                                    <div class="jclogotext">Jurassicrysis</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="transform10 position cardplayedDeck">
+                            <div class="borderDeck">
+                                <div class="interiorDeck interiorDeckPly">
+                                    <div class="dinoIconCard"><img src="{% static 'frontend/images/icons/jcdinohead.png' %}" class="height100"></div>
+                                    <div class="jclogotext">Jurassicrysis</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="transform10 position cardplayedDeck">
+                            <div class="borderDeck">
+                                <div class="interiorDeck interiorDeckPly">
+                                    <div class="dinoIconCard"><img src="{% static 'frontend/images/icons/jcdinohead.png' %}" class="height100"></div>
+                                    <div class="jclogotext">Jurassicrysis</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="transform10 position cardplayedDeck">
+                            <div class="borderDeck">
+                                <div class="interiorDeck interiorDeckPly">
+                                    <div class="dinoIconCard"><img src="{% static 'frontend/images/icons/jcdinohead.png' %}" class="height100"></div>
+                                    <div class="jclogotext">Jurassicrysis</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="transform10 position cardplayedDeck">
+                            <div class="borderDeck">
+                                <div class="interiorDeck interiorDeckPly">
+                                    <div class="dinoIconCard"><img src="{% static 'frontend/images/icons/jcdinohead.png' %}" class="height100"></div>
+                                    <div class="jclogotext">Jurassicrysis</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="transform10 position cardplayedDeck">
+                            <div class="borderDeck">
+                                <div class="interiorDeck interiorDeckPly">
+                                    <div class="dinoIconCard"><img src="{% static 'frontend/images/icons/jcdinohead.png' %}" class="height100"></div>
+                                    <div class="jclogotext">Jurassicrysis</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="transform10 position cardplayedDeck">
+                            <div class="borderDeck">
+                                <div class="interiorDeck interiorDeckPly">
+                                    <div class="dinoIconCard"><img src="{% static 'frontend/images/icons/jcdinohead.png' %}" class="height100"></div>
+                                    <div class="jclogotext">Jurassicrysis</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="transform10 position cardplayedDeck">
+                            <div class="borderDeck">
+                                <div class="interiorDeck interiorDeckPly">
+                                    <div class="dinoIconCard"><img src="{% static 'frontend/images/icons/jcdinohead.png' %}" class="height100"></div>
+                                    <div class="jclogotext">Jurassicrysis</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="transform10 position cardplayedDeck">
+                            <div class="borderDeck">
+                                <div class="interiorDeck interiorDeckPly">
+                                    <div class="dinoIconCard"><img src="{% static 'frontend/images/icons/jcdinohead.png' %}" class="height100"></div>
+                                    <div class="jclogotext">Jurassicrysis</div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-   
-               <div class="ingameBoard forestbg" id="gameboard">
-                       <div id="opp_event" class="position singlecardbox oppeventbox persp100 border">
-                       </div>
-   
-                       <div id ='opp_board' class="position oppboard perspTop">
-                       </div>
-   
-                       <div id="opp_deck" class="position oppdeck persp_100">
-                           <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
-                           <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
-                           <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
-                           <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
-                           <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
-                           <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
-                           <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
-                           <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
-                           <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
-                           <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
-                           <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
-                           <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
-                           <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
-                           <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
-                           <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
-                           <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
-                           <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
-                           <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
-                           <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
-                           <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card card card card card card card</div>
-   
-                       </div>
-   
-                       <div id='middle line'
-                               style="border-top: 1px solid white; position: absolute; top: 50%; width: 100%;">
-                       </div>
-   
-                       <div id="ply_event" class="position plyevent persp100 border">
-                       </div>
-   
-                       <div id ='ply_board' class="position plyboard perspTop">
-                          
-                       </div>
-   
-                       <div id="ply_deck" class="position plydeck persp_100">
-                           <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card</div>
-                           <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card</div>
-                           <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card</div>
-                           <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card</div>
-                           <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card</div>
-                           <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card</div>
-                           <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card</div>
-                           <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card</div>
-                           <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card</div>
-                           <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card</div>
-                           <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card</div>
-                           <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card</div>
-                           <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card</div>
-                           <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card</div>
-                           <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card</div>
-                           <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card</div>
-                           <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card</div>
-                           <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card</div>
-                           <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card</div>
-                           <div class="border position cardplayed transform10 navbarcolor" style="background-color: black; font-size: 1vw;">card card card</div>
-                       </div>
-   
-               </div>
-   
-               <div id='ply_eggs' class="position plyeggs textalign flexcontainer fl_column noEvents">
+
+            </div>
+
+            <div id='ply_eggs' class="position plyeggs textalign flexcontainer fl_column noEvents">
                 <img src="{% static 'frontend/images/eggs/ply_egg.png' %}" alt="" class="height80">
-               </div>
-               
-               <div class="plyeggsCount position textalign"><h1 id="plyEggsCounter" class="navbarcolor font5w memoirsfont noEvents">10</h1></div>
-   
-               <div id='ply_hand' class="position plyhand flexcontainer" >
-                   
-               </div>
-   
-               <div class="position startdiv">
-                   <div class="buttondifficulty pulse margin10" id="startbutton" data-difficulty="hard" data-firstturn="ply">Start</div>
-               </div>
-   
-               <div class="plyEnergy position flexcontainer noEvents" style="visibility: hidden;">
-                    <div class="textalign height90" id="plyEng1"><img src="{% static 'frontend/images/icons/energy.png' %}" alt="" class="height90"></div>
-                    <div class="textalign height90" id="plyEng2"><img src="{% static 'frontend/images/icons/energy.png' %}" alt="" class="height90"></div>
-               </div>
-   
-               <div id="ply_turn" class="border glassdiv position flexcontainer textalign plyTurnPos padding10" style="z-index: 11; opacity: 0; display: none;">
+            </div>
+            
+            <div class="plyeggsCount position textalign"><h1 id="plyEggsCounter" class="navbarcolor font5w memoirsfont noEvents">10</h1></div>
 
-                    <h1 class="caesarfont navbarcolor font10vh flexcontainer aligncenter glow">Your Turn</h1>
-                </div>
-   
-                <div id="opp_turn" class="border glassdiv position flexcontainer textalign oppturnPos padding10" style="z-index: 13; opacity: 0; display: none;">
+            <div id='ply_hand' class="position plyhand flexcontainer" >
+                 
+            </div>
 
-                    <h1 class="caesarfont navbarcolor font10vh flexcontainer aligncenter glow">Opponent's Turn</h1>
+            <div class="position startdiv">
+                <div onclick="openFullscreen()" class="flip-turn-front pulse margin10 caesarfont flexallcenter padding10" id="startbutton" data-difficulty="hard" data-firstturn="ply" style="cursor: pointer; font-size: 3vw;">Start</div>
+            </div>
+
+            <div class="plyEnergy position flexcontainer noEvents" style="visibility: hidden;">
+                <div class="textalign height90 radius10" id="plyEng1"><img src="{% static 'frontend/images/icons/energy.png' %}" alt="" class="height90"></div>
+                <div class="textalign height90 radius10" id="plyEng2"><img src="{% static 'frontend/images/icons/energy.png' %}" alt="" class="height90"></div>
+
+            </div>
+
+            <div id="ply_turn" class="position plyTurnPos" style="z-index: 11; opacity: 0; display: none;">
+                <div class="bothturndinoicon">
+                    <div class="plyturnbg flexallcenter">
+                        <h1 class="caesarfont navbarcolor font10vh flexcontainer aligncenter glow margin10">Your Turn</h1>
+                    </div>
+
                 </div>
-                   
+            </div>
+
+            <div id="opp_turn" class="position oppturnPos" style="z-index: 13; opacity: 0; display: none;">
+                <div class="bothturndinoicon">
+                    <div class="oppturnbg flexallcenter padding10">
+                        <h1 class="caesarfont navbarcolor font10vh flexcontainer aligncenter glow margin10">Opponent's Turn</h1>
+                    </div>
+                </div>
+            </div>
+      
         </div>
 
         <div class="plytransition">
-            <div class="jcbg"><div class="caesarfont flexcontainer" style="font-size: 10vh; color: black">Jurassicrysis</div></div>
+            <div class="jcbg"><div class="caesarfont flexcontainer navbarcolor font10vh">Jurassicrysis</div></div>
         </div>
 
         <div class="difficultypage flexcontainer aligncenter overhidden" id="difficultyid">
@@ -198,8 +501,82 @@
             
         </div>
 
+        <div id="youwinscreen" class="youwinbg youwinimg" style="display: none;">
+            <div class="balloon1" style="height: 20vh;">
+                <img src="{% static 'frontend/images/animated/congrats.gif' %}" class="height90"/>
+            </div>
+            <div class="balloon2" style="height: 20vh;">
+                <img src="{% static 'frontend/images/animated/congrats.gif' %}" class="height90"/>
+            </div>
+
+            <div class="confetti3" style="height: 20vh;">
+                <img src="{% static 'frontend/images/animated/confetti.gif' %}" class="height90"/>
+            </div>
+            <div class="confetti4" style="height: 20vh;">
+                <img src="{% static 'frontend/images/animated/confetti.gif' %}" class="height90"/>
+            </div>
+            <div class="confetti5" style="height: 20vh;">
+                <img src="{% static 'frontend/images/animated/confetti.gif' %}" class="height90"/>
+            </div>
+            <div class="confetti6" style="height: 20vh;">
+                <img src="{% static 'frontend/images/animated/confetti.gif' %}" class="height90"/>
+            </div>
+
+            <div class="confetti1" style="height: 20vh;">
+                <img src="{% static 'frontend/images/animated/confetti.gif' %}" class="height90"/>
+            </div>
+            <div class="confetti2" style="height: 20vh;">
+                <img src="{% static 'frontend/images/animated/confetti.gif' %}" class="height90"/>
+            </div>
+            <div class="winlosemessage flexcontainer" id="winmessage">
+                <h1 class="caesarfont navbarcolor font10vh flexcontainer aligncenter glow margin10">You Win !</h1>
+            </div>
+            <div class="winloseresults">
+                <div id="youwinlevelup" class="caesarfont navbarcolor font5vh flexcontainer aligncenter">
+                    XP ++
+                </div>
+                <div id="youwindinocoins" class="caesarfont navbarcolor font5vh flexcontainer aligncenter">
+                    DinoCoins +3000
+                </div>
+                <div id="youwinexit" onclick="redirectHome()" class="font3w caesarfont flexcontainer textalign aligncenter pulse exitbutton">
+                    Exit
+                </div>
+            </div>
+            
+        </div>
+
+        <div id="youlosescreen" class="youlosebg flexallcenter" style="display: none;">
+            <div class="winlosemessage" id="losemessage">
+                <h1 class="caesarfont navbarcolor font10vh flexcontainer aligncenter glow margin10">You lose !</h1>
+            </div>
+            <div class="winloseresults">
+                
+                <div id="youlosedinocoins" class="caesarfont navbarcolor font5vh flexcontainer aligncenter">
+                    DinoCoins +500 
+                </div>
+                <div id="youloseexit" onclick="redirectHome()" class="font3w caesarfont flexcontainer textalign aligncenter pulse exitbutton">
+                    Exit
+                </div>
+
+            </div>
+
+        </div>
+
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.6.1/gsap.min.js"></script>
         <script type="text/javascript" src="{% static 'frontend/transitions/playtransition.js' %}"></script>
         <script type="text/javascript" src="{% static 'frontend/play/main.js' %}"></script>
+        <script>
+            /* Full screen mode*/
+            function openFullscreen() {
+                var elem = document.documentElement;
+                if (elem.requestFullscreen) {
+                    elem.requestFullscreen();
+                } else if (elem.webkitRequestFullscreen) { /* Safari */
+                    elem.webkitRequestFullscreen();
+                } else if (elem.msRequestFullscreen) { /* IE11 */
+                    elem.msRequestFullscreen();
+                }
+            }
+        </script>
     </body>
 </html>
