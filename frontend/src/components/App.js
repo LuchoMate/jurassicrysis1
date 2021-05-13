@@ -2561,20 +2561,37 @@ function youWin(){
     const youwinlevelup = document.getElementById("youwinlevelup");
     const youwindinocoins = document.getElementById("youwindinocoins");
 
+    let cookie = document.cookie
+    let csrfToken = cookie.substring(cookie.indexOf('=') + 1)
+
+    fetch(`/api/player_wins/${difficultychosen}`, {
+        method: 'PUT',
+        headers: {
+            'X-CSRFToken': csrfToken,
+            "Content-Type": "application/json; charset=UTF-8"
+          },
+        
+        body: JSON.stringify({
+            "body": "player wins"
+        }) 
+    }).then(response => response.json())
+    .then(result => {console.log(result)})
+    .catch(error => {console.log(error)})
+
     switch (difficultychosen) {
         case "easy":
             youwinlevelup.innerHTML = "100 xp";
-            youwindinocoins.innerHTML = "1000 Dinocoins"
+            youwindinocoins.innerHTML = "&#128178; 1000"
             break;
 
         case "medium":
             youwinlevelup.innerHTML = "300 xp";
-            youwindinocoins.innerHTML = "2000 Dinocoins"
+            youwindinocoins.innerHTML = "&#128178; 2000"
             break;
 
         case "hard":
             youwinlevelup.innerHTML = "600 xp";
-            youwindinocoins.innerHTML = "3500 Dinocoins"
+            youwindinocoins.innerHTML = "&#128178; 3500"
             break;
    
     }
@@ -2613,6 +2630,23 @@ function youLose(){
     losemusic.volume = 0.7;
     losemusic.play();
 
+    let cookie = document.cookie
+    let csrfToken = cookie.substring(cookie.indexOf('=') + 1)
+
+    fetch(`/api/player_loses`, {
+        method: 'PUT',
+        headers: {
+            'X-CSRFToken': csrfToken,
+            "Content-Type": "application/json; charset=UTF-8"
+          },
+        
+        body: JSON.stringify({
+            "body": "player loses"
+        }) 
+    }).then(response => response.json())
+    .then(result => {console.log(result)})
+    .catch(error => {console.log(error)})
+
     const losefanfare = new Audio(`/static/frontend/sounds/music/youlosefanfare.mp3`);
     losefanfare.loop = false;
     losefanfare.play();
@@ -2625,7 +2659,6 @@ function youLose(){
         opacity: 0,
         })
     tl.from("#losemessage", {duration: 2, opacity: 0})
-    tl.from("#youlosedinocoins", {duration: 2, opacity: 0})
     tl.from("#youloseexit", {duration: 2, opacity: 0})
 }
 

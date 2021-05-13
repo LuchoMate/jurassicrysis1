@@ -1,4 +1,4 @@
-/* All credits go to: https://github.com/Bernardo-Castilho/dragdroptouch*/
+/* All credits go to: https://github.com/Bernardo-Castilho/dragdroptouch */
 
 var DragDropTouch;
 (function (DragDropTouch_1) {

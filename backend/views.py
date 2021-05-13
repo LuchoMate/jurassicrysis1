@@ -80,7 +80,71 @@ def api_opp_deck(request, difficulty):
     
     return Response(shuffled)
 
-    
+#Player wins spoils
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def api_player_wins(request, difficulty):
+    if request.method == 'PUT':
+        player = Player.objects.get(username=request.user)
+        
+        if difficulty == "easy":
+            prizemoney = player.dinocoins
+            prizemoney = prizemoney + 1000
+            player.dinocoins = prizemoney
+            prizexp = player.xp
+            prizexp = prizexp + 100
+            player.xp = prizexp
+            totalwins = player.victories
+            totalwins = totalwins + 1
+            player.victories = totalwins
+            player.save()
+            return Response(status=status.HTTP_201_CREATED)
+
+        elif difficulty == "medium":
+            prizemoney = player.dinocoins
+            prizemoney = prizemoney + 2000
+            player.dinocoins = prizemoney
+            prizexp = player.xp
+            prizexp = prizexp + 300
+            player.xp = prizexp
+            totalwins = player.victories
+            totalwins = totalwins + 1
+            player.victories = totalwins
+            player.save()
+            return Response(status=status.HTTP_201_CREATED)
+
+        elif difficulty == "hard":
+            prizemoney = player.dinocoins
+            prizemoney = prizemoney + 3500
+            player.dinocoins = prizemoney
+            prizexp = player.xp
+            prizexp = prizexp + 600
+            player.xp = prizexp
+            totalwins = player.victories
+            totalwins = totalwins + 1
+            player.victories = totalwins
+            player.save()
+            return Response(status=status.HTTP_201_CREATED)
+
+        else:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+    else:
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def api_player_loses(request):
+
+    if request.method == 'PUT':
+        player = Player.objects.get(username=request.user)
+        losscount = player.losses
+        losscount = losscount + 1
+        player.losses = losscount
+        player.save()
+        return Response(status=status.HTTP_201_CREATED)
+    else:
+        return Response(status=status.HTTP_400_BAD_REQUEST)
         
 
 
