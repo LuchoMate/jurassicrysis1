@@ -991,10 +991,10 @@ class SketchPlayerCard extends React.Component{
         const attackTag = 'attackTag flexallcenter';
         const costTag = 'costTag flexallcenter navbarcolor';
         const lifepointsTag = 'lifepointsTag flexallcenter';
-        const nameTag = `namediv namediv${this.state.rarity} flexallcenter`;
+        const nameTag = `namediv namediv${this.state.rarity} flexallcenter overhidden`;
         const dinopicTag = 'dinopicDiv noEvents';
         const imgTag = 'height100 width100';
-        const conditionTag = 'conditionTag flexallcenter';
+        const conditionTag = 'conditionTag flexallcenter overhidden';
         const sizeTag = 'sizeTag flexallcenter';
         const sizeImg = 'height100 width100 clipsize';
         const zztag = 'sleepanimation flexallcenter';
@@ -1246,10 +1246,10 @@ class SketchOppCard extends React.Component{
         const attackTag = 'attackTag flexallcenter';
         const costTag = 'costTag flexallcenter';
         const lifepointsTag = 'lifepointsTag flexallcenter';
-        const nameTag = `namediv namediv${this.state.rarity} flexallcenter`;
+        const nameTag = `namediv namediv${this.state.rarity} flexallcenter overhidden`;
         const dinopicTag = 'dinopicDiv';
         const imgTag = 'height100 width100';
-        const conditionTag = 'conditionTag flexallcenter';
+        const conditionTag = 'conditionTag flexallcenter overhidden';
         const sizeTag = 'sizeTag flexallcenter';
         const sizeImg = 'height100 width100 clipsize';
         const zztag = 'sleepanimation';
@@ -1626,10 +1626,10 @@ function SketchEventHand(props){
     const interiorcard = `interiorcard${props.type}`;
     const costTag = 'costTag flexallcenter';
     const energyTag = 'energyTag flexallcenter';
-    const nameTag = `namediv namediv${props.rarity} flexallcenter`;
+    const nameTag = `namediv namediv${props.rarity} flexallcenter overhidden`;
     const dinopicTag = 'dinopicDiv noEvents';
     const imgTag = 'height100 width100';
-    const conditionTagEv = 'conditionTagEv flexallcenter';
+    const conditionTagEv = 'conditionTagEv flexallcenter overhidden';
     
     return <React.Fragment>
                 <div className={classhand}>
@@ -1676,10 +1676,10 @@ class SketchEventBoard extends React.Component{
     
     render(){
         const interiorcard = `interiorcard${this.props.type}`;
-        const nameTag = `namediv namediv${this.props.rarity} flexallcenter`;
+        const nameTag = `namediv namediv${this.props.rarity} flexallcenter overhidden`;
         const dinopicTag = 'dinopicDiv';
         const imgTag = 'height100 width100';
-        const conditionTagEv = 'conditionTagEv flexallcenter';
+        const conditionTagEv = 'conditionTagEv flexallcenter overhidden';
 
         return(<React.Fragment>
             <div className={this.state.classes}>
@@ -2155,10 +2155,10 @@ class SketchEventBoardOpp extends React.Component{
     render(){
 
         const interiorcard = `interiorcard${this.props.type}`;
-        const nameTag = `namediv namediv${this.props.rarity} flexallcenter`;
+        const nameTag = `namediv namediv${this.props.rarity} flexallcenter overhidden`;
         const dinopicTag = 'dinopicDiv';
         const imgTag = 'height100 width100';
-        const conditionTagEv = 'conditionTagEv flexallcenter';
+        const conditionTagEv = 'conditionTagEv flexallcenter overhidden';
 
         return(<React.Fragment>
             <div className={this.state.classes}>
