@@ -213,19 +213,19 @@ document.getElementById("ply_board").addEventListener("drop", function( event ) 
 
             sortCards("ply");
             /* plyEnergies--;*/
-            console.log(`Energy left: ${plyEnergies}`);
+            
         }
         else{/* Not allow*/
             const wrong = new Audio('/static/frontend/sounds/wrong.wav');
             wrong.loop = false;
             wrong.play();
-            console.log("No energy!")
+            
         }  
     }
 }, false);
 
 function destroyEgg(who){
-    if(who == "opp"){
+    if(who == "opp" && gameOver == false){
 
         const thisNode = document.getElementById("opp_eggs");
         let pos = thisNode.getBoundingClientRect();
@@ -251,10 +251,10 @@ function destroyEgg(who){
         }
         const lastegg = document.getElementById("opp_eggs").lastElementChild;
         lastegg.parentNode.removeChild(lastegg);
-        console.log(`oppeggs: ${oppEggs}`);
+        
 
-        if(handleAttacks.atkCondition.includes("Predator")){
-            console.log("extra egg destroyed")
+        if(handleAttacks.atkCondition.includes("Predator") && gameOver == false){
+            
             oppEggs--
             if(oppEggs <= 0){
                 gameOver = true;
@@ -263,12 +263,12 @@ function destroyEgg(who){
             }
             const lastegg = document.getElementById("opp_eggs").lastElementChild;
             lastegg.parentNode.removeChild(lastegg);
-            console.log(`oppeggs: ${oppEggs}`);
+            
         }
         
     }
 
-    else{
+    else if(gameOver == false){
 
         const thisNode = document.getElementById("ply_eggs");
         let pos = thisNode.getBoundingClientRect();
@@ -287,15 +287,15 @@ function destroyEgg(who){
         destroyedegg.play();
         
         plyEggs--;
-        console.log(`plyeggs: ${plyEggs}`);
+        
         document.getElementById("plyEggsCounter").innerHTML = plyEggs;
         if(plyEggs <= 0){
             console.log("You lose !!")
             gameOver = true;
             youLose();
         }
-        if(handleAttacks.atkCondition.includes("Predator")){
-            console.log("extra egg destroyed")
+        if(handleAttacks.atkCondition.includes("Predator") && gameOver == false){
+
             plyEggs--
             if(plyEggs <= 0){
                 gameOver = true;
@@ -310,7 +310,7 @@ function destroyEgg(who){
 function restoreEgg(who){
     if(who=="ply"){
         if(plyEggs < 10){
-            console.log("restoring ply egg");
+            
             const thisNode = document.getElementById("ply_eggs");
             let pos = thisNode.getBoundingClientRect();
             const center1X = Math.floor(pos.left);
@@ -352,10 +352,8 @@ function restoreEgg(who){
             eggimg.draggable = false;
             eggdiv.appendChild(eggimg);
 
-            console.log("restoring opp egg");
             oppEggs++;
-            console.log(`oppeggs: ${oppEggs}`);
-            
+           
         }
     }
 }
@@ -371,7 +369,7 @@ document.getElementById("opp_eggs").addEventListener("drop", function(event) {
     event.preventDefault();
 
     if(dragged.className.includes("cardplayedPly")){
-        console.log("dropped over eggs")
+        
         document.getElementById("opp_eggs").classList.remove("highlightTarget");
         /* That card cannot attack again this turn*/
         var evento = new Event('input', {
@@ -2552,10 +2550,34 @@ function closeFullscreen() {
     } else if (document.msExitFullscreen) { /* IE11 */
       document.msExitFullscreen();
     }
-  }
+}
+
+/* Hacer put requests para depositar premios*/
 
 function youWin(){
     bgmusic.volume = 0;
+
+    const difficultychosen = document.getElementById("startbutton").dataset.difficulty;
+    const youwinlevelup = document.getElementById("youwinlevelup");
+    const youwindinocoins = document.getElementById("youwindinocoins");
+
+    switch (difficultychosen) {
+        case "easy":
+            youwinlevelup.innerHTML = "100 xp";
+            youwindinocoins.innerHTML = "1000 Dinocoins"
+            break;
+
+        case "medium":
+            youwinlevelup.innerHTML = "300 xp";
+            youwindinocoins.innerHTML = "2000 Dinocoins"
+            break;
+
+        case "hard":
+            youwinlevelup.innerHTML = "600 xp";
+            youwindinocoins.innerHTML = "3500 Dinocoins"
+            break;
+   
+    }
 
     closeFullscreen();
     const winmusic = new Audio(`/static/frontend/sounds/music/youwin.mp3`);
