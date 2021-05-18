@@ -1,9 +1,36 @@
-/* import {startGame} from '../../../src/startgame.js';*/
 
 /* These functions handle transitions, difficulty and rock paper scissors game*/
 
 let difficultyChoice = "";
 let whoplaysfirst = "";
+
+const tiplist = [
+    "Pro tip: Carnivorous dinosaurs receive +1 DMG from Flying dinosaurs.",
+    "Pro tip: Herbivorous dinosaurs receive +1 DMG from Carnivorous dinosaurs.",
+    "Pro tip: Aquatic dinosaurs receive +1 DMG from Herbivorous dinosaurs.",
+    "Pro tip: Flying dinosaurs receive +1 DMG from Aquatic dinosaurs.",
+    "Pro tip: Agile dinosaurs can attack on their first turn. Watch out !",
+    "Pro tip: Scaled dinosaurs are diehard and receive -1 DMG from other dinosaurs.",
+    "Pro tip: Fierce dinosaurs deal +1 DMG against medium and large sized dinosaurs.",
+    "Pro tip: Poisonous dinosaurs deal 1 DMG to any attacking dinosaur. Keep in mind!",
+    "Pro tip: Predator dinosaurs will destroy two eggs instead of one when attacking.",
+    "Pro tip: Think of event cards as magic cards from other cards games.",
+    "Pro tip: Keep in mind cards costs. You only have 2 energies per turn.",
+    "Pro tip: It's up to you whether to attack your opponent's dinosaurs or eggs.",
+    "Pro tip: The first player to destroy all of the opponent's eggs wins!",
+    "Pro tip: Event cards have several types of effects that can turn the tide of the battle.",
+    "Pro tip: Sometimes is best to save your strongest cards for later turns.",
+    "Pro tip: Higher difficulty equals better rewards!",
+    "Pro tip: Sometimes you might prefer small sized dinosaurs due to their low energy cost.",
+    "Pro tip: Dinosaurs with a ZzZ icon over their heads can no longer attack on that turn.",
+    "Pro tip: Dinosaurs with a Swords icon over their heads are ready to attack on that turn.",
+    "Pro tip: Any dinosaur whose Life Points reach Zero is instantly removed from the board."
+]
+
+function setTiplist (){
+    document.getElementById("tipbox").innerHTML = tiplist[Math.floor(Math.random()*20)]; 
+}
+
 
 /* ----Checks device's orientation------*/
 
@@ -47,6 +74,7 @@ function acceptHeight(){
         opacity: 0
 
     })
+    tl.call(setTiplist)
     tl.set("#difficultybox", {display: 'block'});
 
     return tl;
@@ -61,6 +89,7 @@ function pageIn() {
         clearTimerCheck();
 
         tl2 = gsap.timeline();
+        tl2.call(setTiplist)
         tl2.from("#difficultybox", {
             display: 'block',
             duration: 1,

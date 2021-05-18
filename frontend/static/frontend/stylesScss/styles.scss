@@ -1879,6 +1879,41 @@ box-shadow: 3px 3px antiquewhite
     border-radius: 10px;
 }
 
+/*------ Shop page--------*/
+
+.boosterpack{
+    height: 50vh;
+    cursor: pointer;
+    transition: all .2s ease-in-out;
+
+}
+
+.boosterpack:hover{
+    transform: scaleX(1.1);
+    transform: scaleY(1.1);
+}
+
+.buyPackdiv{
+    left: 35%;
+    top: 25%;
+    width: 30%;
+    padding: 10px;
+}
+
+.boosterDemo {
+    @extend .boosterpack;
+}
+
+#buyButton {
+    width: 13vw;
+    height: 11vh;
+    background-color: green;
+    color: white;
+    border-radius: 10px;
+    box-shadow: 3px 3px red;
+    cursor: pointer;
+}
+
 
 
 

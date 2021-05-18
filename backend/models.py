@@ -10,7 +10,7 @@ class Player(AbstractUser):
     victories = models.PositiveSmallIntegerField(default = 0)
     losses = models.PositiveSmallIntegerField(default = 0)
     dinocoins = models.PositiveIntegerField(default = 5000)
-    xp = models.PositiveSmallIntegerField(default = 1)
+    xp = models.PositiveSmallIntegerField(default = 0)
 
 
 #Card model

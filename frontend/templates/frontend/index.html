@@ -2,8 +2,23 @@
 {% load static %}
 
 {% block body %}
-<div class="caesarfont marginauto" style="font-size: xx-large;">Jurassicrysis</div> 
-<h1 style="color: antiquewhite; font-family: 'Pangolin', cursive;">Jurassicrysis Home</h1> 
-<h1 style="color: antiquewhite; font-family: 'Megrim', cursive;">Jurassicrysis Home</h1> 
-<h1 style="color: antiquewhite; font-family:  'Mouse Memoirs', sans-serif;">Jurassicrysis Home</h1>    
+<section data-barba="container" data-barba-namespace="index">
+    <div class="caesarfont navbarcolor font10vh flexcontainer aligncenter glow margin10">Season 1 is here!</div>
+
+  <div style="width: 20vw; height: 10vw; position: absolute; right: 5%">
+      <iframe width="100%" height="100%"
+          src="https://www.youtube.com/embed/hIEJ0_Os1Fs?autoplay=1&mute=1">
+      </iframe>
+  </div>
+
+  <div class="w3-content w3-section" style="max-width: 30vw; border: 3px solid goldenrod;">
+      <img class="mySlides w3-animate-right" src="{% static 'frontend/images/tutorial/tuto1.gif' %}" style="width:100%">
+      <img class="mySlides w3-animate-right" src="{% static 'frontend/images/tutorial/tuto2.gif' %}" style="width:100%">
+      <img class="mySlides w3-animate-right" src="{% static 'frontend/images/tutorial/tuto3.gif' %}" style="width:100%">
+      <img class="mySlides w3-animate-right" src="{% static 'frontend/images/tutorial/tuto4.gif' %}" style="width:100%">
+      <img class="mySlides w3-animate-right" src="{% static 'frontend/images/tutorial/tuto5.gif' %}" style="width:100%">
+  </div>
+
+</section>
+
 {% endblock %}

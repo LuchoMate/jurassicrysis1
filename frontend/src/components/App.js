@@ -2611,6 +2611,7 @@ function youWin(){
     winfanfare2.play();
 
     var tl = gsap.timeline();
+    tl.to("#boarddiv", {opacity: 0, duration: 1})
     tl.set("#boarddiv", {display: 'none'})
     tl.set("#youwinscreen", {display: 'block'})
     tl.from("#youwinscreen", {duration: 0.5,
@@ -2652,6 +2653,7 @@ function youLose(){
     losefanfare.play();
 
     var tl = gsap.timeline();
+    tl.to("#boarddiv", {opacity: 0, duration: 1})
     tl.set("#boarddiv", {display: 'none'})
     tl.set("#youlosescreen", {display: 'block'})
 

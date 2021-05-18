@@ -1,30 +1,34 @@
 {% extends "frontend/layout.html" %}
 
 {% block body %}
+<section data-barba="container" data-barba-namespace="login">
+    <div class="glassdiv marginauto margintop center loginwidth ">
 
-<div class="glassdiv marginauto margintop center loginwidth ">
+        <h2 class="navbarcolor">Login</h2>
+    
+        {% if message %}
+            <div class="w3-round-xxlarge  w3-red">{{ message }}</div>
+        {% endif %}
+    
+        <form action="{% url 'login' %}" method="post">
+            {% csrf_token %}
+            <div class="form-group col-md-6 marginauto">
+                <input class="form-control" type="text" name="username" placeholder="Username">
+            </div>
+            <br>
+            <div class="form-group col-md-6 marginauto ">
+                <input class="form-control" type="password" name="password" placeholder="Password">
+                
+            </div>
+            <br>
+            <div class="center"><input class="btn btn-primary " type="submit" value="Login"></div>
+        </form>
+    
+        <div class="center navbarcolor">Don't have an account? <a id="suggestion" href="{% url 'register' %}">Register here.</a></div> 
+    
+    </div>
 
-    <h2 class="navbarcolor">Login</h2>
+</section>
 
-    {% if message %}
-        <div class="w3-round-xxlarge  w3-red">{{ message }}</div>
-    {% endif %}
 
-    <form action="{% url 'login' %}" method="post">
-        {% csrf_token %}
-        <div class="form-group col-md-6 marginauto">
-            <input class="form-control" type="text" name="username" placeholder="Username">
-        </div>
-        <br>
-        <div class="form-group col-md-6 marginauto ">
-            <input class="form-control" type="password" name="password" placeholder="Password">
-            
-        </div>
-        <br>
-        <div class="center"><input class="btn btn-primary " type="submit" value="Login"></div>
-    </form>
-
-    <div class="center navbarcolor">Don't have an account? <a id="suggestion" href="{% url 'register' %}">Register here.</a></div> 
-
-</div>
 {% endblock %}

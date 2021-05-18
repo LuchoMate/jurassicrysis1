@@ -104,14 +104,13 @@
         <div class="tr2div"></div>
       </div>
 
-      <div class="w3-container" data-barba="container" data-barba-namespace="home">
-        {% block body %}
-        {% endblock %}
-      </div>
+      
+      {% block body %}
+      {% endblock %}
 
       <script src="https://cdn.jsdelivr.net/npm/@barba/core"></script>
       <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.6.1/gsap.min.js"></script>
-      <script src="{% static 'frontend/transitions/transition1.js' %}"></script>
+      <script src="{% static 'frontend/transitions/TransitionBarba.js' %}"></script>
     </body>
 
 </html>

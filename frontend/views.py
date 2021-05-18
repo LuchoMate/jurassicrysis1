@@ -5,7 +5,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.contrib.auth.decorators import login_required
-from backend.models import Player, Card
+from backend.models import Player, Card, Collection
 
 def test(request):
     return render(request, "frontend/test.html")
@@ -67,6 +67,17 @@ def register(request):
             return render(request, "frontend/register.html", {
                 "message": "Username already taken."
             })
+
+        #Assign starter deck to player
+        starterdeck=[3,4,7,14,18,19,23,26,33,34,40,42,48,49,52,55,63,64,65,68]
+        i=0
+        while(i<20):
+            cardToAdd = Card.objects.get(id=starterdeck[i])
+            newCollection = Collection(Owner = user, Card_collected = cardToAdd, quantity = 1, on_deck = 1)
+            newCollection.save()
+            i+=1
+
+
         login(request, user)
         return HttpResponseRedirect(reverse("index"))
     else:
