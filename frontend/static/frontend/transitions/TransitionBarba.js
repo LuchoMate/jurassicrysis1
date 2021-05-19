@@ -125,36 +125,73 @@ function carousel() {
 
 /*--- Shop page----*/
 
+
 function shopPage(){
     console.log("hello shopPage!");
+    document.getElementById("cancelBuy").addEventListener('click', cancelBuy)
     let packs = document.getElementsByClassName("boosterpack");
     for(let i =0; i < packs.length; i++){
-      console.log("adding ev listener!");
-      packs[i].addEventListener('click', function(event){
-  
-        console.log(event.target.id);
+      packs[i].addEventListener('click', function (event){
         handlePack(event.target.id);
       })
     }
-
-    
-    function handlePack(pack){
-        document.getElementById("boosterimgDemo").src=`/static/frontend/images/shop/${pack}Booster.png`;
-        document.getElementById("buyButton").addEventListener('click', function(){
-          buyPack(pack);
-        })
-        var tl = gsap.timeline();
-        tl.set("#buyAPack", {display: 'block'})
-        tl.from("#buyAPack", {opacity: 0,scaleY: 0, scaleX: 0, duration: 0.5})
-    }
-
-    function buyPack(pack){
-      console.log(`Gonna buy ${pack} pack`);
-    }
-  
-
+ 
 }
 
+function handlePack(pack){
+  let packs = document.getElementsByClassName("boosterpack");
+  for(let i =0; i < packs.length; i++){
+    packs[i].style.pointerEvents = "none";
+  }
+
+  document.getElementById("boosterimgDemo").src=`/static/frontend/images/shop/${pack}Booster.png`;
+  document.getElementById("buyButton").addEventListener('click', function(){
+    buyPack(pack);
+  })
+  var tl = gsap.timeline();
+  tl.set("#buyAPack", {display: 'block'})
+  tl.from("#buyAPack", {opacity: 0,scaleY: 0, scaleX: 0, duration: 0.5})
+}
+
+function buyPack(pack){
+    console.log(`Gonna buy ${pack} pack`);
+
+    let cookie = document.cookie
+    let csrfToken = cookie.substring(cookie.indexOf('=') + 1)
+
+    fetch(`/api/buy_pack`, {
+        method: 'PUT',
+        headers: {
+            'X-CSRFToken': csrfToken,
+            "Content-Type": "application/json; charset=UTF-8"
+          },
+        
+        body: JSON.stringify({
+            "content": pack
+        }) 
+    }).then(response => response.json())
+    .then(result => {console.log(result.status)})
+    .catch(error => {console.log(error)})
+}
+
+function cancelBuy(){
+
+  /* To remove click handler from button*/
+  var old_element = document.getElementById("buyButton");
+  var new_element = old_element.cloneNode(true);
+  old_element.parentNode.replaceChild(new_element, old_element);
+
+  let packs = document.getElementsByClassName("boosterpack");
+  for(let i =0; i < packs.length; i++){
+    packs[i].style.pointerEvents = "auto";
+  }
+
+  var tl = gsap.timeline();
+  tl.to("#buyAPack", {scaleY: 0, scaleX: 0, duration: 0.5})
+  tl.set("#buyAPack", {display: 'none', scaleX: 1, scaleY: 1})
+}
+
+/* Small delay to transition*/
 
 function delay(n) {
   n = n || 2000;

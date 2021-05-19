@@ -9,5 +9,6 @@ urlpatterns = [
     path('get_card/<int:cardId>', views.api_get_card, name='get_card'),
     path('player_wins/<str:difficulty>', views.api_player_wins, name='player_wins'),
     path('player_loses', views.api_player_loses, name='player_loses'),
+    path('buy_pack', views.api_buy_pack, name='buy_pack'),
 
 ]
