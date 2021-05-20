@@ -185,6 +185,8 @@ def api_buy_pack(request):
                     newCollection = Collection(Owner = player, Card_collected = cardCheck)
                     newCollection.save()
 
+            player.dinocoins = player.dinocoins - 5000
+            player.save()
             cardsAdded ={"cardsAdded": boosterpack}
             return Response(cardsAdded, status=status.HTTP_201_CREATED)
 
@@ -212,6 +214,8 @@ def api_buy_pack(request):
                     newCollection = Collection(Owner = player, Card_collected = cardCheck)
                     newCollection.save()
 
+            player.dinocoins = player.dinocoins - 5000
+            player.save()
             cardsAdded ={"cardsAdded": boosterpack}
             return Response(cardsAdded, status=status.HTTP_201_CREATED)
    
@@ -238,6 +242,8 @@ def api_buy_pack(request):
                     newCollection = Collection(Owner = player, Card_collected = cardCheck)
                     newCollection.save()
 
+            player.dinocoins = player.dinocoins - 5000
+            player.save()
             cardsAdded ={"cardsAdded": boosterpack}
             return Response(cardsAdded, status=status.HTTP_201_CREATED)
 
@@ -265,6 +271,8 @@ def api_buy_pack(request):
                     newCollection = Collection(Owner = player, Card_collected = cardCheck)
                     newCollection.save()
 
+            player.dinocoins = player.dinocoins - 5000
+            player.save()
             cardsAdded ={"cardsAdded": boosterpack}
             return Response(cardsAdded, status=status.HTTP_201_CREATED)
 
@@ -293,6 +301,8 @@ def api_buy_pack(request):
                     newCollection = Collection(Owner = player, Card_collected = cardCheck)
                     newCollection.save()
 
+            player.dinocoins = player.dinocoins - 5000
+            player.save()
             cardsAdded ={"cardsAdded": boosterpack}
             return Response(cardsAdded, status=status.HTTP_201_CREATED)
 
@@ -302,7 +312,7 @@ def api_buy_pack(request):
   
     
     else:
-        noCoins={"response": "no Money!"}
+        noCoins={"response": "no enough Dinocoins!"}
         return Response(noCoins, status=status.HTTP_204_NO_CONTENT)
 
 

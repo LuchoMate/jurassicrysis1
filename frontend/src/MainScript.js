@@ -1,0 +1,1 @@
+import MainApp from './components/MainApp';

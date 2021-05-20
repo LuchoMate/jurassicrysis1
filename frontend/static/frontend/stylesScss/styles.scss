@@ -1914,6 +1914,10 @@ box-shadow: 3px 3px antiquewhite
     cursor: pointer;
 }
 
+#closeNotMoney {
+    @extend #buyButton;
+}
+
 
 
 

@@ -12,7 +12,7 @@ const tiplist = [
     "Pro tip: Agile dinosaurs can attack on their first turn. Watch out !",
     "Pro tip: Scaled dinosaurs are diehard and receive -1 DMG from other dinosaurs.",
     "Pro tip: Fierce dinosaurs deal +1 DMG against medium and large sized dinosaurs.",
-    "Pro tip: Poisonous dinosaurs deal 1 DMG to any attacking dinosaur. Keep in mind!",
+    "Pro tip: Poisonous dinosaurs deal 1 DMG to any attacking dinosaur. Keep that in mind!",
     "Pro tip: Predator dinosaurs will destroy two eggs instead of one when attacking.",
     "Pro tip: Think of event cards as magic cards from other cards games.",
     "Pro tip: Keep in mind cards costs. You only have 2 energies per turn.",
@@ -24,11 +24,12 @@ const tiplist = [
     "Pro tip: Sometimes you might prefer small sized dinosaurs due to their low energy cost.",
     "Pro tip: Dinosaurs with a ZzZ icon over their heads can no longer attack on that turn.",
     "Pro tip: Dinosaurs with a Swords icon over their heads are ready to attack on that turn.",
-    "Pro tip: Any dinosaur whose Life Points reach Zero is instantly removed from the board."
+    "Pro tip: Any dinosaur whose Life Points reaches Zero is instantly removed from the board.",
+    "Pro tip: One of your eggs will be destroyed every turn if your deck has no cards left."
 ]
 
 function setTiplist (){
-    document.getElementById("tipbox").innerHTML = tiplist[Math.floor(Math.random()*20)]; 
+    document.getElementById("tipbox").innerHTML = tiplist[Math.floor(Math.random()*21)]; 
 }
 
 
