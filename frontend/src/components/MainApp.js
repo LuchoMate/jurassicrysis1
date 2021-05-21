@@ -43,7 +43,7 @@ barba.init({
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-function pageOut(){
+  function pageOut(){
 
     gsap.to(".transition1 div", {
       opacity: 1,
@@ -124,7 +124,7 @@ function pageOut(){
       if (myIndex > x.length) {myIndex = 1}    
       x[myIndex-1].style.display = "block";  
       setTimeout(carousel, 5000);    
-  }
+}
   
   /*------- Shop page-------*/
   
@@ -183,6 +183,11 @@ function pageOut(){
       })
       .then(newCards => {
 
+        //Modificar plata
+        let checkCoins = document.getElementById("userCoins").innerHTML;
+        checkCoins = parseInt(checkCoins) - 5000;
+        document.getElementById("userCoins").innerHTML = checkCoins;
+
         var tl = gsap.timeline();
         tl.to("#buyAPack", {opacity: 0, scaleY: 0, scaleX: 0, duration: 0.2})
         tl.set("#buyAPack", {opacity: 1, scaleX: 1, scaleY: 1, display: 'none'})
@@ -190,8 +195,9 @@ function pageOut(){
         var old_element = document.getElementById("buyButton");
         var new_element = old_element.cloneNode(true);
         old_element.parentNode.replaceChild(new_element, old_element);
-  
-        
+
+        document.getElementById("closePurchase").addEventListener('click', closeNewCards)
+
         newCards.cardsAdded.forEach(element => {
           console.log(element)
           /* callshowNewCard*/
@@ -249,6 +255,24 @@ function pageOut(){
       }
   
   }
+
+  /* close cards display and clears current cards to show*/
+  function closeNewCards(){
+    var tl = gsap.timeline();
+    tl.to("#showNewCards", {opacity: 0, scaleX: 0, scaleY: 0, duration: 0.2})
+    tl.set("#showNewCards", {visibility: 'hidden', opacity: 1, scaleY: 1, scaleX: 1})
+
+    let clearDisplay = document.getElementById("newCardsDisplay");
+    while(clearDisplay.lastElementChild){
+      clearDisplay.removeChild(clearDisplay.lastElementChild);
+    }
+
+    let packs = document.getElementsByClassName("boosterpack");
+      for(let i =0; i < packs.length; i++){
+      packs[i].style.pointerEvents = "auto";
+      }
+
+  }
   
   function cancelBuy(){
   
@@ -271,10 +295,13 @@ function pageOut(){
   async function showNewCard(newCard){
     let response = await fetch(`/api/get_card/${newCard}`);
     let card = await response.json();
-    const childDiv = document.createElement("div")
-    childDiv.classList.add("containerwrapper")
-    document.getElementById("showNewCards").appendChild(childDiv)
-    let lastchild = document.getElementById("showNewCards").lastElementChild
+    const childDiv = document.createElement("div");
+    childDiv.classList.add("containerwrapper");
+    childDiv.classList.add(`displayRarity${card.rarity}`);
+
+    
+    document.getElementById("newCardsDisplay").appendChild(childDiv)
+    let lastchild = document.getElementById("newCardsDisplay").lastElementChild
     if(card.card_type != "ev"){
       ReactDOM.render(<SketchDinoCard name={card.name}
           atk={card.attack}
@@ -354,7 +381,7 @@ function pageOut(){
     const nameTag = `namediv namediv${props.rarity} flexallcenter overhidden`;
     const dinopicTag = 'dinopicDiv noEvents';
     const imgTag = 'height100 width100';
-    const conditionTagEv = 'conditionTagEv flexallcenter overhidden';
+    const conditionTagEv = 'conditionTagEvDisplay';
     
     return <React.Fragment>
                 <div className={classhand}>

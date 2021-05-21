@@ -1919,10 +1919,9 @@ box-shadow: 3px 3px antiquewhite
 }
 
 #showNewCards {
-    height: 45vh; width: 80vw;
-    left: 5%;
+    height: 60vh; width: 80vw;
+    left: 10%;
     top: 30%;
-    border: 2px solid blue;
 }
 
 .displayCardContainer {
@@ -1940,16 +1939,86 @@ box-shadow: 3px 3px antiquewhite
 }
 
 .containerwrapper {
+    @extend .flexallcenter;
     position: relative;
-    border: 1px solid red;
     height: 36vh;
     min-height: 36vh;
     max-height: 36vh; 
     width: 12vw;
     min-width: 12vw;
     max-width: 12vw; 
-   
 }
+
+#closePurchase {
+    @extend #buyButton;
+}
+
+.conditionTagEvDisplay{
+    position: absolute;
+    width: 95%;
+    height: 25%;
+    top: 70%;
+    left: 1.5%;
+    border: 2px solid silver;
+    border-radius: 10px;
+    background-image: url("images/icons/conditiontag.jpeg");
+    color: black;
+    font-size: xx-small;
+    text-align: center;
+    padding: 2px;
+    white-space: pre-line;
+}
+
+@keyframes glowco {
+    50% {
+      box-shadow: 0 0 4vw darkgray;
+    }
+    
+    100% {
+      box-shadow: none;
+    }
+}
+
+@keyframes glowsc {
+    50% {
+      box-shadow: 0 0 4vw blue;
+    }
+    
+    100% {
+      box-shadow: none;
+    }
+}
+
+@keyframes glowex {
+    50% {
+      box-shadow: 0 0 4vw gold;
+    }
+    
+    100% {
+      box-shadow: none;
+    }
+}
+  
+.displayRarityco {
+    animation: glowco;
+    animation-duration: 2.5s;
+    animation-iteration-count: infinite;
+}
+
+.displayRaritysc {
+    animation: glowsc;
+    animation-duration: 1.5s;
+    animation-iteration-count: infinite;
+}
+
+.displayRarityex {
+    animation: glowex;
+    animation-duration: 0.5s;
+    animation-iteration-count: infinite;
+}
+
+
+
 
 
 
