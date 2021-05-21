@@ -1918,6 +1918,39 @@ box-shadow: 3px 3px antiquewhite
     @extend #buyButton;
 }
 
+#showNewCards {
+    height: 45vh; width: 80vw;
+    left: 5%;
+    top: 30%;
+    border: 2px solid blue;
+}
+
+.displayCardContainer {
+    position: absolute;
+    flex: 0 0 50px;
+    height: 35vh;
+    min-height: 35vh;
+    max-height: 35vh; 
+    width: 11vw;
+    min-width: 11vw;
+    max-width: 11vw; 
+    border-radius: 5px;
+    border: 2px solid gold;
+    transition: transform .25s;
+}
+
+.containerwrapper {
+    position: relative;
+    border: 1px solid red;
+    height: 36vh;
+    min-height: 36vh;
+    max-height: 36vh; 
+    width: 12vw;
+    min-width: 12vw;
+    max-width: 12vw; 
+   
+}
+
 
 
 
