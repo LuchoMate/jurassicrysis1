@@ -200,10 +200,55 @@ import ReactDOM from 'react-dom';
 
         newCards.cardsAdded.forEach(element => {
           console.log(element)
-          /* callshowNewCard*/
-          showNewCard(element)
+
+          let mainflip = document.createElement("div");
+          mainflip.classList.add("flip-card-main");
+          document.getElementById("newCardsDisplay").appendChild(mainflip);
+
+          mainflip.addEventListener('click',function() {
+            console.log("clicked!");
+            this.classList.toggle("turnBack");
+            this.style.pointerEvents = 'none';
+            const drawsound = new Audio('/static/frontend/sounds/drawcard.mp3');
+            drawsound.loop = false;
+            drawsound.play();
+            })
+          /* mainflip add event listener click, fliphandler*/
+
+          let innerflip = document.createElement("div");
+          innerflip.classList.add("flip-card-inner");
+          mainflip.appendChild(innerflip);
+
+          let frontborder = document.createElement("div");
+          frontborder.classList.add("flip-card-front");
+          innerflip.appendChild(frontborder);
+
+          let interiorborder = document.createElement("div");
+          interiorborder.classList.add("interiorDeck");
+          interiorborder.classList.add("interiorDeckPly");
+          frontborder.appendChild(interiorborder);
+
+          let iconcard = document.createElement("div");
+          iconcard.classList.add("dinoIconCard");
+          interiorborder.appendChild(iconcard);
+
+          let iconimg = document.createElement("img");
+          iconimg.src = '/static/frontend/images/icons/jcdinohead.png';
+          iconimg.classList.add("height100");
+          iconcard.appendChild(iconimg);
+
+          let logotext = document.createElement("div");
+          logotext.classList.add("jclogotext");
+          logotext.innerHTML = "Jurassicrysis";
+          interiorborder.appendChild(logotext);
+
+          let backCard = document.createElement("div");
+          backCard.classList.add("containerwrapper");
+          innerflip.appendChild(backCard);
+
+          showNewCard(element, backCard);
         });
-        /* gsap timeline mostrar el div con cartas listas*/
+        
   
         const button = new Audio('/static/frontend/sounds/winrps.mp3');
         button.loop = false;
@@ -218,6 +263,7 @@ import ReactDOM from 'react-dom';
       notMoney();
     })
   }
+
   
   /* Not enough money to buy pack*/
   function notMoney(){
@@ -292,16 +338,12 @@ import ReactDOM from 'react-dom';
   }
   
   /* Show card by id*/
-  async function showNewCard(newCard){
+  async function showNewCard(newCard, nodetoAdd){
     let response = await fetch(`/api/get_card/${newCard}`);
     let card = await response.json();
-    const childDiv = document.createElement("div");
-    childDiv.classList.add("containerwrapper");
-    childDiv.classList.add(`displayRarity${card.rarity}`);
 
-    
-    document.getElementById("newCardsDisplay").appendChild(childDiv)
-    let lastchild = document.getElementById("newCardsDisplay").lastElementChild
+    nodetoAdd.classList.add(`displayRarity${card.rarity}`);
+
     if(card.card_type != "ev"){
       ReactDOM.render(<SketchDinoCard name={card.name}
           atk={card.attack}
@@ -312,7 +354,7 @@ import ReactDOM from 'react-dom';
           type={card.card_type}
           cost={card.cost}
   
-          />, lastchild);
+          />, nodetoAdd);
   
     }
   
@@ -324,10 +366,9 @@ import ReactDOM from 'react-dom';
           cost={card.cost}
           eventtext={card.event_effect}
   
-      />, lastchild)
+      />, nodetoAdd)
   
     }
-  
   
   }
   

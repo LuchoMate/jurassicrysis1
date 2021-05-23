@@ -431,6 +431,7 @@ h6 {
     background-repeat: no-repeat, repeat;
     background-position: center;
     background-size: cover;
+    border-radius: 50%;
     /* */
 }
 
@@ -1930,9 +1931,9 @@ box-shadow: 3px 3px antiquewhite
     height: 35vh;
     min-height: 35vh;
     max-height: 35vh; 
-    width: 11vw;
-    min-width: 11vw;
-    max-width: 11vw; 
+    width: 12vw;
+    min-width: 12vw;
+    max-width: 12vw; 
     border-radius: 5px;
     border: 2px solid gold;
     transition: transform .25s;
@@ -1940,13 +1941,16 @@ box-shadow: 3px 3px antiquewhite
 
 .containerwrapper {
     @extend .flexallcenter;
-    position: relative;
+    position: absolute;
     height: 36vh;
     min-height: 36vh;
     max-height: 36vh; 
     width: 12vw;
     min-width: 12vw;
     max-width: 12vw; 
+    transform: rotateY(180deg);
+    -webkit-backface-visibility: hidden; /* Safari */
+    backface-visibility: hidden;
 }
 
 #closePurchase {
@@ -2016,6 +2020,50 @@ box-shadow: 3px 3px antiquewhite
     animation-duration: 0.5s;
     animation-iteration-count: infinite;
 }
+
+.flip-card-main {
+    background-color: transparent;
+    height: 36vh;
+    min-height: 36vh;
+    max-height: 36vh; 
+    width: 12vw;
+    min-width: 12vw;
+    max-width: 12vw; 
+    border: none;
+    perspective: 1000px;
+    cursor: pointer;
+
+}
+
+.flip-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.8s;
+    transform-style: preserve-3d;
+}
+
+.flip-card-front {
+    @extend .borderDeck;
+    -webkit-backface-visibility: hidden; /* Safari */
+    backface-visibility: hidden;
+    position: absolute;
+}
+
+.flip-card-main.turnBack .flip-card-inner {
+    transform: rotateY(180deg);
+}
+
+/* 
+.flip-card-front, .flip-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    
+}*/
+
+
+
 
 
 
