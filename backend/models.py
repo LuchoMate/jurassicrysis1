@@ -3,7 +3,6 @@ from django.db import models
 from django.utils import timezone
 from django.core.validators import MaxValueValidator, MinValueValidator
 
-
 #User model
 class Player(AbstractUser):
     member_since = models.DateField(auto_now_add=timezone.now())
@@ -74,7 +73,23 @@ class Collection(models.Model):
     def __str__(self):
         return f"{self.Owner} owns {self.quantity} of {self.Card_collected} // on deck ---> {self.on_deck}"
 
+#Stores ongoing trade requests
+class Trade(models.Model):
+    Sender = models.ForeignKey(Player, on_delete=models.CASCADE, related_name='sent_requests')
+    Recipient = models.ForeignKey(Player, on_delete=models.CASCADE, related_name='incoming_requests')
+    Sender_card = models.ForeignKey(Card, on_delete=models.CASCADE, related_name='card_offered')
+    Recipient_card = models.ForeignKey(Card, on_delete=models.CASCADE, related_name='card_asked')
 
+    class Meta:
+        ordering = ('Sender',)
+        constraints = [
+            models.UniqueConstraint(fields=['Sender', 'Recipient', 'Sender_card','Recipient_card'], name='individual_request'),
+            models.CheckConstraint(
+            check= ~models.Q(Sender= models.F('Recipient')),
+            name='cannot_request_themselves')]
+
+    def __str__(self):
+        return f"{self.Sender} offers {self.Sender_card} to {self.Recipient} for {self.Recipient_card}"
 
 
 
