@@ -1,9 +1,10 @@
+from rest_framework import response
 from frontend.views import play
 from django.shortcuts import render
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
-from .models import Player, Card, Collection
-from .serializers import coll_serializer, card_serializer
+from .models import Player, Card, Collection, Trade
+from .serializers import coll_serializer, card_serializer, trade_serializer
 from rest_framework.response import Response
 from rest_framework import status
 import json
@@ -160,8 +161,7 @@ def api_buy_pack(request):
         data = json.loads(request.body)
         boosterpack = []
         if data["content"] == "ca":
-            #restar dinocoins
-            #luego de elegir, añadirlas a la coleccion
+            
             for x in range(3):
                 rNumber = random.random()
                 if rNumber <= 0.8:#common card
@@ -312,8 +312,35 @@ def api_buy_pack(request):
   
     
     else:
-        noCoins={"response": "no enough Dinocoins!"}
+        noCoins={"response": "not enough Dinocoins!"}
         return Response(noCoins, status=status.HTTP_204_NO_CONTENT)
+
+#Get players incoming trades requests
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def api_incoming_requests(request):
+    player = Player.objects.get(username=request.user)
+    incoming = player.incoming_requests.all()
+    if incoming:
+        serializer = trade_serializer(incoming, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    else:
+        body= {"Content": "No incoming requests at the moment."}
+        return Response(body, status=status.HTTP_404_NOT_FOUND)
+
+#Get players outgoing trades requests
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def api_outgoing_requests(request):
+    player = Player.objects.get(username=request.user)
+    outgoing = player.sent_requests.all()
+    if outgoing:
+        serializer = trade_serializer(outgoing, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    else:
+        body= {"Content": "No outgoing requests at the moment."}
+        return Response(body, status=status.HTTP_404_NOT_FOUND)
+
 
 
         

@@ -87,6 +87,7 @@ class Trade(models.Model):
             models.CheckConstraint(
             check= ~models.Q(Sender= models.F('Recipient')),
             name='cannot_request_themselves')]
+        #further logic will be dealt with in its corresponding Views
 
     def __str__(self):
         return f"{self.Sender} offers {self.Sender_card} to {self.Recipient} for {self.Recipient_card}"

@@ -1,5 +1,13 @@
 {% extends "frontend/layout.html" %}
 
 {% block body %}
-    <h1 style="color: antiquewhite;">Trade cards</h1> 
+<section data-barba="container" data-barba-namespace="trader">
+    <div class="caesarfont navbarcolor font10vh flexcontainer aligncenter glow margin10">Trades</div>
+    <div class="caesarfont navbarcolor font5vh flexcontainer aligncenter margin10 plyturnbg padding10 fl_column" style="position: relative; height: auto;">
+        Incoming Trade Requests
+        <div id="incoming_requests" class="blackTransparent"></div>
+        Outgoing Trade Requests
+        <div id="outgoing_requests" class="blackTransparent"></div>
+    </div>  
+</section> 
 {% endblock %}

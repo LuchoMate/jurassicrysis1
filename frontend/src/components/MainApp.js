@@ -112,9 +112,11 @@ function pageIn(){
   */
   
   /* Home page carousel*/
-  
+
+var myIndex = 0;  
 function carousel() {
-    var myIndex = 0;
+  console.log("hello index!");
+    
     var i;
     var x = document.getElementsByClassName("mySlides");
     for (i = 0; i < x.length; i++) {
@@ -445,6 +447,109 @@ function SketchEventCard(props){
               </div>
           </React.Fragment>
 }
+
+/*------- Trades Page-------*/
+
+/* Loads incoming trades requests*/
+async function loadIncoming() {
+  let response = await fetch(`/api/incoming_requests`);
+  if(response.status == 200){
+    const incoming_div = document.getElementById("incoming_requests")
+    incoming_div.innerHTML = ""
+    let incoming_requests = await response.json();
+    console.log(incoming_requests);
+
+    let tablediv = document.createElement("table");
+    tablediv.classList.add("table");
+    tablediv.classList.add("table-hover");
+    tablediv.classList.add("table-dark");
+    tablediv.classList.add("table-striped")
+    incoming_div.appendChild(tablediv);
+
+    let thead = document.createElement("thead");
+    tablediv.appendChild(thead);
+    let tr = document.createElement("tr");
+    thead.appendChild(tr);
+
+    let tSender = document.createElement("th");
+    tSender.scope="col";
+    tSender.innerHTML = "Sender"
+    tr.appendChild(tSender);
+
+    let tsenderCard = document.createElement("th");
+    tsenderCard.scope="col";
+    tsenderCard.innerHTML="Card Offered";
+    tr.appendChild(tsenderCard);
+
+    let tcardReq = document.createElement("th");
+    tcardReq.scope="col";
+    tcardReq.innerHTML = "Card Requested";
+    tr.appendChild(tcardReq);
+
+    let tbody = document.createElement("tbody");
+    tablediv.appendChild(tbody);
+
+    let i=1;
+    incoming_requests.forEach(element => {
+      let trow = document.createElement("tr");
+      trow.style.cursor ="pointer";
+      tbody.appendChild(trow);
+      /* 
+      let thh = document.createElement("th");
+      thh.scope ="row";
+      thh.innerHTML = i;
+      i++;*/
+
+      let td = document.createElement("td");
+      td.innerHTML = element.Sender;
+      trow.appendChild(td);
+
+      let td2 = document.createElement("td");
+      td2.innerHTML = element.Sender_card;
+      trow.appendChild(td2);
+
+      let td3 = document.createElement("td");
+      td3.innerHTML = element.Recipient_card;
+      trow.appendChild(td3);      
+      
+    });
+  }
+  else {
+    document.getElementById("incoming_requests").innerHTML = "No active Requests."
+  }
+}
+/* Loads outgoing trades requests */
+async function loadOutgoing() {
+  let out_response = await fetch(`/api/outgoing_requests`);
+  if(out_response.status == 200){
+    const outgoing_div = document.getElementById("outgoing_requests")
+    outgoing_div.innerHTML = ""
+
+    let outgoing_requests = await out_response.json();
+    console.log(outgoing_requests);
+    outgoing_requests.forEach(element => {
+      let appendDiv = document.createElement("div");
+      appendDiv.classList.add("blackTransparent");
+      appendDiv.classList.add("margin5px");
+      appendDiv.classList.add("padding10");
+      outgoing_div.appendChild(appendDiv);
+      appendDiv.innerHTML = `You offered <b>${element.Sender_card}</b> to <b>${element.Recipient}</b> in exchange for his/her <b>${element.Recipient_card}</b>`;
+
+    });
+  }
+  else {
+    document.getElementById("outgoing_requests").innerHTML = "No sent requests."
+  }
+}
+/* On page load functions*/
+function tradePage(){
+  loadIncoming();
+  loadOutgoing();
+  
+}
+
+
+
   
 /* Small delay to transition*/
 
@@ -532,6 +637,23 @@ barba.init({
 
         async enter(data) {
           pageIn();
+        },
+
+      },
+
+      {
+        name: 'trader',
+        to: {namespace: ['trader']},
+        async leave(data) {
+          const done = this.async();
+          pageOut();
+          await delay(1500);
+          done();
+        },
+
+        async enter(data) {
+          pageIn();
+          tradePage();
         },
 
       },
