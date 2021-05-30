@@ -56,7 +56,7 @@ class Card(models.Model):
 class Collection(models.Model):
     Owner = models.ForeignKey(Player, on_delete=models.CASCADE, null=True
         ,related_name='player_cards')
-    Card_collected = models.ForeignKey(Card, on_delete=models.CASCADE, null=True)
+    Card_collected = models.ForeignKey(Card, on_delete=models.CASCADE, null=True, related_name='in_collection')
     quantity = models.PositiveSmallIntegerField(default = 1,
         validators=[MinValueValidator(1, 'Cannot have 0 cards on db')])
     on_deck = models.PositiveSmallIntegerField(default=0, 

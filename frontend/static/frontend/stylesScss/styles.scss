@@ -2032,7 +2032,6 @@ box-shadow: 3px 3px antiquewhite
     border: none;
     perspective: 1000px;
     cursor: pointer;
-
 }
 
 .flip-card-inner {
@@ -2068,6 +2067,90 @@ box-shadow: 3px 3px antiquewhite
     margin: 5px;
 }
 
+#newTrade {
+    @extend #buyButton;
+    cursor: pointer;
+}
+
+.categoryPic {
+    margin: 5px;
+    border-radius: 50%;
+    border: 2px solid wheat;
+    min-height: 20vh;
+    max-height: 20vh;
+}
+
+.width15 {
+    width: 15vw;;
+}
+
+#tradeCategory{
+    position: absolute;
+    left: 5%;
+    top: 30%;
+}
+
+.cursorPointer {
+    cursor: pointer;
+}
+
+.largehover {
+    @extend .flexcontainer;
+    @extend .margin10;
+    @extend .width15;
+    @extend .fl_column;
+    @extend .cursorPointer;
+    transition: all .2s ease-in-out;
+}
+
+.largehover:hover {
+    transform: scaleX(1.1);
+    transform: scaleY(1.1);
+}
+
+#categoryContainer {
+    display: flex; 
+    justify-content: space-around; 
+    flex-wrap: wrap; 
+    width: 100%;
+    height: 70%;
+}
+
+.singlecardwrapper {
+    height: 36vh;
+    min-height: 36vh;
+    max-height: 36vh; 
+    width: 12vw;
+    min-width: 12vw;
+    max-width: 12vw; 
+    border: none;
+    margin: 10px;
+}
+
+#showCategory {
+    visibility: hidden; 
+    height: 70vh; 
+    width: 90vw; 
+    z-index: 10; 
+    top: 25%; 
+    left: 5%; 
+    overflow-y: scroll;
+}
+
+#showCardAvailable {
+    @extend #showCategory;
+}
+
+.tradesbg {
+    background-repeat: no-repeat, repeat;
+    background-position: center;
+    background-size: cover;
+    background-image: url("images/wallpaper/bluewp.jpg");
+    border: 5px solid gold;
+    border-radius: 20px;
+    position: absolute;
+    white-space: nowrap;
+}
 
 
 

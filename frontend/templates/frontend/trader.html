@@ -1,13 +1,57 @@
 {% extends "frontend/layout.html" %}
+{% load static %}
 
 {% block body %}
 <section data-barba="container" data-barba-namespace="trader">
+    <div class="flexcontainer"> <div id="newTrade" class="font5vh caesarfont navbarcolor aligncenter glow margin10 padding10" style="width: fit-content"> New Trade</div> </div>
     <div class="caesarfont navbarcolor font10vh flexcontainer aligncenter glow margin10">Trades</div>
-    <div class="caesarfont navbarcolor font5vh flexcontainer aligncenter margin10 plyturnbg padding10 fl_column" style="position: relative; height: auto;">
+    <div class="caesarfont navbarcolor font5vh flexcontainer aligncenter margin10 tradesbg padding10 fl_column" style="position: relative; height: auto;">
         Incoming Trade Requests
         <div id="incoming_requests" class="blackTransparent"></div>
         Outgoing Trade Requests
         <div id="outgoing_requests" class="blackTransparent"></div>
-    </div>  
+    </div> 
+
+    <div id="tradeCategory" class="flexcontainer margin10 tradesbg padding10 navbarcolor fl_column" style="visibility: hidden; height: fit-content;">
+        <div id="cancelTrade" class="font5vh" style="align-self: flex-end; cursor: pointer;">&#10060;</div>
+        <div class="font5vh navbarcolor caesarfont margin10 textalign glow">Which card type are you looking for?</div>
+        <div class="flexcontainer">
+            <div class="largehover">
+                <img id="categoryca" src="{% static 'frontend/images/cards/Tyrannosaurus.PNG' %}" alt="" class="categoryPic">
+                <div class="pangolinfont font5vh flexcontainer" style="color: red;">Carnivorous</div>
+            </div>
+            <div class="largehover">
+                <img id="categoryhe" src="{% static 'frontend/images/cards/Brachiosaurus.PNG' %}" alt="" class="categoryPic">
+                <div class="pangolinfont font5vh flexcontainer" style="color: green;">Herbivorous</div>
+            </div>
+            <div class="largehover">
+                <img id="categoryaq" src="{% static 'frontend/images/cards/Plesiosaurus.PNG' %}" alt="" class="categoryPic">
+                <div class="pangolinfont font5vh flexcontainer" style="color: blue">Aquatic</div>
+            </div>
+            <div  class="largehover">
+                <img id="categoryfl" src="{% static 'frontend/images/cards/Zhejiangopterus.PNG' %}" alt="" class="categoryPic">
+                <div class="pangolinfont font5vh flexcontainer" style="color: skyblue">Flying</div>
+            </div>
+            <div class="largehover">
+                <img id="categoryev" src="{% static 'frontend/images/cards/Large Litter.PNG' %}" alt="" class="categoryPic">
+                <div class="pangolinfont font5vh flexcontainer" style="color: purple">Event</div>
+            </div>
+        </div>
+      
+    </div>
+
+    <div id="showCategory" class="flexcontainer margin10 tradesbg padding10 navbarcolor fl_column position">
+        <div id="closeCategory" class="font5vh" style="align-self: flex-end; cursor: pointer;">&#10060;</div>
+        <div class="font5vh navbarcolor caesarfont margin10 textalign">Select a card</div>
+        <div id="categoryContainer"></div>
+    </div>
+
+    <div id="showCardAvailable" class="margin10 tradesbg padding10 navbarcolor position" style="z-index: 12;">
+        <div  class="font5vh" style="cursor: pointer; display: flex; justify-content: flex-end;"><div style="width: fit-content;" id="closeCardAvailable">&#10060;</div></div>
+        <div class="font5vh navbarcolor caesarfont textalign">Card availability</div>
+        <div id="displayCardAvailable" class="flexcontainer"></div>
+        <div id="cardUserAvailables" class="blackTransparent pangolinfont navbarcolor font5vh flexcontainer"></div>
+    </div>
+
 </section> 
 {% endblock %}

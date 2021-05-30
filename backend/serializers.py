@@ -3,9 +3,13 @@ from .models import Collection, Player, Card, Trade
 
 class coll_serializer(serializers.ModelSerializer):
 
+    Owner=serializers.SlugRelatedField(
+        slug_field='username',
+        queryset=Player.objects.all()   
+    )
     class Meta:
         model= Collection
-        fields = ('Card_collected', 'quantity', 'on_deck')
+        fields = ('id', 'Owner', 'Card_collected', 'quantity', 'on_deck')
 
 class card_serializer(serializers.ModelSerializer):
 
@@ -22,7 +26,15 @@ class trade_serializer(serializers.ModelSerializer):
         slug_field='username',
         queryset=Player.objects.all()   
     )
-
+    Sender_card = serializers.SlugRelatedField(
+        slug_field='name',
+        queryset=Card.objects.all()   
+    )
+    Recipient_card = serializers.SlugRelatedField(
+        slug_field='name',
+        queryset=Card.objects.all()   
+    )
+    
     class Meta:
         model = Trade
         fields = ('id', 'Sender', 'Recipient', 'Sender_card', 'Recipient_card')

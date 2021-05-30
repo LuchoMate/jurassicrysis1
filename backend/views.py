@@ -341,6 +341,33 @@ def api_outgoing_requests(request):
         body= {"Content": "No outgoing requests at the moment."}
         return Response(body, status=status.HTTP_404_NOT_FOUND)
 
+#Check if card is available for trade (quantity > on_deck of any user)
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def api_check_available(request, cardId):
+    try:
+        card = Card.objects.get(id=cardId)
+    except Card.DoesNotExist:
+        body= {"Content": "Invalid card, please try again."}
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    
+    query = Collection.objects.filter(Card_collected = card)
+    available_query = []
+    for collected in query:
+        if collected.quantity > collected.on_deck:
+            if collected.Owner != request.user:
+                available_query.append(collected)
+
+    if available_query:
+        serializer = coll_serializer(available_query, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    else:
+        body= {"Content": "No users with this card available at the moment."}
+        return Response(body, status=status.HTTP_404_NOT_FOUND)
+
+
+
+
 
 
         

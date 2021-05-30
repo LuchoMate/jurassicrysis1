@@ -488,52 +488,106 @@ async function loadIncoming() {
 
     let tbody = document.createElement("tbody");
     tablediv.appendChild(tbody);
-
-    let i=1;
+    
     incoming_requests.forEach(element => {
       let trow = document.createElement("tr");
       trow.style.cursor ="pointer";
       tbody.appendChild(trow);
-      /* 
-      let thh = document.createElement("th");
-      thh.scope ="row";
-      thh.innerHTML = i;
-      i++;*/
 
-      let td = document.createElement("td");
-      td.innerHTML = element.Sender;
-      trow.appendChild(td);
-
-      let td2 = document.createElement("td");
-      td2.innerHTML = element.Sender_card;
-      trow.appendChild(td2);
-
-      let td3 = document.createElement("td");
-      td3.innerHTML = element.Recipient_card;
-      trow.appendChild(td3);      
+      ReactDOM.render(<RenderIncomingCell 
+      Sender={element.Sender}
+      SenderCard={element.Sender_card}
+      RecipientCard={element.Recipient_card}
+      requestId={element.id}
       
+      />, trow)
     });
+
   }
   else {
     document.getElementById("incoming_requests").innerHTML = "No active Requests."
   }
 }
+
+/* Renders each cell details*/
+class RenderIncomingCell extends React.Component{
+  constructor(props){
+    super(props);
+    this.showDetails = this.showDetails.bind(this);
+  }
+
+  showDetails(){
+    console.log("showDetails")
+    console.log(this.props.requestId)
+    /* Create divs y llamar a segundo react component*/
+    
+  }
+
+  render(){
+    return(
+      <React.Fragment>
+          <td onClick={this.showDetails}>{this.props.Sender}</td>
+          <td onClick={this.showDetails}>{this.props.SenderCard}</td>
+          <td onClick={this.showDetails}>{this.props.RecipientCard}</td>
+      </React.Fragment>
+    )
+  }
+
+}
+
+
 /* Loads outgoing trades requests */
 async function loadOutgoing() {
   let out_response = await fetch(`/api/outgoing_requests`);
   if(out_response.status == 200){
     const outgoing_div = document.getElementById("outgoing_requests")
     outgoing_div.innerHTML = ""
-
     let outgoing_requests = await out_response.json();
     console.log(outgoing_requests);
+
+    
+    let tablediv = document.createElement("table");
+    tablediv.classList.add("table");
+    tablediv.classList.add("table-hover");
+    tablediv.classList.add("table-dark");
+    tablediv.classList.add("table-striped")
+    outgoing_div.appendChild(tablediv); 
+
+    let thead = document.createElement("thead");
+    tablediv.appendChild(thead);
+    let tr = document.createElement("tr");
+    thead.appendChild(tr);
+
+    let cOffered = document.createElement("th");
+    cOffered.scope="col";
+    cOffered.innerHTML = "Card Offered"
+    tr.appendChild(cOffered);
+
+    let tUser = document.createElement("th");
+    tUser.scope="col";
+    tUser.innerHTML="User";
+    tr.appendChild(tUser);
+
+    let tcardReq = document.createElement("th");
+    tcardReq.scope="col";
+    tcardReq.innerHTML = "Card Requested";
+    tr.appendChild(tcardReq);
+
+    let tbody = document.createElement("tbody");
+    tablediv.appendChild(tbody);
+
     outgoing_requests.forEach(element => {
-      let appendDiv = document.createElement("div");
-      appendDiv.classList.add("blackTransparent");
-      appendDiv.classList.add("margin5px");
-      appendDiv.classList.add("padding10");
-      outgoing_div.appendChild(appendDiv);
-      appendDiv.innerHTML = `You offered <b>${element.Sender_card}</b> to <b>${element.Recipient}</b> in exchange for his/her <b>${element.Recipient_card}</b>`;
+
+      let trow = document.createElement("tr");
+      trow.style.cursor ="pointer";
+      tbody.appendChild(trow);
+
+      ReactDOM.render(<RenderOutgoingCell
+        SenderCard={element.Sender_card}
+        Recipient={element.Recipient}
+        RecipientCard={element.Recipient_card}
+        requestId={element.id}
+        />, trow)
 
     });
   }
@@ -541,16 +595,239 @@ async function loadOutgoing() {
     document.getElementById("outgoing_requests").innerHTML = "No sent requests."
   }
 }
-/* On page load functions*/
-function tradePage(){
-  loadIncoming();
-  loadOutgoing();
+
+/* Renders each cell details*/
+class RenderOutgoingCell extends React.Component{
+  constructor(props){
+    super(props);
+    this.showDetails = this.showDetails.bind(this);
+  }
+
+  showDetails(){
+    console.log("showDetails")
+    console.log(this.props.requestId)
+    /* Create divs y llamar a segundo react component*/
+  }
+
+  render(){
+    return(
+      <React.Fragment>
+          <td onClick={this.showDetails}>{this.props.SenderCard}</td>
+          <td onClick={this.showDetails}>{this.props.Recipient}</td>
+          <td onClick={this.showDetails}>{this.props.RecipientCard}</td>
+      </React.Fragment>
+    )
+  }
+
+}
+
+function openTrade(){
+  var tl = gsap.timeline()
+  tl.set("#tradeCategory", {visibility: 'visible'})
+  tl.from("#tradeCategory", {scaleX: 0, scaleY: 0, duration: 0.2})
+}
+
+async function showCategory(category){
+  console.log("Show category")
   
+ 
+  const catString = String(category)
+  const catDisplay = catString.slice(8);
+  console.log(`catDisplay=${catDisplay}`);
+  let catArray = []
+
+  switch (catDisplay) {
+    case "ca":
+      catArray=[3,4,5,6,7,8,9,10,11,12,13,14,15,16,17]
+      break;
+    case "he":
+      catArray=[18,19,20,21,22,23,24,25,26,27,28,29,30,31,32]
+      break;
+    case "aq":
+      catArray=[33,34,35,36,37,38,39,40,41,42,43,44,45,46,47]
+      break;
+    case "fl":
+      catArray=[48,49,50,51,52,53,54,55,56,57,58,59,60,61,62]
+      break;
+    case "ev":
+      catArray=[63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82]
+
+    default:
+      console.log("nothing happened")
+      break;
+  }
+
+  catArray.forEach(element => {
+    const createadiv = document.createElement("div")
+    createadiv.dataset.cardid = element;
+    createadiv.style.cursor = 'pointer';
+    createadiv.classList.add("singlecardwrapper");
+
+    createadiv.addEventListener('click', function(event){
+      showCardAvailable(event.currentTarget.dataset.cardid);
+      
+      console.log("clicked createadiv!")
+    }, true);
+    
+    document.getElementById("categoryContainer").appendChild(createadiv)
+
+    const lastCatChild = document.getElementById("categoryContainer").lastElementChild;
+    showNewCard(element, lastCatChild)
+  });
+
+  closeTrade();
+  var tl = gsap.timeline()
+  tl.set("#showCategory", {visibility: 'visible'})
+  tl.from("#showCategory", {scaleX: 0, scaleY: 0, duration: 0.2})
+
+}
+
+function closeTrade(){
+  var tl = gsap.timeline()
+
+  tl.to("#tradeCategory", {scaleX: 0, scaleY: 0, duration: 0.2})
+  tl.set("#tradeCategory", {visibility: 'hidden'})
+  tl.set("#tradeCategory", {scaleX: 1, scaleY: 1});
+
+}
+
+function closeCategory(){
+  var tl = gsap.timeline()
+  tl.to("#showCategory", {scaleX: 0, scaleY: 0, duration: 0.2})
+  tl.set("#showCategory", {visibility: 'hidden'})
+  tl.set("#showCategory", {scaleX: 1, scaleY: 1});
+
+  document.getElementById("categoryContainer").innerHTML = "";
+
+}
+
+/* Shows if selected card is available for trade*/
+async function showCardAvailable(card){
+  console.log(`showcardAv ${card}`);
+  const createadiv = document.createElement("div")
+  createadiv.classList.add("singlecardwrapper");
+  document.getElementById("displayCardAvailable").appendChild(createadiv);
+  const nodedisplay = document.getElementById("displayCardAvailable").lastElementChild;
+  showNewCard(card, nodedisplay);
+
+  let check_card = await fetch(`/api/check_card/${card}`);
+  if(check_card.status == 200){
+
+    const available_div = document.getElementById("cardUserAvailables")
+    available_div.innerHTML = ""
+    let available_users = await check_card.json();
+    console.log(available_users);
+
+    let tablediv = document.createElement("table");
+    tablediv.classList.add("table");
+    tablediv.classList.add("table-hover");
+    tablediv.classList.add("table-dark");
+    tablediv.classList.add("table-striped");
+    tablediv.classList.add("align-middle");
+    available_div.appendChild(tablediv); 
+
+    let thead = document.createElement("thead");
+    tablediv.appendChild(thead);
+    let tr = document.createElement("tr");
+    thead.appendChild(tr);
+
+    let usershow = document.createElement("th");
+    usershow.scope="col";
+    usershow.innerHTML = "Player"
+    tr.appendChild(usershow);
+
+    let Quantity = document.createElement("th");
+    Quantity.scope="col";
+    Quantity.innerHTML="Quantity";
+    tr.appendChild(Quantity);
+
+    let Request = document.createElement("th");
+    Request.scope="col";
+    Request.innerHTML = "Send Offer";
+    tr.appendChild(Request);
+
+    let tbody = document.createElement("tbody");
+    tablediv.appendChild(tbody);
+
+    available_users.forEach(element => {
+
+      let trow = document.createElement("tr");
+      trow.style.cursor ="pointer";
+      tbody.appendChild(trow);
+
+      ReactDOM.render(<RenderPlayerAvlb
+        Player={element.Owner}
+        Quantity={element.quantity}
+        CardCollected={element.Card_collected}
+        requestId={element.id}
+        />, trow)
+
+    });
+
+  }
+  else {
+    document.getElementById("cardUserAvailables").innerHTML = "This card is not available for trade at this moment."
+  }
+
+  closeCategory();
+  var tl = gsap.timeline()
+  tl.set("#showCardAvailable", {visibility: 'visible'})
+  tl.from("#showCardAvailable", {scaleX: 0, scaleY: 0, duration: 0.2});
+
+}
+
+/* Renders each players available cards*/
+class RenderPlayerAvlb extends React.Component{
+  constructor(props){
+    super(props);
+    this.showDetails = this.showDetails.bind(this);
+  }
+
+  showDetails(){
+    console.log("showDetails Render Player")
+    /* Create divs y llamar a segundo react component*/
+  }
+
+  render(){
+    return(
+      <React.Fragment>
+          <td>{this.props.Player}</td>
+          <td>{this.props.Quantity}</td>
+          <td><button  onClick={this.showDetails} type="button" className="btn btn-primary">Trade</button></td>
+      </React.Fragment>
+    )
+  }
+
+}
+
+function closeAvailable() {
+  var tl = gsap.timeline()
+  tl.to("#showCardAvailable", {scaleX: 0, scaleY: 0, duration: 0.2})
+  tl.set("#showCardAvailable", {visibility: 'hidden', scaleX: 1, scaleY: 1,})
+  document.getElementById("displayCardAvailable").innerHTML ="";
+  document.getElementById("cardUserAvailables").innerHTML ="";
 }
 
 
 
+/* On page load functions*/
+function tradePage(){
+  loadIncoming();
+  loadOutgoing();
+  document.getElementById("newTrade").addEventListener('click', openTrade)
+  document.getElementById("cancelTrade").addEventListener('click', function(){closeTrade()} )
+  document.getElementById("closeCategory").addEventListener('click', function(){closeCategory()} )
+  document.getElementById("closeCardAvailable").addEventListener('click', function(){closeAvailable()} )
+
+  const categories = document.getElementsByClassName("categoryPic");
+  for(let i =0; i < categories.length; i++){
+    categories[i].addEventListener('click', function (event){
+      showCategory(event.target.id);
+    }, true)
+  } 
   
+}
+ 
 /* Small delay to transition*/
 
 function delay(n) {
