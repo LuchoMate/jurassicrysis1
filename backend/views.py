@@ -341,7 +341,7 @@ def api_outgoing_requests(request):
         body= {"Content": "No outgoing requests at the moment."}
         return Response(body, status=status.HTTP_404_NOT_FOUND)
 
-#Check if card is available for trade (quantity > on_deck of any user)
+#Check if a given card is available for trade (quantity > on_deck of any user)
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def api_check_available(request, cardId):
@@ -364,6 +364,30 @@ def api_check_available(request, cardId):
     else:
         body= {"Content": "No users with this card available at the moment."}
         return Response(body, status=status.HTTP_404_NOT_FOUND)
+
+#Returns a list of user's available cards for trade
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def api_my_avl_cards(request):
+    player = Player.objects.get(username=request.user)
+    query = Collection.objects.filter(Owner=player)
+    if query:
+        availableCardsList = []
+        for card in query:
+            if card.quantity > card.on_deck:
+                availableCardsList.append(card.Card_collected.id)
+        if availableCardsList:
+            availableCardsList.sort()
+            return Response(availableCardsList, status=status.HTTP_200_OK)
+        else:
+            body= {"Content": "You don't have any available cards to trade."}
+            return Response(body, status=status.HTTP_404_NOT_FOUND)
+    else:
+        body= {"Content": "You don't have any available cards to trade."}
+        return Response(body, status=status.HTTP_404_NOT_FOUND)
+
+
+
 
 
 

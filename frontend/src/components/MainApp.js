@@ -760,6 +760,7 @@ async function showCardAvailable(card){
         Quantity={element.quantity}
         CardCollected={element.Card_collected}
         requestId={element.id}
+        cardtoTrade={card}
         />, trow)
 
     });
@@ -776,16 +777,65 @@ async function showCardAvailable(card){
 
 }
 
-/* Renders each players available cards*/
+function finishTrade(playerToSend, cardToTrade, cardToOffer){
+  console.log(`Send RQ to ${playerToSend}, I want ${cardToTrade} and I offer ${cardToOffer}`)
+}
+
+/* Renders each players available cards, also shows current user available cards for trade on click*/
 class RenderPlayerAvlb extends React.Component{
   constructor(props){
     super(props);
+   
     this.showDetails = this.showDetails.bind(this);
+    this.hideTradesList = this.hideTradesList.bind(this);
+  }
+
+  async hideTradesList() {
+    document.getElementById("cardUserAvailables").innerHTML="";
+    document.getElementById("cardAvTitle").innerHTML=`Choose card to offer to <strong>${this.props.Player}</strong>`;
+    document.getElementById("yourAvCards").style.display = 'block';
+
+    let response = await fetch(`/api/mycardstrade`);
+    if(response.status == 200){
+      let cardlist = await response.json();
+      cardlist.forEach(element => {
+        const createadiv = document.createElement("div")
+        /* createadiv.dataset.mycardid = element;*/
+        createadiv.style.cursor = 'pointer';
+        createadiv.classList.add("singlecardwrapper");
+        createadiv.dataset.playerToSend = this.props.Player;
+        createadiv.dataset.cardtoTrade = this.props.cardtoTrade;
+        createadiv.dataset.cardtoOffer = element;
+        /* 
+        console.log(`propsPlayer: ${this.props.Player}`);
+        console.log(`propscardtotrade: ${this.props.cardtoTrade}`);
+        console.log(`mycard: ${element}`);*/
+
+        createadiv.addEventListener('click', function(event){
+          console.log("clicked card to offer!")
+          finishTrade(event.currentTarget.dataset.playerToSend,
+            event.currentTarget.dataset.cardtoTrade,
+            event.currentTarget.dataset.cardtoOffer);
+        }, true); 
+        
+        document.getElementById("cardUserAvailables").appendChild(createadiv)
+        const lastCatChild = document.getElementById("cardUserAvailables").lastElementChild;
+        showNewCard(element, lastCatChild)
+  
+      });
+    }
+    else {
+      document.getElementById("cardUserAvailables").innerHTML="You don't have any available cards to trade";
+    }
+    gsap.to("#cardUserAvailables", {opacity: 1, duration: 0.3})
   }
 
   showDetails(){
-    console.log("showDetails Render Player")
-    /* Create divs y llamar a segundo react component*/
+    console.log(`${this.props.Player} has ${this.props.Quantity} of idcard ${this.props.cardtoTrade}`)
+    var tl = gsap.timeline();
+    tl.to("#cardUserAvailables", {opacity: 0, duration: 0.3})
+    tl.call(this.hideTradesList)
+  
   }
 
   render(){
@@ -806,9 +856,10 @@ function closeAvailable() {
   tl.set("#showCardAvailable", {visibility: 'hidden', scaleX: 1, scaleY: 1,})
   document.getElementById("displayCardAvailable").innerHTML ="";
   document.getElementById("cardUserAvailables").innerHTML ="";
+  document.getElementById("cardAvTitle").innerHTML ="Card availability";
+  document.getElementById("yourAvCards").style.display = 'none';
+
 }
-
-
 
 /* On page load functions*/
 function tradePage(){

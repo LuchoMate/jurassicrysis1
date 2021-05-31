@@ -3,7 +3,7 @@
 
 {% block body %}
 <section data-barba="container" data-barba-namespace="trader">
-    <div class="flexcontainer"> <div id="newTrade" class="font5vh caesarfont navbarcolor aligncenter glow margin10 padding10" style="width: fit-content"> New Trade</div> </div>
+    <div class="flexcontainer"> <div id="newTrade" class="flexcontainer font5vh caesarfont navbarcolor aligncenter glow margin10 padding10" style="width: fit-content"> New Trade</div> </div>
     <div class="caesarfont navbarcolor font10vh flexcontainer aligncenter glow margin10">Trades</div>
     <div class="caesarfont navbarcolor font5vh flexcontainer aligncenter margin10 tradesbg padding10 fl_column" style="position: relative; height: auto;">
         Incoming Trade Requests
@@ -47,9 +47,10 @@
     </div>
 
     <div id="showCardAvailable" class="margin10 tradesbg padding10 navbarcolor position" style="z-index: 12;">
-        <div  class="font5vh" style="cursor: pointer; display: flex; justify-content: flex-end;"><div style="width: fit-content;" id="closeCardAvailable">&#10060;</div></div>
-        <div class="font5vh navbarcolor caesarfont textalign">Card availability</div>
+        <div class="font5vh" style="cursor: pointer; display: flex; justify-content: flex-end;"><div style="width: fit-content;" id="closeCardAvailable">&#10060;</div></div>
+        <div id="cardAvTitle" class="font5vh navbarcolor caesarfont textalign">Card availability</div>
         <div id="displayCardAvailable" class="flexcontainer"></div>
+        <div id="yourAvCards" class="font5vh navbarcolor caesarfont textalign" style="display: none;">Your available cards</div>
         <div id="cardUserAvailables" class="blackTransparent pangolinfont navbarcolor font5vh flexcontainer"></div>
     </div>
 

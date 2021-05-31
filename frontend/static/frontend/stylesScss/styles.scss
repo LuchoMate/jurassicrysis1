@@ -2152,6 +2152,14 @@ box-shadow: 3px 3px antiquewhite
     white-space: nowrap;
 }
 
+#myCardsAvailable {
+    @extend #showCategory;
+}
+
+#cardUserAvailables {
+    @extend #categoryContainer;
+}
+
 
 
 

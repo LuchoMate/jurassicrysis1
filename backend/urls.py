@@ -13,5 +13,6 @@ urlpatterns = [
     path('incoming_requests', views.api_incoming_requests, name='incoming_requests'),
     path('outgoing_requests', views.api_outgoing_requests, name='outgoing_requests'),
     path('check_card/<int:cardId>', views.api_check_available, name='check_card'),
+    path('mycardstrade', views.api_my_avl_cards, name='mycardstrade'),
 
 ]
