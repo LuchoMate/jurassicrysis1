@@ -448,6 +448,35 @@ def api_new_trade(request):
     else:
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
+#Deletes logged user given trade request
+@api_view(['DELETE'])
+@permission_classes([IsAuthenticated])
+def api_cancel_trade(request):
+    requestPlayer = Player.objects.get(username=request.user)
+    if request.method == 'DELETE':
+        data = json.loads(request.body)
+        try:
+            tradeToCancel = Trade.objects.get(id=data["tradeId"])
+        except Trade.DoesNotExist:
+            body= {"Content": "This trade request does not exist."}
+            return Response(body, status=status.HTTP_404_NOT_FOUND)
+
+        
+        if tradeToCancel.Sender.username == requestPlayer.username or tradeToCancel.Recipient.username == requestPlayer.username:
+            try:
+                tradeToCancel.delete()
+            except IntegrityError:
+                body= {"Content": "Could not delete current trade, try again later."}
+                return Response(body, status=status.HTTP_409_CONFLICT)
+        
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        else:
+            body= {"Content": "You cannot modify this trade."}
+            return Response(body, status=status.HTTP_403_FORBIDDEN)
+
+    else:
+       return Response(status=status.HTTP_400_BAD_REQUEST) 
+
 
 
 

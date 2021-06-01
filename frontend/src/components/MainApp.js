@@ -573,6 +573,11 @@ async function loadOutgoing() {
     tcardReq.innerHTML = "Card Requested";
     tr.appendChild(tcardReq);
 
+    let tCancel = document.createElement("th");
+    tCancel.scope="col";
+    tCancel.innerHTML = "Cancel trade";
+    tr.appendChild(tCancel);
+
     let tbody = document.createElement("tbody");
     tablediv.appendChild(tbody);
 
@@ -600,21 +605,71 @@ async function loadOutgoing() {
 class RenderOutgoingCell extends React.Component{
   constructor(props){
     super(props);
-    this.showDetails = this.showDetails.bind(this);
+    this.cancelTrade = this.cancelTrade.bind(this);
+    this.destroyMe = this.destroyMe.bind(this);
   }
 
-  showDetails(){
-    console.log("showDetails")
+  cancelTrade(){
+    console.log("cancel trade")
     console.log(this.props.requestId)
-    /* Create divs y llamar a segundo react component*/
+
+    /* Llamar api delete y en 200 hacer lo siguiente*/
+    let cookie = document.cookie
+    let csrfToken = cookie.substring(cookie.indexOf('=') + 1)
+
+    fetch(`/api/cancel_trade`, {
+        method: 'DELETE',
+        headers: {
+            'X-CSRFToken': csrfToken,
+            "Content-Type": "application/json; charset=UTF-8"
+          },
+        
+        body: JSON.stringify({
+            "tradeId": this.props.requestId
+            
+        }) 
+    }).then(response => {
+      
+      if(response.status != 204){
+        throw new Error('error');
+      }
+      else{console.log(response.status);
+        const button = new Audio('/static/frontend/sounds/button2.mp3');
+        button.loop = false;
+        button.play();
+
+        const thisNode = ReactDOM.findDOMNode(this);            
+        var tl = gsap.timeline();
+        tl.to(thisNode, {scaleY: 0, scaleX: 0, duration: 0.4})
+        setTimeout(() => {this.destroyMe()}, 0.7);
+        setTimeout(() => {loadOutgoing()}, 0.8);
+
+
+      }
+    })
+    .catch(error => {console.log(error);
+      const wrong = new Audio('/static/frontend/sounds/wrong.wav');
+      wrong.loop = false;
+      wrong.play();
+      
+    });
+
   }
 
+  destroyMe(){
+    const thisNode = ReactDOM.findDOMNode(this);
+    const parent = thisNode.parentNode;
+    ReactDOM.unmountComponentAtNode(thisNode.parentNode);
+    parent.parentNode.removeChild(parent);  
+  } 
+  
   render(){
     return(
       <React.Fragment>
-          <td onClick={this.showDetails}>{this.props.SenderCard}</td>
-          <td onClick={this.showDetails}>{this.props.Recipient}</td>
-          <td onClick={this.showDetails}>{this.props.RecipientCard}</td>
+          <td>{this.props.SenderCard}</td>
+          <td>{this.props.Recipient}</td>
+          <td>{this.props.RecipientCard}</td>
+          <td><button onClick={this.cancelTrade} type="button" className="btn btn-danger">Cancel</button></td>
       </React.Fragment>
     )
   }

@@ -90,7 +90,7 @@ class Trade(models.Model):
         #further logic will be dealt with in its corresponding Views
 
     def __str__(self):
-        return f"{self.Sender} offers {self.Sender_card} to {self.Recipient} for {self.Recipient_card}"
+        return f"ID{self.id} {self.Sender} offers {self.Sender_card} to {self.Recipient} for {self.Recipient_card}"
 
 
 
