@@ -2160,6 +2160,19 @@ box-shadow: 3px 3px antiquewhite
     @extend #categoryContainer;
 }
 
+#successfulNewTrade {
+    @extend .position;
+    @extend .flexcontainer;
+    top: 30%;
+    left: 30%;
+    display: none;
+    z-index: 18;
+}
+
+#closeSuccessful {
+    @extend #newTrade;
+}
+
 
 
 

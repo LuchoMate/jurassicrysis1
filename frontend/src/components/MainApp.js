@@ -261,7 +261,7 @@ function buyPack(pack){
       tl.from("#showNewCards", {opacity: 0, scaleY: 0, scaleX: 0, duration: 0.2})
       
     })
-    .catch(error => {console.log("no enough Dinocoins!");
+    .catch(error => {console.log("not enough Dinocoins!");
     notMoney();
   })
 }
@@ -622,6 +622,9 @@ class RenderOutgoingCell extends React.Component{
 }
 
 function openTrade(){
+  const button = new Audio('/static/frontend/sounds/button2.mp3');
+  button.loop = false;
+  button.play();
   var tl = gsap.timeline()
   tl.set("#tradeCategory", {visibility: 'visible'})
   tl.from("#tradeCategory", {scaleX: 0, scaleY: 0, duration: 0.2})
@@ -629,7 +632,9 @@ function openTrade(){
 
 async function showCategory(category){
   console.log("Show category")
-  
+  const button = new Audio('/static/frontend/sounds/button2.mp3');
+  button.loop = false;
+  button.play();
  
   const catString = String(category)
   const catDisplay = catString.slice(8);
@@ -683,6 +688,9 @@ async function showCategory(category){
 }
 
 function closeTrade(){
+  const button = new Audio('/static/frontend/sounds/button2.mp3');
+  button.loop = false;
+  button.play();
   var tl = gsap.timeline()
 
   tl.to("#tradeCategory", {scaleX: 0, scaleY: 0, duration: 0.2})
@@ -692,6 +700,9 @@ function closeTrade(){
 }
 
 function closeCategory(){
+  const button = new Audio('/static/frontend/sounds/button2.mp3');
+  button.loop = false;
+  button.play();
   var tl = gsap.timeline()
   tl.to("#showCategory", {scaleX: 0, scaleY: 0, duration: 0.2})
   tl.set("#showCategory", {visibility: 'hidden'})
@@ -778,7 +789,53 @@ async function showCardAvailable(card){
 }
 
 function finishTrade(playerToSend, cardToTrade, cardToOffer){
+  closeAvailable();
+  
   console.log(`Send RQ to ${playerToSend}, I want ${cardToTrade} and I offer ${cardToOffer}`)
+
+  let cookie = document.cookie
+  let csrfToken = cookie.substring(cookie.indexOf('=') + 1)
+
+  fetch(`/api/new_trade`, {
+      method: 'POST',
+      headers: {
+          'X-CSRFToken': csrfToken,
+          "Content-Type": "application/json; charset=UTF-8"
+        },
+      
+      body: JSON.stringify({
+          "TargetPlayer": playerToSend,
+          "TargetCard": cardToTrade,
+          "OfferedCard": cardToOffer
+      }) 
+  }).then(response => {
+    
+    if(response.status != 201){
+      throw new Error('error');
+    }
+    else console.log(response.status); 
+
+    return response.json();
+  }).then(response => {console.log(response);
+      const button = new Audio('/static/frontend/sounds/winrps.mp3');
+      button.loop = false;
+      button.play();
+      document.getElementById("newTradeMsg").innerHTML="Trade request created successfully!";
+      var tl = gsap.timeline()
+      tl.set("#successfulNewTrade", {display: 'block'})
+      tl.from("#successfulNewTrade", {scaleY: 0, scaleX: 0, duration: 0.3})
+
+  })
+  .catch(error => {console.log(error);
+    const wrong = new Audio('/static/frontend/sounds/wrong.wav');
+    wrong.loop = false;
+    wrong.play();
+    document.getElementById("newTradeMsg").innerHTML="Trade request could not be completed.";
+    var tl = gsap.timeline()
+    tl.set("#successfulNewTrade", {display: 'block'})
+    tl.from("#successfulNewTrade", {scaleY: 0, scaleX: 0, duration: 0.3})
+  });
+
 }
 
 /* Renders each players available cards, also shows current user available cards for trade on click*/
@@ -806,11 +863,7 @@ class RenderPlayerAvlb extends React.Component{
         createadiv.dataset.playerToSend = this.props.Player;
         createadiv.dataset.cardtoTrade = this.props.cardtoTrade;
         createadiv.dataset.cardtoOffer = element;
-        /* 
-        console.log(`propsPlayer: ${this.props.Player}`);
-        console.log(`propscardtotrade: ${this.props.cardtoTrade}`);
-        console.log(`mycard: ${element}`);*/
-
+        
         createadiv.addEventListener('click', function(event){
           console.log("clicked card to offer!")
           finishTrade(event.currentTarget.dataset.playerToSend,
@@ -831,6 +884,10 @@ class RenderPlayerAvlb extends React.Component{
   }
 
   showDetails(){
+    const button = new Audio('/static/frontend/sounds/button2.mp3');
+    button.loop = false;
+    button.play();
+
     console.log(`${this.props.Player} has ${this.props.Quantity} of idcard ${this.props.cardtoTrade}`)
     var tl = gsap.timeline();
     tl.to("#cardUserAvailables", {opacity: 0, duration: 0.3})
@@ -861,6 +918,14 @@ function closeAvailable() {
 
 }
 
+function closeTradeStatus() {
+  loadOutgoing();
+  var tl = gsap.timeline()
+  tl.to("#successfulNewTrade", {scaleX: 0, scaleY: 0, duration: 0.3})
+  tl.set("#successfulNewTrade", {display: 'none', scaleX: 1, scaleY: 1})
+  document.getElementById("newTradeMsg").innerHTML = "";
+}
+
 /* On page load functions*/
 function tradePage(){
   loadIncoming();
@@ -869,6 +934,7 @@ function tradePage(){
   document.getElementById("cancelTrade").addEventListener('click', function(){closeTrade()} )
   document.getElementById("closeCategory").addEventListener('click', function(){closeCategory()} )
   document.getElementById("closeCardAvailable").addEventListener('click', function(){closeAvailable()} )
+  document.getElementById("closeSuccessful").addEventListener('click', function(){closeTradeStatus()})
 
   const categories = document.getElementsByClassName("categoryPic");
   for(let i =0; i < categories.length; i++){

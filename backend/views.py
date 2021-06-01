@@ -11,6 +11,7 @@ import json
 from django.http import JsonResponse
 import random
 from random import randrange
+from django.db import IntegrityError
 
 @permission_classes([IsAuthenticated])
 @api_view(['GET'])
@@ -385,6 +386,67 @@ def api_my_avl_cards(request):
     else:
         body= {"Content": "You don't have any available cards to trade."}
         return Response(body, status=status.HTTP_404_NOT_FOUND)
+
+#Create a new trade request
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def api_new_trade(request):
+    requestPlayer = Player.objects.get(username=request.user)
+    if request.method == 'POST':
+        postData = request.data
+
+        try:
+            targetPlayer = Player.objects.get(username=postData["TargetPlayer"])
+        except Player.DoesNotExist:
+            body= {"Content": "Requested player does not exist."}
+            return Response(body, status=status.HTTP_404_NOT_FOUND)
+
+        try:
+            targetCard = Card.objects.get(id=postData["TargetCard"])
+        except Card.DoesNotExist:
+            body= {"Content": "Requested card does not exist."}
+            return Response(body, status=status.HTTP_404_NOT_FOUND)
+ 
+        try:   
+            offeredCard = Card.objects.get(id=postData["OfferedCard"])
+        except Card.DoesNotExist:
+            body= {"Content": "Offered card does not exist."}
+            return Response(body, status=status.HTTP_404_NOT_FOUND)
+
+        #double checks if cards are in players collections
+        targetColl = targetPlayer.player_cards.all()
+        checkTargetCard = targetColl.get(Card_collected = targetCard)
+        if checkTargetCard:
+            if checkTargetCard.quantity <= checkTargetCard.on_deck:
+                body= {"Content": f"{targetPlayer} does not have card {targetCard.name} available for trade."}
+                return Response(body, status=status.HTTP_404_NOT_FOUND)  
+        else:
+            body= {"Content": f"{targetPlayer} does not own card {targetCard.name}."}
+            return Response(body, status=status.HTTP_404_NOT_FOUND) 
+
+        userColl = requestPlayer.player_cards.all()
+        checkPlayerCard = userColl.get(Card_collected = offeredCard)
+        if checkPlayerCard:
+            if checkPlayerCard.quantity <= checkPlayerCard.on_deck:
+                body= {"Content": f"You do not have {offeredCard.name} available for trade."}
+                return Response(body, status=status.HTTP_404_NOT_FOUND)
+        else:
+            body= {"Content": f"You do not own {offeredCard.name}."}
+            return Response(body, status=status.HTTP_404_NOT_FOUND) 
+
+        try:
+            newTrade = Trade(Sender = requestPlayer, Recipient = targetPlayer,
+            Sender_card = offeredCard, Recipient_card = targetCard)
+            newTrade.save()
+        except IntegrityError:
+            body= {"Content": "Trade with the same parameters already active."}
+            return Response(body, status=status.HTTP_404_NOT_FOUND)
+
+        serializer = trade_serializer(newTrade)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+         
+    else:
+        return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 
