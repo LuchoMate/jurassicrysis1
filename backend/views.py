@@ -13,6 +13,7 @@ import random
 from random import randrange
 from django.db import IntegrityError
 
+#Gets card by id
 @permission_classes([IsAuthenticated])
 @api_view(['GET'])
 def api_get_card(request, cardId):
@@ -23,6 +24,19 @@ def api_get_card(request, cardId):
     
     serializer = card_serializer(thiscard, many=False)
     return Response(serializer.data)
+
+#Returns card id given its name
+@permission_classes([IsAuthenticated])
+@api_view(['GET'])
+def api_return_card_id(request, cardName):
+    try:
+        thiscard = Card.objects.get(name=cardName)
+    except Card.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    cardid= {"cardid": thiscard.id}
+    return Response(cardid, status=status.HTTP_200_OK)
+
 
 #get logged user card's collection
 @api_view(['GET'])

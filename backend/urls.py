@@ -7,6 +7,7 @@ urlpatterns = [
     path('shuffled_deck', views.api_shuffled_deck, name='shuffled_deck'),
     path('opp_deck/<str:difficulty>', views.api_opp_deck, name='opp_deck'),
     path('get_card/<int:cardId>', views.api_get_card, name='get_card'),
+    path('return_card_id/<str:cardName>', views.api_return_card_id, name='return_card_id'),
     path('player_wins/<str:difficulty>', views.api_player_wins, name='player_wins'),
     path('player_loses', views.api_player_loses, name='player_loses'),
     path('buy_pack', views.api_buy_pack, name='buy_pack'),

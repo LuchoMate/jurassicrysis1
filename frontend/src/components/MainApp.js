@@ -652,13 +652,19 @@ async function tradeAccepted(senderCard, recipientCard){
   createadiv.classList.add("singlecardwrapper")
   document.getElementById("myNewCard").appendChild(createadiv)
   const nodedisplay = document.getElementById("myNewCard").lastElementChild;
-  showNewCard(senderCard, nodedisplay);
+  
+  let response = await fetch(`/api/return_card_id/${senderCard}`);
+  let card = await response.json();
+  showNewCard(card.cardid, nodedisplay);
 
   let createadiv2 = document.createElement("div")
   createadiv2.classList.add("singlecardwrapper")
   document.getElementById("mySentCard").appendChild(createadiv2)
   const nodedisplay2 = document.getElementById("mySentCard").lastElementChild;
-  showNewCard(recipientCard, nodedisplay2);
+
+  let response2 = await fetch(`/api/return_card_id/${recipientCard}`);
+  let card2 = await response2.json();
+  showNewCard(card2.cardid, nodedisplay2);
 
   var tl = gsap.timeline()
   tl.set("#tradeAccepted", {visibility: 'visible'})
