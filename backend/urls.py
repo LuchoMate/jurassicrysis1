@@ -16,6 +16,7 @@ urlpatterns = [
     path('mycardstrade', views.api_my_avl_cards, name='mycardstrade'),
     path('new_trade', views.api_new_trade, name='new_trade'),
     path('cancel_trade', views.api_cancel_trade, name='cancel_trade'),
+    path('accept_trade', views.api_accept_trade, name='accept_trade'),
 
 
 ]

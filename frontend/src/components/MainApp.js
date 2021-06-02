@@ -474,24 +474,38 @@ async function loadIncoming() {
     let tSender = document.createElement("th");
     tSender.scope="col";
     tSender.innerHTML = "Sender"
+    tSender.classList.add("textalign");
     tr.appendChild(tSender);
 
     let tsenderCard = document.createElement("th");
     tsenderCard.scope="col";
     tsenderCard.innerHTML="Card Offered";
+    tsenderCard.classList.add("textalign");
     tr.appendChild(tsenderCard);
 
     let tcardReq = document.createElement("th");
     tcardReq.scope="col";
     tcardReq.innerHTML = "Card Requested";
+    tcardReq.classList.add("textalign");
     tr.appendChild(tcardReq);
+
+    let tAccept = document.createElement("th");
+    tAccept.scope="col";
+    tAccept.innerHTML = "Accept";
+    tAccept.classList.add("textalign");
+    tr.appendChild(tAccept);
+
+    let tReject = document.createElement("th");
+    tReject.scope="col";
+    tReject.innerHTML = "Reject";
+    tReject.classList.add("textalign");
+    tr.appendChild(tReject);
 
     let tbody = document.createElement("tbody");
     tablediv.appendChild(tbody);
     
     incoming_requests.forEach(element => {
       let trow = document.createElement("tr");
-      trow.style.cursor ="pointer";
       tbody.appendChild(trow);
 
       ReactDOM.render(<RenderIncomingCell 
@@ -513,25 +527,142 @@ async function loadIncoming() {
 class RenderIncomingCell extends React.Component{
   constructor(props){
     super(props);
-    this.showDetails = this.showDetails.bind(this);
+    this.cancelTrade = this.cancelTrade.bind(this);
+    this.acceptTrade = this.acceptTrade.bind(this);
+    this.destroyMe = this.destroyMe.bind(this);
   }
 
-  showDetails(){
-    console.log("showDetails")
+  acceptTrade(){
+    console.log("accept trade")
     console.log(this.props.requestId)
-    /* Create divs y llamar a segundo react component*/
-    
+
+    let cookie = document.cookie
+    let csrfToken = cookie.substring(cookie.indexOf('=') + 1)
+
+    fetch(`/api/accept_trade`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': csrfToken,
+            "Content-Type": "application/json; charset=UTF-8"
+          },
+        
+        body: JSON.stringify({
+            "tradeId": this.props.requestId,
+            "senderPlayer": this.props.Sender,
+            "senderCard": this.props.SenderCard,
+            "recipientCard": this.props.RecipientCard
+            
+        }) 
+    }).then(response => {
+      
+      if(response.status != 204){
+        throw new Error('error');
+      }
+      else{console.log(response.status);
+        const button = new Audio('/static/frontend/sounds/winrps.mp3');
+        button.loop = false;
+        button.play();
+
+        const thisNode = ReactDOM.findDOMNode(this);            
+        var tl = gsap.timeline();
+        tl.to(thisNode, {opacity: 0, duration: 0.4})
+        setTimeout(() => {this.destroyMe()}, 0.7);
+        setTimeout(() => {loadIncoming()}, 0.8);
+        setTimeout(() => {tradeAccepted(this.props.SenderCard, this.props.RecipientCard)}, 0.8);
+
+      }
+    })
+    .catch(error => {console.log(error);
+      const wrong = new Audio('/static/frontend/sounds/wrong.wav');
+      wrong.loop = false;
+      wrong.play();
+      
+    });
+
   }
+
+  cancelTrade(){
+    console.log("cancel trade")
+    console.log(this.props.requestId)
+
+    let cookie = document.cookie
+    let csrfToken = cookie.substring(cookie.indexOf('=') + 1)
+
+    fetch(`/api/cancel_trade`, {
+        method: 'DELETE',
+        headers: {
+            'X-CSRFToken': csrfToken,
+            "Content-Type": "application/json; charset=UTF-8"
+          },
+        
+        body: JSON.stringify({
+            "tradeId": this.props.requestId
+            
+        }) 
+    }).then(response => {
+      
+      if(response.status != 204){
+        throw new Error('error');
+      }
+      else{console.log(response.status);
+        const button = new Audio('/static/frontend/sounds/button2.mp3');
+        button.loop = false;
+        button.play();
+
+        const thisNode = ReactDOM.findDOMNode(this);            
+        var tl = gsap.timeline();
+        tl.to(thisNode, {opacity: 0, duration: 0.4})
+        setTimeout(() => {this.destroyMe()}, 0.7);
+        setTimeout(() => {loadIncoming()}, 0.8);
+
+      }
+    })
+    .catch(error => {console.log(error);
+      const wrong = new Audio('/static/frontend/sounds/wrong.wav');
+      wrong.loop = false;
+      wrong.play();
+      
+    });
+
+  }
+
+  destroyMe(){
+    const thisNode = ReactDOM.findDOMNode(this);
+    const parent = thisNode.parentNode;
+    ReactDOM.unmountComponentAtNode(thisNode.parentNode);
+    parent.parentNode.removeChild(parent);  
+  } 
 
   render(){
     return(
       <React.Fragment>
-          <td onClick={this.showDetails}>{this.props.Sender}</td>
-          <td onClick={this.showDetails}>{this.props.SenderCard}</td>
-          <td onClick={this.showDetails}>{this.props.RecipientCard}</td>
+          <td className="textalign">{this.props.Sender}</td>
+          <td className="textalign">{this.props.SenderCard}</td>
+          <td className="textalign">{this.props.RecipientCard}</td>
+          <td className="textalign"><button onClick={this.acceptTrade} type="button" className="btn btn-success">Accept</button></td>
+          <td className="textalign"><button onClick={this.cancelTrade} type="button" className="btn btn-danger">Reject</button></td>
       </React.Fragment>
     )
   }
+
+}
+
+async function tradeAccepted(senderCard, recipientCard){
+  let createadiv = document.createElement("div")
+  createadiv.classList.add("singlecardwrapper")
+  document.getElementById("myNewCard").appendChild(createadiv)
+  const nodedisplay = document.getElementById("myNewCard").lastElementChild;
+  showNewCard(senderCard, nodedisplay);
+
+  let createadiv2 = document.createElement("div")
+  createadiv2.classList.add("singlecardwrapper")
+  document.getElementById("mySentCard").appendChild(createadiv2)
+  const nodedisplay2 = document.getElementById("mySentCard").lastElementChild;
+  showNewCard(recipientCard, nodedisplay2);
+
+  var tl = gsap.timeline()
+  tl.set("#tradeAccepted", {visibility: 'visible'})
+  tl.from("#tradeAccepted", {scaleY: 0, scaleX: 0, duration: 0.3})
 
 }
 
@@ -561,21 +692,25 @@ async function loadOutgoing() {
     let cOffered = document.createElement("th");
     cOffered.scope="col";
     cOffered.innerHTML = "Card Offered"
+    cOffered.classList.add("textalign")
     tr.appendChild(cOffered);
 
     let tUser = document.createElement("th");
     tUser.scope="col";
     tUser.innerHTML="User";
+    tUser.classList.add("textalign")
     tr.appendChild(tUser);
 
     let tcardReq = document.createElement("th");
     tcardReq.scope="col";
     tcardReq.innerHTML = "Card Requested";
+    tcardReq.classList.add("textalign");
     tr.appendChild(tcardReq);
 
     let tCancel = document.createElement("th");
     tCancel.scope="col";
     tCancel.innerHTML = "Cancel trade";
+    tCancel.classList.add("textalign");
     tr.appendChild(tCancel);
 
     let tbody = document.createElement("tbody");
@@ -584,7 +719,6 @@ async function loadOutgoing() {
     outgoing_requests.forEach(element => {
 
       let trow = document.createElement("tr");
-      trow.style.cursor ="pointer";
       tbody.appendChild(trow);
 
       ReactDOM.render(<RenderOutgoingCell
@@ -640,7 +774,7 @@ class RenderOutgoingCell extends React.Component{
 
         const thisNode = ReactDOM.findDOMNode(this);            
         var tl = gsap.timeline();
-        tl.to(thisNode, {scaleY: 0, scaleX: 0, duration: 0.4})
+        tl.to(thisNode, {opacity: 0, duration: 0.4})
         setTimeout(() => {this.destroyMe()}, 0.7);
         setTimeout(() => {loadOutgoing()}, 0.8);
 
@@ -666,10 +800,10 @@ class RenderOutgoingCell extends React.Component{
   render(){
     return(
       <React.Fragment>
-          <td>{this.props.SenderCard}</td>
-          <td>{this.props.Recipient}</td>
-          <td>{this.props.RecipientCard}</td>
-          <td><button onClick={this.cancelTrade} type="button" className="btn btn-danger">Cancel</button></td>
+          <td className="textalign">{this.props.SenderCard}</td>
+          <td className="textalign">{this.props.Recipient}</td>
+          <td className="textalign">{this.props.RecipientCard}</td>
+          <td className="textalign"><button onClick={this.cancelTrade} type="button" className="btn btn-danger">Cancel</button></td>
       </React.Fragment>
     )
   }
@@ -981,6 +1115,14 @@ function closeTradeStatus() {
   document.getElementById("newTradeMsg").innerHTML = "";
 }
 
+function closeTradeAccepted(){
+  var tl = gsap.timeline()
+  tl.to("#tradeAccepted", {scaleX: 0, scaleY: 0})
+  tl.set("#tradeAccepted", {scaleX: 1, scaleY: 1, visibility: 'hidden'})
+  document.getElementById("myNewCard").innerHTML = "";
+  document.getElementById("mySentCard").innerHTML = "";
+}
+
 /* On page load functions*/
 function tradePage(){
   loadIncoming();
@@ -990,6 +1132,7 @@ function tradePage(){
   document.getElementById("closeCategory").addEventListener('click', function(){closeCategory()} )
   document.getElementById("closeCardAvailable").addEventListener('click', function(){closeAvailable()} )
   document.getElementById("closeSuccessful").addEventListener('click', function(){closeTradeStatus()})
+  document.getElementById("closeTradeAccepted").addEventListener('click', function(){closeTradeAccepted()})
 
   const categories = document.getElementsByClassName("categoryPic");
   for(let i =0; i < categories.length; i++){

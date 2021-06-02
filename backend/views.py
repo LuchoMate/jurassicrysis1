@@ -446,7 +446,7 @@ def api_new_trade(request):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
          
     else:
-        return Response(status=status.HTTP_400_BAD_REQUEST)
+        return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
 #Deletes logged user given trade request
 @api_view(['DELETE'])
@@ -475,7 +475,102 @@ def api_cancel_trade(request):
             return Response(body, status=status.HTTP_403_FORBIDDEN)
 
     else:
-       return Response(status=status.HTTP_400_BAD_REQUEST) 
+       return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED) 
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def api_accept_trade(request):
+    recipientPlayer = Player.objects.get(username=request.user)
+    if request.method == 'POST':
+        postData = request.data
+
+        try:
+            senderPlayer = Player.objects.get(username=postData["senderPlayer"])
+        except Player.DoesNotExist:
+            body= {"Content": "Requester player does not exist."}
+            return Response(body, status=status.HTTP_404_NOT_FOUND)
+
+        try:
+            senderCard = Card.objects.get(name=postData["senderCard"])
+        except Card.DoesNotExist:
+            body= {"Content": "Offered card does not exist."}
+            return Response(body, status=status.HTTP_404_NOT_FOUND)
+
+        try:
+            recipientCard = Card.objects.get(name=postData["recipientCard"])
+        except Card.DoesNotExist:
+            body= {"Content": "Offered card does not exist."}
+            return Response(body, status=status.HTTP_404_NOT_FOUND)
+
+        try:
+            thisTrade = Trade.objects.get(id=postData["tradeId"])
+        except Trade.DoesNotExist:
+            body= {"Content": "This trade is no longer available"}
+            return Response(body, status=status.HTTP_404_NOT_FOUND)
+
+        #double checks if cards are in players collections
+        targetColl = recipientPlayer.player_cards.all()
+        checkTargetCard = targetColl.get(Card_collected = recipientCard)
+        if checkTargetCard:
+            if checkTargetCard.quantity <= checkTargetCard.on_deck:
+                body= {"Content": "Your card is not available for trade."}
+                return Response(body, status=status.HTTP_404_NOT_FOUND)  
+        else:
+            body= {"Content": "You do not own this card"}
+            return Response(body, status=status.HTTP_404_NOT_FOUND) 
+
+        senderColl = senderPlayer.player_cards.all()
+        checkPlayerCard = senderColl.get(Card_collected = senderCard)
+        if checkPlayerCard:
+            if checkPlayerCard.quantity <= checkPlayerCard.on_deck:
+                body= {"Content": "Sender does not have this card available for trade"}
+                return Response(body, status=status.HTTP_404_NOT_FOUND)
+        else:
+            body= {"Content": "Sender does not own his/her offered card"}
+            return Response(body, status=status.HTTP_404_NOT_FOUND)
+
+        #Adds Sender card to Recipient's collection
+        receivingCard = []
+        try:
+            receivingCard = targetColl.get(Card_collected = senderCard)
+
+        except Collection.DoesNotExist:
+            newCollection = Collection(Owner = recipientPlayer, 
+            Card_collected = senderCard, quantity = 1, on_deck = 0)
+            newCollection.save()
+
+        if receivingCard:
+            addquantity = receivingCard.quantity
+            addquantity = addquantity + 1
+            receivingCard.quantity = addquantity
+            receivingCard.save()
+            
+        
+        #Adds Recipient card to Sender's collection
+        sendingCard = []
+        try:
+            sendingCard = senderColl.get(Card_collected = recipientCard)
+        except Collection.DoesNotExist :
+            newCollection = Collection(Owner = senderPlayer,
+            Card_collected = recipientCard, quantity = 1, on_deck = 0)
+            newCollection.save()
+
+        if sendingCard:
+            addquantity = sendingCard.quantity
+            addquantity = addquantity +1
+            sendingCard.quantity = addquantity
+            sendingCard.save()
+       
+        try:
+            thisTrade.delete()
+        except IntegrityError:
+            body= {"Content": "Could not delete current trade, try again later."}
+            return Response(body, status=status.HTTP_409_CONFLICT)
+        
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+    else:
+      return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)   
 
 
 

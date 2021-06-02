@@ -2173,6 +2173,22 @@ box-shadow: 3px 3px antiquewhite
     @extend #newTrade;
 }
 
+#tradeAccepted {
+    visibility: hidden;
+    position: absolute; 
+    height: 70vh; 
+    width: 90vw; 
+    z-index: 20; 
+    top: 25%; 
+    left: 5%; 
+}
+
+#closeTradeAccepted{
+    @extend #newTrade;
+}
+
+
+
 
 
 
