@@ -1926,7 +1926,7 @@ box-shadow: 3px 3px antiquewhite
 }
 
 .displayCardContainer {
-    position: absolute;
+    position: relative;
     flex: 0 0 50px;
     height: 35vh;
     min-height: 35vh;
@@ -2194,6 +2194,78 @@ box-shadow: 3px 3px antiquewhite
     animation: opacityinout;
     animation-duration: 2s;
     animation-iteration-count: infinite;
+}
+
+/* Deck Manager page*/
+
+#saveDeck {
+    @extend #newTrade;
+}
+
+#deckContainer {
+    border-radius: 5px;
+    border: 4px solid wheat;
+    display: flex; 
+    justify-content: space-around; 
+    flex-wrap: wrap; 
+    width: 100%;
+    height: 70%;
+}
+
+.deckCatCount {
+    @extend .flexcontainer;
+    @extend .fl_spacearound;
+    width: 100%;
+    height: 15%;
+    border-radius: 5px;
+    border: 2px solid gold;
+    margin-top: 3px;
+}
+
+#collContainer {
+    border: 5px solid wheat;
+    border-radius: 5px;
+    width: 100%;
+    height: 85%;
+    overflow-y: scroll;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.test2singlecardwrapper {
+    height: 36vh;
+    min-height: 36vh;
+    max-height: 36vh; 
+    width: 12vw;
+    min-width: 12vw;
+    max-width: 12vw; 
+    border: 1px solid red;
+    margin: 10px;
+
+}
+
+.font3vw {
+    font-size: 3vw;
+}
+
+.font2vh {
+    font-size: 2vh;
+}
+
+#invalidAdd {
+    
+    position: absolute;
+    z-index: 5;
+    visibility: hidden;
+    left: 30%;
+    top: 40%;
+    width: 30vw;
+    height: max-content;
+}
+
+#closeInvalidAdd {
+    @extend #newTrade;
 }
 
 

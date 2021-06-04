@@ -2,5 +2,58 @@
 {% load static %}
 
 {% block body %}
-        <h1 style="color: antiquewhite;">Manage Deck Here</h1>       
+
+<section data-barba="container" data-barba-namespace="deckmanager">
+    <div class="caesarfont navbarcolor font5vh flexcontainer aligncenter glow margin10">Deck Manager</div>
+    <div id="maindmdiv" class="flexcontainer" style="justify-content: space-around;" style="width: 95%;">
+        <div class="tradesbg padding10 fl_column" style="width: 45vw; height: 65vh; position: relative;">
+                <div class="flexcontainer fl_spacearound" style="align-items: center;">
+                        <div><button type="button" class="btn btn-success">Save!</button></div>
+                        <div class="pangolinfont font5vh flexcontainer navbarcolor">Your deck</div>
+                        <div class="pangolinfont font5vh flexcontainer navbarcolor">
+                                <div id="deckLength"></div>
+                                <div id="deckLengthIcon"></div>
+                        </div>
+                </div>
+                <div id="deckContainer" class="flexcontainer" style="overflow-y: scroll; flex-wrap: wrap; justify-content: space-between;"></div>
+                <div class="deckCatCount">
+                        <div style="width: 17%; align-items: center;" class="flexcontainer fl_column pangolinfont">
+                                <div id="caCardCount" class="font3vw pangolinfont" style="color:crimson">4</div>
+                                
+                        </div>
+                        <div style="width: 17%; align-items: center;" class="flexcontainer fl_column pangolinfont">
+                                <div id="heCardCount" class="font3vw pangolinfont" style="color:green">5</div>
+                                 
+                        </div>
+                        <div style="width: 17%; align-items: center;" class="flexcontainer fl_column pangolinfont">
+                                <div id="aqCardCount" class="font3vw pangolinfont" style="color:blue">3</div>
+                                 
+                        </div>
+                        <div style="width: 17%; align-items: center;" class="flexcontainer fl_column pangolinfont">
+                                <div id="flCardCount" class="font3vw pangolinfont" style="color:lightskyblue">2</div>
+                               
+                        </div>
+                        <div style="width: 17%; align-items: center;" class="flexcontainer fl_column pangolinfont">
+                                <div id="evCardCount" class="font3vw pangolinfont" style="color:purple">6</div>
+                                
+                        </div>
+                </div>
+        </div>
+        <div class="flexcontainer tradesbg padding10 fl_column" style="width: 45vw; height: 65vh; position: relative;">
+                <div class="pangolinfont font5vh flexcontainer navbarcolor">Available cards</div>
+                <div id="collContainer"></div>
+        </div>
+        
+
+   </div>
+
+   <div id="invalidAdd" class="tradesbg padding10">
+           <div class="pangolinfont navbarcolor textalign margin10 flexcontainer" style="white-space: pre-line;"><h3>Maximum 2 identical cards per deck!</h3></div>
+           <div class="flexcontainer"> <div id="closeInvalidAdd" class="flexcontainer font5vh caesarfont navbarcolor aligncenter glow margin10 padding10" style="width: fit-content">Close</div> </div>
+
+   </div>
+
+
+</section>
+
 {% endblock %}

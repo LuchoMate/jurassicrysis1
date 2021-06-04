@@ -1127,6 +1127,8 @@ function closeTradeAccepted(){
   tl.set("#tradeAccepted", {scaleX: 1, scaleY: 1, visibility: 'hidden'})
   document.getElementById("myNewCard").innerHTML = "";
   document.getElementById("mySentCard").innerHTML = "";
+  loadIncoming();
+  loadOutgoing();
 }
 
 /* On page load functions*/
@@ -1148,6 +1150,100 @@ function tradePage(){
   } 
   
 }
+
+/*-----------Deck manager page-------------*/
+
+
+/* On page load*/
+function deckmanagerPage(){
+  console.log("Check your deck!");
+  let dl = getDeckLength();
+  console.log(dl);
+  loadDeck();
+  load_avl_collection();
+}
+
+/* Loads and renders user's deck*/
+async function loadDeck() {
+  let response = await fetch("/api/my_deck")
+  let deck = await response.json();
+
+  deck.deck.forEach(element => {
+    const createadiv = document.createElement("div")
+    createadiv.dataset.cardid = element;
+    createadiv.style.cursor = 'pointer';
+    createadiv.classList.add("singlecardwrapper");
+    createadiv.style.display="flex";
+    createadiv.style.justifyContent="center";
+
+    /* Añadir event listener removeFromDeck*/
+
+    document.getElementById("deckContainer").appendChild(createadiv)
+    const lastCatChild = document.getElementById("deckContainer").lastElementChild;
+    showNewCard(element, lastCatChild)
+    
+  });
+
+
+}
+/* Gets users deck length*/
+async function getDeckLength(){
+  let response = await fetch("/api/my_deck")
+  let deck = await response.json();
+  document.getElementById("deckLength").innerHTML = deck.deck.length;
+
+  if (deck.deck.length == 20){
+    document.getElementById("deckLengthIcon").innerHTML = "&#9989;"
+  }
+  else {
+    document.getElementById("deckLengthIcon").innerHTML = "&#9940;"
+  }
+
+  return deck.deck.length;
+
+}
+
+/* Loads and renders users available cards*/
+async function load_avl_collection(){
+  let response = await fetch("/api/myallavl")
+  if(response.status == 200){
+    let cardlist = await response.json();
+    cardlist.forEach(element => {
+      const createadiv = document.createElement("div")
+      createadiv.style.cursor = 'pointer';
+      createadiv.classList.add("singlecardwrapper");
+
+      /* Añadir datasets y event listener*/
+      document.getElementById("collContainer").appendChild(createadiv)
+      const lastCatChild = document.getElementById("collContainer").lastElementChild;
+      showNewCard(element, lastCatChild)
+
+    });
+
+  }
+  else {
+    const creatediv = document.createElement("div")
+    creatediv.classList.add("textalign")
+    creatediv.classList.add("navbarcolor")
+    creatediv.classList.add("pangolinfont")
+    creatediv.classList.add("font5vh")
+    creatediv.classList.add("flexcontainer")
+    creatediv.innerHTML="No cards available."
+    document.getElementById("collContainer").appendChild(creatediv)
+  }
+ 
+}
+
+/* Attempts to add a card from collection to deck*/
+function addToDeck(){
+
+
+}
+/* Removes a card from deck to collection*/
+function removeFromDeck(){
+
+}
+
  
 /* Small delay to transition*/
 
@@ -1252,6 +1348,24 @@ barba.init({
         async enter(data) {
           pageIn();
           tradePage();
+        },
+
+      },
+
+      {
+        name: 'deckmanager',
+        to: {namespace: ['deckmanager']},
+        async leave(data) {
+          const done = this.async();
+          pageOut();
+          await delay(1500);
+          done();
+        },
+
+        async enter(data) {
+          pageIn();
+          deckmanagerPage()
+          
         },
 
       },

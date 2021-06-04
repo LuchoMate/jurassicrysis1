@@ -54,10 +54,16 @@ def api_player_collection(request):
 def api_player_deck(request):
     player = Player.objects.get(username=request.user)
     query = player.player_cards.all()
-    deck = query.filter(on_deck__gte=1)
-    serializer = coll_serializer(deck, many=True)
+    prev_deck = query.filter(on_deck__gte=1)
 
-    return Response(serializer.data)
+    deck = []
+    for card in prev_deck:
+        deck.append(card.Card_collected.id)
+        if card.on_deck > 1 :
+            deck.append(card.Card_collected.id)
+    deck.sort()
+    mydeck = {"deck": deck}
+    return Response(mydeck)
 
 
 #get logged user's shuffled deck
@@ -380,7 +386,7 @@ def api_check_available(request, cardId):
         body= {"Content": "No users with this card available at the moment."}
         return Response(body, status=status.HTTP_404_NOT_FOUND)
 
-#Returns a list of user's available cards for trade
+#Returns a list of user's available cards for trade (one of each, not in deck)
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def api_my_avl_cards(request):
@@ -395,11 +401,35 @@ def api_my_avl_cards(request):
             availableCardsList.sort()
             return Response(availableCardsList, status=status.HTTP_200_OK)
         else:
-            body= {"Content": "You don't have any available cards to trade."}
+            body= {"Content": "You don't have any cards available."}
             return Response(body, status=status.HTTP_404_NOT_FOUND)
     else:
-        body= {"Content": "You don't have any available cards to trade."}
+        body= {"Content": "You don't have any cards available."}
         return Response(body, status=status.HTTP_404_NOT_FOUND)
+
+#Returns a list of all of the user's available cards
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def api_all_avl_cards(request):
+    player = Player.objects.get(username=request.user)
+    query = Collection.objects.filter(Owner=player)
+    if query:
+        available_cards = []
+        for card in query:
+            if card.quantity > card.on_deck:
+                for i in range(card.quantity):
+                    available_cards.append(card.Card_collected.id)
+
+        if available_cards:
+            available_cards.sort()
+            return Response(available_cards, status=status.HTTP_200_OK)
+        else:
+            body= {"Content": "You don't have any cards available."}
+            return Response(body, status=status.HTTP_404_NOT_FOUND)
+    else:
+        body= {"Content": "You don't have any cards available."}
+        return Response(body, status=status.HTTP_404_NOT_FOUND)
+
 
 #Create a new trade request
 @api_view(['POST'])
@@ -491,6 +521,7 @@ def api_cancel_trade(request):
     else:
        return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED) 
 
+#Accepts requested trade and deletes related card trades, if necessary
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def api_accept_trade(request):
@@ -558,6 +589,44 @@ def api_accept_trade(request):
             addquantity = addquantity + 1
             receivingCard.quantity = addquantity
             receivingCard.save()
+
+        #Deletes sender card from his/her collection
+        if checkPlayerCard.quantity > 1:
+            substractQuantity = checkPlayerCard.quantity
+            substractQuantity = substractQuantity -1
+            checkPlayerCard.quantity = substractQuantity
+            checkPlayerCard.save()
+            if checkPlayerCard.quantity == checkPlayerCard.on_deck:
+                #deleting related trades (since card is no longer available)
+                try:
+                    relatedOutgoingTrades = senderPlayer.sent_requests.filter(Sender_card = senderCard)
+                except Trade.DoesNotExist:
+                    pass
+                for trade in relatedOutgoingTrades:
+                    trade.delete()
+
+                try:
+                    relatedIncomingTrades = senderPlayer.incoming_requests.filter(Recipient_card = senderCard)
+                except Trade.DoesNotExist:
+                    pass
+                for trade in relatedIncomingTrades:
+                    trade.delete()
+
+        else:
+            checkPlayerCard.delete()
+            try:
+                relatedOutgoingTrades = senderPlayer.sent_requests.filter(Sender_card = senderCard)
+            except Trade.DoesNotExist:
+                pass
+            for trade in relatedOutgoingTrades:
+                trade.delete()
+
+            try:
+                relatedIncomingTrades = senderPlayer.incoming_requests.filter(Recipient_card = senderCard)
+            except Trade.DoesNotExist:
+                pass
+            for trade in relatedIncomingTrades:
+                trade.delete()
             
         
         #Adds Recipient card to Sender's collection
@@ -574,6 +643,45 @@ def api_accept_trade(request):
             addquantity = addquantity +1
             sendingCard.quantity = addquantity
             sendingCard.save()
+
+        #Deletes recipient card from his/her collection
+        if checkTargetCard.quantity > 1:
+            substractQuantity = checkTargetCard.quantity
+            substractQuantity = substractQuantity -1
+            checkTargetCard.quantity = substractQuantity
+            checkTargetCard.save()
+            if checkTargetCard.quantity == checkTargetCard.on_deck:
+                #deleting related trades (since card is no longer available)
+                try:
+                    relatedOutgoingTrades = recipientPlayer.sent_requests.filter(Sender_card = recipientCard)
+                except Trade.DoesNotExist:
+                    pass
+                for trade in relatedOutgoingTrades:
+                    trade.delete()
+
+                try:
+                    relatedIncomingTrades = recipientPlayer.incoming_requests.filter(Recipient_card = recipientCard)
+                except Trade.DoesNotExist:
+                    pass
+                for trade in relatedIncomingTrades:
+                    trade.delete()
+
+        else:
+            checkTargetCard.delete()
+            try:
+                relatedOutgoingTrades = recipientPlayer.sent_requests.filter(Sender_card = recipientCard)
+            except Trade.DoesNotExist:
+                pass
+            for trade in relatedOutgoingTrades:
+                trade.delete()
+
+            try:
+                relatedIncomingTrades = recipientPlayer.incoming_requests.filter(Recipient_card = recipientCard)
+            except Trade.DoesNotExist:
+                pass
+            for trade in relatedIncomingTrades:
+                trade.delete()
+
        
         try:
             thisTrade.delete()
