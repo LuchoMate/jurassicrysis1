@@ -83,9 +83,15 @@ function acceptHeight(){
 
 /*------------------- */
 
-function pageIn() {
-
-    checkHeight();  
+async function pageIn() {
+    let response = await fetch('/api/my_deck');
+    let mydeck = await response.json();
+    if (mydeck.deck.length != 20){
+        console.log("invalid deck")
+        document.getElementById("deckWarning").style.display="block";
+    }
+    else{
+        checkHeight();  
     if (!checkHeight()){
         clearTimerCheck();
 
@@ -99,18 +105,22 @@ function pageIn() {
     
         })
         tl2.set("#difficultybox", {display: 'block'});
-    }/* device is already landscape-oriented, skip to difficulty box*/  
+        }/* device is already landscape-oriented, skip to difficulty box*/  
 
-    var tl = gsap.timeline();
+        var tl = gsap.timeline();
 
-    tl.to(".plytransition div", {
-        duration: 1.5,
-        scaleY: 0,
-        transformOrigin: "top left",
-        ease: "bounce.out"
-    });
+        tl.to(".plytransition div", {
+            duration: 1.5,
+            scaleY: 0,
+            transformOrigin: "top left",
+            ease: "bounce.out"
+        });
 
+
+    }
+  
 }
+
 /* Animated background*/
 function difficultybg() {
     var tl = gsap.timeline({repeat:-1});

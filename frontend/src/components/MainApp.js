@@ -1161,6 +1161,9 @@ function deckmanagerPage(){
   console.log(dl);
   loadDeck();
   load_avl_collection();
+  loadComposition();
+
+  document.getElementById("closeInvalidAdd").addEventListener('click', function(){closeInvalidAdd()})
 }
 
 /* Loads and renders user's deck*/
@@ -1175,6 +1178,11 @@ async function loadDeck() {
     createadiv.classList.add("singlecardwrapper");
     createadiv.style.display="flex";
     createadiv.style.justifyContent="center";
+    createadiv.dataset.cardid = element;
+    createadiv.addEventListener('click', function(event){
+      removeFromDeck(event.currentTarget.dataset.cardid);
+      console.log("clicked createadiv!")
+    }, true);
 
     /* Añadir event listener removeFromDeck*/
 
@@ -1212,8 +1220,12 @@ async function load_avl_collection(){
       const createadiv = document.createElement("div")
       createadiv.style.cursor = 'pointer';
       createadiv.classList.add("singlecardwrapper");
+      createadiv.dataset.cardid = element;
+      createadiv.addEventListener('click', function(event){
+        addToDeck(event.currentTarget.dataset.cardid);
+        console.log("clicked createadiv!")
+      }, true);
 
-      /* Añadir datasets y event listener*/
       document.getElementById("collContainer").appendChild(createadiv)
       const lastCatChild = document.getElementById("collContainer").lastElementChild;
       showNewCard(element, lastCatChild)
@@ -1233,15 +1245,127 @@ async function load_avl_collection(){
   }
  
 }
+/* Get user's # of card types on deck*/
+async function loadComposition(){
+  let response = await fetch('/api/deck_composition');
+  let composition = await response.json();
+
+  document.getElementById("caCardCount").innerHTML = composition.ca;
+  document.getElementById("heCardCount").innerHTML = composition.he;
+  document.getElementById("aqCardCount").innerHTML = composition.aq;
+  document.getElementById("flCardCount").innerHTML = composition.fl;
+  document.getElementById("evCardCount").innerHTML = composition.ev;
+
+}
 
 /* Attempts to add a card from collection to deck*/
-function addToDeck(){
+function addToDeck(cardid){
+  let cookie = document.cookie
+  let csrfToken = cookie.substring(cookie.indexOf('=') + 1)
+  fetch(`/api/update_deck`, {
+    method: 'PUT',
+    headers: {
+        'X-CSRFToken': csrfToken,
+        "Content-Type": "application/json; charset=UTF-8"
+      },
+    
+    body: JSON.stringify({
+        "content": cardid
+    }) 
+  }).then(response => {
+    console.log(response.status); 
+    if(response.status == 204){
+      console.log("Adding to deck!")
+      let dl = getDeckLength();
+      console.log(dl);
+      document.getElementById("deckContainer").innerHTML="";
+      loadDeck();
+      document.getElementById("collContainer").innerHTML="";
+      load_avl_collection();
+      /* Colocarle la animacion aqui*/
+      const drawsound = new Audio('/static/frontend/sounds/drawcard.mp3');
+      drawsound.loop = false;
+      drawsound.play();
+      const y1 = -(window.innerHeight*0.5)
+      const x1 = window.innerWidth*0.75
+      const x2 = window.innerWidth*0.25 
+      var tl = gsap.timeline()
+      tl.set("#addCard", {y: y1, x: x1, visibility: 'visible'})
+      tl.to("#addCard", {x: x2, duration: 0.4})
+      tl.to("#addCard", {opacity: 0, duration: 0.2})
+      tl.set("#addCard", {opacity: 1, visibility: 'hidden'})
+      loadComposition();
 
+    }
+    else if(response.status == 406){
+      console.log("Max 2 per deck")
+      var tl = gsap.timeline()
+      tl.set("#invalidAdd", {visibility: 'visible'})
+      tl.from("#invalidAdd", {scaleX: 0, scaleY: 0, duration: 0.3})
+      const wrong = new Audio('/static/frontend/sounds/wrong.wav');
+      wrong.loop = false;
+      wrong.play();
+
+    }
+    else {
+      console.log("Invalid card, try again!")
+    }
+  })
 
 }
 /* Removes a card from deck to collection*/
-function removeFromDeck(){
+function removeFromDeck(cardid){
+  let cookie = document.cookie
+  let csrfToken = cookie.substring(cookie.indexOf('=') + 1)
 
+  fetch(`/api/update_deck`, {
+    method: 'DELETE',
+    headers: {
+        'X-CSRFToken': csrfToken,
+        "Content-Type": "application/json; charset=UTF-8"
+      },
+    
+    body: JSON.stringify({
+        "content": cardid
+        
+    }) 
+  }).then(response => {
+    if(response.status == 204){
+
+      console.log("Removing from deck!")
+      let dl = getDeckLength();
+      console.log(dl);
+      document.getElementById("deckContainer").innerHTML="";
+      loadDeck();
+      document.getElementById("collContainer").innerHTML="";
+      load_avl_collection();
+
+      const drawsound = new Audio('/static/frontend/sounds/drawcard.mp3');
+      drawsound.loop = false;
+      drawsound.play();
+      const y1 = -(window.innerHeight*0.5)
+      const x1 = window.innerWidth*0.25
+      const x2 = window.innerWidth*0.75 
+      var tl = gsap.timeline()
+      tl.set("#removeCard", {y: y1, x: x1, visibility: 'visible'})
+      tl.to("#removeCard", {x: x2, duration: 0.4})
+      tl.to("#removeCard", {opacity: 0, duration: 0.2})
+      tl.set("#removeCard", {opacity: 1, visibility: 'hidden'})
+      loadComposition();
+
+    }
+    else {
+      console.log("Invalid card removed!")
+    }
+
+  })
+
+}
+
+function closeInvalidAdd(){
+  var tl = gsap.timeline()
+  tl.to("#invalidAdd", {scaleX: 0, scaleY: 0, duration: 0.3})
+  tl.set("#invalidAdd", {visibility: 'hidden', scaleX: 1, scaleY: 1})
 }
 
  

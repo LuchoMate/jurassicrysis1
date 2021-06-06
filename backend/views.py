@@ -1,3 +1,4 @@
+from django.http.response import Http404
 from rest_framework import response
 from frontend.views import play
 from django.shortcuts import render
@@ -83,6 +84,102 @@ def api_shuffled_deck(request):
     random.shuffle(deck)
     shuffled = {"shuffled": deck}
     return Response(shuffled)
+
+#Adds or removes cards from player's deck
+@api_view(['PUT', 'DELETE'])
+@permission_classes([IsAuthenticated])
+def api_update_deck(request):
+    player = Player.objects.get(username=request.user)
+    if request.method == 'PUT':
+        data = json.loads(request.body)
+        try:
+            cardToAdd = Card.objects.get(id=data["content"])
+        except Card.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        try:
+            cardCollected = Collection.objects.filter(Owner = player).get(Card_collected = cardToAdd)
+        except Collection.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        #Attempts to add to deck
+        if cardCollected.quantity > cardCollected.on_deck:
+            if cardCollected.on_deck < 2:
+                on_deck = cardCollected.on_deck
+                on_deck = on_deck +1
+                cardCollected.on_deck = on_deck
+                cardCollected.save()
+                return Response(status=status.HTTP_204_NO_CONTENT)
+            else:
+                #Maximum 2 per deck
+                return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
+    
+        else:
+            return Response(status=status.HTTP_403_FORBIDDEN)
+
+    elif request.method == 'DELETE':
+        data = json.loads(request.body)
+        try:
+            cardToRemove = Card.objects.get(id=data["content"])
+        except Card.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        try:
+            cardCollected = Collection.objects.filter(Owner = player).get(Card_collected = cardToRemove)
+        except Collection.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        #Attemps to remove from deck
+        if cardCollected.on_deck > 0:
+            quantity = cardCollected.on_deck
+            quantity = quantity - 1
+            cardCollected.on_deck = quantity
+            cardCollected.save()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+
+        else:
+           return Response(status=status.HTTP_403_FORBIDDEN) 
+ 
+    else:
+        return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
+#get player's deck composition (# of carnivorous, herbivorous, etc)
+@api_view(['GET'])
+def api_deck_composition(request):
+    player = Player.objects.get(username=request.user)
+    query = player.player_cards.all()
+    prev_deck = query.filter(on_deck__gte=1)
+
+    ca=0
+    he=0
+    aq=0
+    fl=0
+    ev=0
+    for card in prev_deck:
+        
+        if card.Card_collected.card_type == "ca":
+            ca = ca +1
+            if card.on_deck > 1 :
+                ca = ca +1
+        if card.Card_collected.card_type == "he":
+            he = he +1
+            if card.on_deck > 1:
+                he= he+1
+        if card.Card_collected.card_type == "aq":
+            aq = aq + 1
+            if card.on_deck > 1:
+                aq = aq +1
+        if card.Card_collected.card_type == "fl":
+            fl = fl +1
+            if card.on_deck > 1:
+                fl = fl +1
+        if card.Card_collected.card_type == "ev":
+            ev = ev +1
+            if card.on_deck > 1:
+                ev = ev +1
+
+    composition = {"ca": ca, "he": he, "aq": aq, "fl": fl, "ev": ev}
+    return Response(composition, status=status.HTTP_200_OK)
+
 
 #get opponents shuffled deck
 @api_view(['GET'])
