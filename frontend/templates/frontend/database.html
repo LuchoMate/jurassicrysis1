@@ -13,7 +13,7 @@
                 <option value="fl">Flying</option>
                 <option value="ev">Event</option>
                 </select>
-                <input type="search" placeholder="Search by card name..." class="margin10">
+                <input id="userSearch" type="search" placeholder="Search by card name..." class="margin10">
         </div>
         <div id="dbCategory" class="margin 10 flexcontainer fl_spacearound width100 tradesbg" style="position: static; flex-wrap: wrap;"></div>
 
@@ -25,7 +25,7 @@
                         <div id="cdCardName" class="caesarfont glow font5vh flexcontainer navbarcolor" style="width: fit-content;"></div>
                 </div>
                 <div class="width100 flexcontainer fl_spacearound">
-                        <div style="width: 30%; border: 1px solid red;">
+                        <div style="width: 30%; border: 3px solid goldenrod; border-radius: 5px;">
                                 <div id="cdCardDisplay" class="flexcontainer"></div>
                                 <div class="flexcontainer">
                                         <div><button id="playMeSound" style='font: size 15px;' class="btn btn-info margin10"><i class='fa fa-volume-up'></i></button></div>
@@ -33,7 +33,7 @@
                                 </div>
 
                         </div>
-                        <div style="border: 1px solid blue; width: 60%;">
+                        <div style="border: 3px solid wheat; width: 60%; border-radius: 5px;">
                                 <div class="flexcontainer">
                                         <div class="pangolinfont font5vh fitcontent navbarcolor" style="margin-right: 5px;">Category:</div><div id="cdCategory" class="pangolinfont font5vh fitcontent"></div>
                                 </div>
@@ -56,6 +56,7 @@
         <div id="cdGetImage" style="visibility: hidden;">
                 <div id="closeGetImage" class="font5vh" style="align-self: flex-end; cursor: pointer; width: fit-content;">&#10060;</div>
                 <div class="flexcontainer"><div id="cdShowImage" class="flexcontainer" style="width: 40%;"><img style="width: 100%;" id="cdShowDino" src="{% static 'frontend/images/cards/Alanqa.PNG' %}" alt=""></div></div>
+                <div class="navbarcolor textalign pangolinfont" style="font-size: small;">Source: https://dinosaurpictures.org</div>
         </div>
        
 

@@ -63,7 +63,7 @@ class Collection(models.Model):
         validators=[MaxValueValidator(2, 'Maximum 2 per deck')])
        
     class Meta:
-        ordering = ('Owner',)
+        ordering = ('Owner', 'Card_collected')
         constraints = [
             models.UniqueConstraint(fields=['Owner', 'Card_collected'], name='individual_card'),
             models.CheckConstraint(name='cannot_have_more_than_quantity',

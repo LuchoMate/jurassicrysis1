@@ -2321,6 +2321,22 @@ box-shadow: 3px 3px antiquewhite
     width: fit-content;
 }
 
+.collectionWrapper{
+    height: 42vh;
+    min-height: 42vh;
+    max-height: 42vh; 
+    width: 13vw;
+    min-width: 13vw;
+    max-width: 13vw; 
+    border: 2px dashed wheat;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+
+
 
 
 

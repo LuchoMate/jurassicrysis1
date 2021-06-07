@@ -40,6 +40,10 @@ barba.init({
 
 */
 
+/* Author: Luis Balladares
+    For CS50's Web development with Python and Javascript
+*/
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 
@@ -111,7 +115,7 @@ function pageIn(){
   }
   */
   
-  /* Home page carousel*/
+  /* -----Home page carousel-----*/
 
 var myIndex = 0;  
 function carousel() {
@@ -215,7 +219,7 @@ function buyPack(pack){
           drawsound.loop = false;
           drawsound.play();
           })
-        /* mainflip add event listener click, fliphandler*/
+        
 
         let innerflip = document.createElement("div");
         innerflip.classList.add("flip-card-inner");
@@ -1373,6 +1377,8 @@ function closeInvalidAdd(){
 function databasePage(){
   document.getElementById("closeCardDetails").addEventListener('click', function(){closeCardDetails()})
   document.getElementById("closeGetImage").addEventListener('click', function(){closeCardImage()})
+  document.getElementById("dbCatSelect").addEventListener('change', function(){dbShowCategory(this.value)}, false)
+  document.getElementById("userSearch").addEventListener('input', searchCard);
   dbShowCategory("all");
 
 }
@@ -1388,6 +1394,128 @@ function closeCardImage(){
   var tl = gsap.timeline()
   tl.to("#cdGetImage", {scaleX: 0, scaleY: 0, duration: 0.5})
   tl.set("#cdGetImage", {scaleX: 1, scaleY: 1, visibility: 'hidden'})
+}
+
+const cardList = [
+  "Scipionyx",
+  "Sinornithoides",
+  "Bambiraptor",
+  "Chilesaurus",
+  "Elopteryx",
+  "Velociraptor",
+  "Bahariasaurus",
+  "Saltriovenator",
+  "Megapnosaurus",
+  "Allosaurus",
+  "Albertosaurus",
+  "Inostrancevia",
+  "Metriacanthosaurus",
+  "Tyrannosaurus",
+  "Giganotosaurus",
+  "Compsognathus",
+  "Segnosaurus",
+  "Homalocephale",
+  "Qantassaurus",
+  "Anchisaurus",
+  "Dicraeosaurus",
+  "Kaatedocus",
+  "Huayangosaurus",
+  "Kunbarrasaurus",
+  "Ankylosaurus",
+  "Dracopelta",
+  "Barosaurus",
+  "Stegosaurus",
+  "Triceratops",
+  "Brachiosaurus",
+  "Umoonasaurus",
+  "Hainosaurus",
+  "Rhomaleosaurus",
+  "Megalneusaurus",
+  "Dolichosaurus",
+  "Alexeyisaurus",
+  "Styxosaurus",
+  "Elasmosaurus",
+  "Futabasaurus",
+  "Brachauchenius",
+  "Thalassomedon",
+  "Kronosaurus",
+  "Mosasaurus",
+  "Miguelosaurus",
+  "Plesiosaurus",
+  "Anurognathus",
+  "Jinfengopteryx",
+  "Archaeopteryx",
+  "Alanqa",
+  "Gwawinapterus",
+  "Tupandactylus",
+  "Anhanguera",
+  "Azhdarcho",
+  "Bellubrunnus",
+  "Dsungaripterus",
+  "Ikrandraco",
+  "Zhejiangopterus",
+  "Ornitocheirus",
+  "Pterodactylus",
+  "Zhenyuanopterus",
+  "Ambush",
+  "Better Lands",
+  "Large Litter",
+  "Surprise Attack",
+  "Regroup now",
+  "Maternal Bond",
+  "Famine",
+  "Cold Winter",
+  "Migration",
+  "Drought",
+  "Repel Attack",
+  "Counterattack",
+  "Predators Out",
+  "Floods",
+  "Eruption",
+  "Earthquake",
+  "Tsunami",
+  "Thunder",
+  "Stampede",
+  "Asteroid"
+]
+
+/* Shows cards matching search query*/
+async function searchCard(e){
+  let querySearch = [];
+  const userSearch = e.target.value.toLowerCase()
+  for(let i=0; i<cardList.length; i++){
+    if(cardList[i].toLowerCase().includes(userSearch)){
+      querySearch.push(i+3)/* Cards IDs begin at number 3*/
+    }
+  }
+  document.getElementById("dbCategory").innerHTML = "";
+  if(querySearch.length > 0){
+    querySearch.forEach(element => {
+      const createadiv = document.createElement("div")
+      createadiv.style.cursor = 'pointer';
+      createadiv.classList.add("singlecardwrapper");
+      createadiv.dataset.cardid = element;
+      createadiv.addEventListener('click', function(event){
+        dbCardDetails(event.currentTarget.dataset.cardid);
+      }, true);
+
+      document.getElementById("dbCategory").appendChild(createadiv)
+      const lastCatChild = document.getElementById("dbCategory").lastElementChild;
+      showNewCard(element, lastCatChild)
+
+    });
+  }
+  else{
+    const somediv = document.createElement("div");
+    somediv.classList.add("pangolinfont");
+    somediv.classList.add("textalign");
+    somediv.classList.add("font5vh");
+    somediv.classList.add("navbarcolor");
+    somediv.innerHTML ="No cards matching query.";
+    document.getElementById("dbCategory").appendChild(somediv);
+
+  }
+
 }
 
 /* Shows cardlist by category*/
@@ -1409,8 +1537,91 @@ async function dbShowCategory(category){
         showNewCard(i, lastCatChild)
 
       }
-      
       break;
+
+    case "ca":
+      for(let i=3; i<18; i++){
+        const createadiv = document.createElement("div")
+        createadiv.style.cursor = 'pointer';
+        createadiv.classList.add("singlecardwrapper");
+        createadiv.dataset.cardid = i;
+        createadiv.addEventListener('click', function(event){
+          dbCardDetails(event.currentTarget.dataset.cardid);
+        }, true);
+
+        document.getElementById("dbCategory").appendChild(createadiv)
+        const lastCatChild = document.getElementById("dbCategory").lastElementChild;
+        showNewCard(i, lastCatChild)
+      }
+      break;
+
+    case "he":
+      for(let i=18; i<33; i++){
+        const createadiv = document.createElement("div")
+        createadiv.style.cursor = 'pointer';
+        createadiv.classList.add("singlecardwrapper");
+        createadiv.dataset.cardid = i;
+        createadiv.addEventListener('click', function(event){
+          dbCardDetails(event.currentTarget.dataset.cardid);
+        }, true);
+
+        document.getElementById("dbCategory").appendChild(createadiv)
+        const lastCatChild = document.getElementById("dbCategory").lastElementChild;
+        showNewCard(i, lastCatChild)
+
+      }
+      break;
+
+    case "aq":
+      for(let i=33; i<48; i++){
+        const createadiv = document.createElement("div")
+        createadiv.style.cursor = 'pointer';
+        createadiv.classList.add("singlecardwrapper");
+        createadiv.dataset.cardid = i;
+        createadiv.addEventListener('click', function(event){
+          dbCardDetails(event.currentTarget.dataset.cardid);
+        }, true);
+
+        document.getElementById("dbCategory").appendChild(createadiv)
+        const lastCatChild = document.getElementById("dbCategory").lastElementChild;
+        showNewCard(i, lastCatChild)
+
+      }
+      break;
+
+    case "fl":
+      for(let i=48; i<63; i++){
+        const createadiv = document.createElement("div")
+        createadiv.style.cursor = 'pointer';
+        createadiv.classList.add("singlecardwrapper");
+        createadiv.dataset.cardid = i;
+        createadiv.addEventListener('click', function(event){
+          dbCardDetails(event.currentTarget.dataset.cardid);
+        }, true);
+
+        document.getElementById("dbCategory").appendChild(createadiv)
+        const lastCatChild = document.getElementById("dbCategory").lastElementChild;
+        showNewCard(i, lastCatChild)
+
+      }
+      break;
+
+    case "ev":
+      for(let i=63; i<83; i++){
+        const createadiv = document.createElement("div")
+        createadiv.style.cursor = 'pointer';
+        createadiv.classList.add("singlecardwrapper");
+        createadiv.dataset.cardid = i;
+        createadiv.addEventListener('click', function(event){
+          dbCardDetails(event.currentTarget.dataset.cardid);
+        }, true);
+
+        document.getElementById("dbCategory").appendChild(createadiv)
+        const lastCatChild = document.getElementById("dbCategory").lastElementChild;
+        showNewCard(i, lastCatChild)
+      }
+      break;
+
   
     default:
       break;
@@ -1437,41 +1648,37 @@ async function dbCardDetails(cardid){
   old_element.parentNode.replaceChild(new_element, old_element);
   document.getElementById("showMeImg").addEventListener('click', function(){showDinoImg(cardinfo.name)})
 
-  /* Lo mismo pero para el play button*/
   var old_element = document.getElementById("playMeSound");
   var new_element = old_element.cloneNode(true);
   old_element.parentNode.replaceChild(new_element, old_element);
   document.getElementById("playMeSound").addEventListener('click', function(){playDinoSound(cardinfo.name)})
 
-
-
-
   document.getElementById("cdCardName").innerHTML = cardinfo.name;
   switch (cardinfo.card_type) {
     case "ca":
       document.getElementById("cdCategory").innerHTML="Carnivorous"
-      document.getElementById("cdCategory").classList.add("caColor")
+      document.getElementById("cdCategory").style.color = 'crimson'
       
       break;
   
     case "he":
       document.getElementById("cdCategory").innerHTML="Herbivorous"
-      document.getElementById("cdCategory").classList.add("heColor")
+      document.getElementById("cdCategory").style.color = 'green'
       break;
 
     case "aq":
       document.getElementById("cdCategory").innerHTML="Aquatic"
-      document.getElementById("cdCategory").classList.add("aqColor")
+      document.getElementById("cdCategory").style.color = 'blue'
       break;
 
     case "fl":
       document.getElementById("cdCategory").innerHTML="Flying"
-      document.getElementById("cdCategory").classList.add("flColor")
+      document.getElementById("cdCategory").style.color = 'lightblue'
       break;
 
     case "ev":
       document.getElementById("cdCategory").innerHTML="Event"
-      document.getElementById("cdCategory").classList.add("evColor")
+      document.getElementById("cdCategory").style.color = 'purple'
       break;
 
     default:
@@ -1552,8 +1759,8 @@ async function dbCardDetails(cardid){
 
   }
   else {
-    document.getElementById("cdAbility").innerHTML="See card's text.";
-    document.getElementById("cdEffect").innerHTML="";
+    document.getElementById("cdAbility").innerHTML="-";
+    document.getElementById("cdEffect").innerHTML="-";
 
   }
   
@@ -1577,6 +1784,56 @@ function playDinoSound(dinoName){
   dinocry.loop = false;
   dinocry.volume = 0.5;
   dinocry.play();
+}
+
+/*------- My collection page----------*/
+
+async function collectionPage(){
+  getCompleted();
+  getPlayerCollection()
+}
+
+/* Gets number of collected cards by player*/
+async function getCompleted(){
+  let response = await fetch(`/api/collection_total`);
+  let completed = await response.json();
+
+  document.getElementById("individualCollected").innerHTML = completed.Completion;
+  document.getElementById("percentageTitle").innerHTML = `${((completed.Completion/80)*100).toFixed(1)}%`;
+  document.getElementById("collProgressBar").innerHTML = `${((completed.Completion/80)*100).toFixed(1)}%`;
+  document.getElementById("collProgressBar").style.width = `${((completed.Completion/80)*100).toFixed(1)}%`;
+}
+
+async function getPlayerCollection(){
+  let response = await fetch(`/api/collection_total`);
+  let collection = await response.json();
+
+  const cardlist = collection.CardId;
+  const quantity = collection.Quantity;
+  
+  for(let i =0; i<cardlist.length; i++){
+    let wrapperdiv = document.createElement("div");
+    wrapperdiv.classList.add("collectionWrapper");
+    document.getElementById("collDisplay").appendChild(wrapperdiv);
+
+    let createadiv = document.createElement("div")
+    createadiv.classList.add("singlecardwrapper");
+    createadiv.style.margin = "0px";
+    wrapperdiv.appendChild(createadiv);
+    let nodedisplay = wrapperdiv.lastElementChild;
+    showNewCard(cardlist[i], nodedisplay);
+
+    let qntDiv = document.createElement("div");
+    qntDiv.classList.add("navbarcolor");
+    qntDiv.classList.add("textalign");
+    qntDiv.classList.add("pangolinfont");
+    qntDiv.classList.add("font5vh");
+    qntDiv.innerHTML = `x${quantity[i]}`
+
+    wrapperdiv.appendChild(qntDiv);
+
+    
+  }
 }
 
 
@@ -1722,6 +1979,24 @@ barba.init({
           
           
           
+        },
+
+      },
+      
+      {
+        name: 'collection',
+        to: {namespace: ['collection']},
+        async leave(data) {
+          const done = this.async();
+          pageOut();
+          await delay(1500);
+          done();
+        },
+
+        async enter(data) {
+          pageIn();
+          collectionPage();
+         
         },
 
       },

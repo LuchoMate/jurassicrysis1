@@ -144,6 +144,7 @@ def api_update_deck(request):
 
 #get player's deck composition (# of carnivorous, herbivorous, etc)
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def api_deck_composition(request):
     player = Player.objects.get(username=request.user)
     query = player.player_cards.all()
@@ -180,9 +181,25 @@ def api_deck_composition(request):
     composition = {"ca": ca, "he": he, "aq": aq, "fl": fl, "ev": ev}
     return Response(composition, status=status.HTTP_200_OK)
 
+#get player's # of collected cards as well as quantity of each one
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def api_collection_total(request):
+    player = Player.objects.get(username=request.user)
+    query = player.player_cards.all()
+    cardid = []
+    quantity = []
+    for coll in query:
+        cardid.append(coll.Card_collected.id)
+        quantity.append(coll.quantity)
+
+    Completion = {"Completion": len(query), "CardId": cardid, "Quantity": quantity}
+    return Response(Completion, status=status.HTTP_200_OK)
+
 
 #get opponents shuffled deck
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def api_opp_deck(request, difficulty):
 
     if difficulty == "easy":

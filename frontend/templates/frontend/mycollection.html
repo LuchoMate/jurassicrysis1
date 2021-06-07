@@ -2,7 +2,22 @@
 
 {% block body %}
 <section data-barba="container" data-barba-namespace="collection">
-        <h1 style="color: antiquewhite;">My Collection</h1> 
+        <div class="caesarfont navbarcolor font5vh flexcontainer aligncenter glow margin10">My collection</div>
+        <div class="flexcontainer">
+                <div style="margin-right: 10px;" class="pangolinfont font5vh navbarcolor">Cards collected: </div>
+                <div class="navbarcolor font5vh pangolinfont"><span id="individualCollected" style="color: red;">25</span>/80</div>
+
+
+        </div>
+        <div class="textalign navbarcolor font5vh pangolinfont">Progress: <span id="percentageTitle" class="font5vh pangolinfont">30%</span></div>
+        <div class="flexcontainer">
+                <div class="progress" style="width: 50vw;">
+                        <div id="collProgressBar" class="progress-bar progress-bar-striped progress-bar-animated bg-info" role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="80" style="width: 30%"></div>
+                </div>
+        </div>
+        <div id="collDisplay" class="padding10 margin10 flexcontainer fl_spacearound width100 tradesbg" style="position: static; flex-wrap: wrap;"></div>
+
+        
 </section>
               
 {% endblock %}
