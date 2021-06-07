@@ -1431,11 +1431,20 @@ async function dbCardDetails(cardid){
   const nodedisplay = document.getElementById("cdCardDisplay").lastElementChild;
   showNewCard(cardid, nodedisplay);
 
-  /* Aca redoblar*/
+  
   var old_element = document.getElementById("showMeImg");
   var new_element = old_element.cloneNode(true);
   old_element.parentNode.replaceChild(new_element, old_element);
   document.getElementById("showMeImg").addEventListener('click', function(){showDinoImg(cardinfo.name)})
+
+  /* Lo mismo pero para el play button*/
+  var old_element = document.getElementById("playMeSound");
+  var new_element = old_element.cloneNode(true);
+  old_element.parentNode.replaceChild(new_element, old_element);
+  document.getElementById("playMeSound").addEventListener('click', function(){playDinoSound(cardinfo.name)})
+
+
+
 
   document.getElementById("cdCardName").innerHTML = cardinfo.name;
   switch (cardinfo.card_type) {
@@ -1561,6 +1570,13 @@ function showDinoImg(dinoName){
   var tl = gsap.timeline();
   tl.set("#cdGetImage", {visibility: 'visible'})
   tl.from("#cdGetImage", {scaleX: 0, scaleY: 0, duration: 0.5})
+}
+
+function playDinoSound(dinoName){
+  const dinocry = new Audio(`/static/frontend/sounds/cards/${dinoName}.wav`);
+  dinocry.loop = false;
+  dinocry.volume = 0.5;
+  dinocry.play();
 }
 
 
