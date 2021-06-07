@@ -2268,6 +2268,59 @@ box-shadow: 3px 3px antiquewhite
     @extend #newTrade;
 }
 
+/*--------Database page--------- */
+
+#dbCardDetails{
+    @extend .tradesbg;
+    z-index: 120;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+}
+
+#cdGetImage{
+    @extend .tradesbg;
+    z-index: 130;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+
+}
+
+#cdShowImage{
+    border: 3px solid goldenrod;
+    border-radius: 10px;
+    width:60%;
+}
+
+.caColor{
+    color: crimson;
+}
+
+.hecolor{
+    color: green;
+}
+
+.aqcolor{
+    color: blue;
+}
+
+.flcolor{
+    color: skyblue;
+}
+
+.evcolor{
+    color:purple;
+}
+
+.fitcontent{
+    width: fit-content;
+}
+
 
 
 

@@ -1368,6 +1368,202 @@ function closeInvalidAdd(){
   tl.set("#invalidAdd", {visibility: 'hidden', scaleX: 1, scaleY: 1})
 }
 
+/*---------Database page----------- */
+
+function databasePage(){
+  document.getElementById("closeCardDetails").addEventListener('click', function(){closeCardDetails()})
+  document.getElementById("closeGetImage").addEventListener('click', function(){closeCardImage()})
+  dbShowCategory("all");
+
+}
+
+function closeCardDetails(){
+  var tl = gsap.timeline()
+  tl.to("#dbCardDetails", {scaleX: 0, scaleY: 0, duration: 0.3})
+  tl.set("#dbCardDetails", {scaleX: 1, scaleY: 1, visibility: 'hidden'})
+  document.getElementById("cdCardDisplay").innerHTML="";
+}
+
+function closeCardImage(){
+  var tl = gsap.timeline()
+  tl.to("#cdGetImage", {scaleX: 0, scaleY: 0, duration: 0.5})
+  tl.set("#cdGetImage", {scaleX: 1, scaleY: 1, visibility: 'hidden'})
+}
+
+/* Shows cardlist by category*/
+async function dbShowCategory(category){
+  document.getElementById("dbCategory").innerHTML = "";
+  switch (category) {
+    case "all":
+      for(let i=3; i<83; i++){
+        const createadiv = document.createElement("div")
+        createadiv.style.cursor = 'pointer';
+        createadiv.classList.add("singlecardwrapper");
+        createadiv.dataset.cardid = i;
+        createadiv.addEventListener('click', function(event){
+          dbCardDetails(event.currentTarget.dataset.cardid);
+        }, true);
+
+        document.getElementById("dbCategory").appendChild(createadiv)
+        const lastCatChild = document.getElementById("dbCategory").lastElementChild;
+        showNewCard(i, lastCatChild)
+
+      }
+      
+      break;
+  
+    default:
+      break;
+  }
+
+}
+
+
+/* Opens card detailed info*/
+async function dbCardDetails(cardid){
+  console.log(`clicked cardid: ${cardid}`);
+  let response = await fetch(`/api/get_card/${cardid}`);
+  let cardinfo = await response.json();
+
+  const createadiv = document.createElement("div")
+  createadiv.classList.add("singlecardwrapper");
+  document.getElementById("cdCardDisplay").appendChild(createadiv);
+  const nodedisplay = document.getElementById("cdCardDisplay").lastElementChild;
+  showNewCard(cardid, nodedisplay);
+
+  /* Aca redoblar*/
+  var old_element = document.getElementById("showMeImg");
+  var new_element = old_element.cloneNode(true);
+  old_element.parentNode.replaceChild(new_element, old_element);
+  document.getElementById("showMeImg").addEventListener('click', function(){showDinoImg(cardinfo.name)})
+
+  document.getElementById("cdCardName").innerHTML = cardinfo.name;
+  switch (cardinfo.card_type) {
+    case "ca":
+      document.getElementById("cdCategory").innerHTML="Carnivorous"
+      document.getElementById("cdCategory").classList.add("caColor")
+      
+      break;
+  
+    case "he":
+      document.getElementById("cdCategory").innerHTML="Herbivorous"
+      document.getElementById("cdCategory").classList.add("heColor")
+      break;
+
+    case "aq":
+      document.getElementById("cdCategory").innerHTML="Aquatic"
+      document.getElementById("cdCategory").classList.add("aqColor")
+      break;
+
+    case "fl":
+      document.getElementById("cdCategory").innerHTML="Flying"
+      document.getElementById("cdCategory").classList.add("flColor")
+      break;
+
+    case "ev":
+      document.getElementById("cdCategory").innerHTML="Event"
+      document.getElementById("cdCategory").classList.add("evColor")
+      break;
+
+    default:
+      break;
+  }
+
+  switch (cardinfo.size) {
+    case "sm":
+      document.getElementById("cdSize").innerHTML="Small"
+      break;
+  
+    case "me":
+      document.getElementById("cdSize").innerHTML="Medium"
+      break;
+
+    case "la":
+      document.getElementById("cdSize").innerHTML="Large"
+      break;
+
+    default:
+      break;
+  }
+
+  switch (cardinfo.rarity) {
+    case "co":
+      document.getElementById("cdRarity").innerHTML="Common"
+      document.getElementById("cdRarity").style.color = 'gray'
+      break;
+
+    case "sc":
+      document.getElementById("cdRarity").innerHTML="Scarce"
+      document.getElementById("cdRarity").style.color = 'blue'
+      break;
+
+    case "ex":
+      document.getElementById("cdRarity").innerHTML="Exceptional"
+      document.getElementById("cdRarity").style.color = 'gold'
+      break;
+  
+    default:
+      break;
+  }
+
+  if(cardinfo.card_type != "ev"){
+    switch (cardinfo.condition_text) {
+      case "":
+        document.getElementById("cdAbility").innerHTML="None";
+        document.getElementById("cdEffect").innerHTML="";
+        break;
+      case "Agile.":
+        document.getElementById("cdAbility").innerHTML="Agile";
+        document.getElementById("cdEffect").innerHTML="This card can attack on its first turn.";
+        break;
+  
+      case "Fierce.":
+        document.getElementById("cdAbility").innerHTML="Fierce";
+        document.getElementById("cdEffect").innerHTML="This card deals +1 DMG to Medium and Large Dinosaurs.";
+        break;
+  
+      case "Poisonous.":
+        document.getElementById("cdAbility").innerHTML="Poisonous";
+        document.getElementById("cdEffect").innerHTML="Any dinosaur attacking this card receives 1 DMG.";
+        break;
+      
+      case "Scaled.":
+        document.getElementById("cdAbility").innerHTML="Scaled";
+        document.getElementById("cdEffect").innerHTML="This card receives -1 DMG from other dinosaurs.";
+        break;
+  
+      case "Predator.":
+        document.getElementById("cdAbility").innerHTML="Predator";
+        document.getElementById("cdEffect").innerHTML="Destroys two eggs instead of one when attacking.";
+        break;
+    
+      default:
+        break;
+    }
+
+  }
+  else {
+    document.getElementById("cdAbility").innerHTML="See card's text.";
+    document.getElementById("cdEffect").innerHTML="";
+
+  }
+  
+
+  var tl = gsap.timeline()
+  tl.set("#dbCardDetails", {visibility: 'visible'})
+  tl.from("#dbCardDetails", {scaleX: 0, scaleY: 0, duration: 0.5})
+
+
+}
+
+function showDinoImg(dinoName){
+  document.getElementById("cdShowDino").src=`/static/frontend/images/cards/${dinoName}.png`;
+  var tl = gsap.timeline();
+  tl.set("#cdGetImage", {visibility: 'visible'})
+  tl.from("#cdGetImage", {scaleX: 0, scaleY: 0, duration: 0.5})
+}
+
+
  
 /* Small delay to transition*/
 
@@ -1489,6 +1685,26 @@ barba.init({
         async enter(data) {
           pageIn();
           deckmanagerPage()
+          
+        },
+
+      },
+
+      {
+        name: 'database',
+        to: {namespace: ['database']},
+        async leave(data) {
+          const done = this.async();
+          pageOut();
+          await delay(1500);
+          done();
+        },
+
+        async enter(data) {
+          pageIn();
+          databasePage();
+          
+          
           
         },
 
