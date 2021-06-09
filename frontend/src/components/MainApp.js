@@ -56,23 +56,6 @@ function pageIn(){
     
 }
   
-  /*
-  function contentAnimation() {
-    var tl = gsap.timeline();
-    tl.from("h1", {
-        duration: 0.3,
-        translateY: 50,
-        opacity: 0,
-    });
-    tl.to(
-        "img",
-        {
-            clipPath: "polygon(0 0, 100% 0, 100% 100%, 0% 100%)",
-        },
-        "-=.1"
-    );
-  }
-  */
   
   /* -----Home page carousel-----*/
 
@@ -1877,7 +1860,7 @@ function leaderboardsCategory(lbCategory){
     case "c":
       let c_collected = document.createElement("th");
       c_collected.scope="col";
-      c_collected.innerHTML="Experience";
+      c_collected.innerHTML="Cards collected";
       tr.appendChild(c_collected);
       let i = 1;
       for (var key in leaderboard_collection){
@@ -2117,6 +2100,22 @@ barba.init({
 
       },
 
+      {
+        name: 'register',
+        to: {namespace: ['register']},
+        async leave(data) {
+          const done = this.async();
+          pageOut();
+          await delay(1500);
+          done();
+        },
+
+        async enter(data) {
+          pageIn();
+          
+        },
+
+      },
 
   ],
 });

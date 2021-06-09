@@ -1,43 +1,46 @@
 {% extends "frontend/layout.html" %}
+{% load static %}
 
 {% block body %}
 
 <section data-barba="container" data-barba-namespace="register">
+    <div class="registerDiv">
+        <div class="blackTransparent center loginwidth margin10 padding10">
 
-    <div class="blackTransparent marginauto center loginwidth">
+            <h2 class="navbarcolor">Register</h2>
+        
+            {% if message %}
+                <div class="w3-round-xxlarge  w3-red">{{ message }}</div>
+            {% endif %}
+        
+            <form action="{% url 'register' %}" method="post">
+                {% csrf_token %}
+                <div class="form-group col-md-6 marginauto">
+                    <input class="form-control" type="text" name="username" placeholder="Username">
+                </div>
+                <br>
+                <div class="form-group col-md-6 marginauto">
+                    <input class="form-control" type="email" name="email" placeholder="Email Address">
+                </div>
+                <br>
+                <div class="form-group col-md-6 marginauto">
+                    <input class="form-control" type="password" name="password" placeholder="Password">
+                </div>
+                <br>
+                <div class="form-group col-md-6 marginauto">
+                    <input class="form-control" type="password" name="confirmation" placeholder="Confirm Password">
+                </div>
+                <br>
+                <div class="center"><input class="btn btn-primary" type="submit" value="Register"></div>
+            </form>
+        
+            <div class="center navbarcolor">Already have an account? <a id="suggestion" href="{% url 'login' %}">Log In here.</a></div> 
+        
+        </div>
 
-        <h2 class="navbarcolor">Register</h2>
-    
-        {% if message %}
-            <div class="w3-round-xxlarge  w3-red">{{ message }}</div>
-        {% endif %}
-    
-        <form action="{% url 'register' %}" method="post">
-            {% csrf_token %}
-            <div class="form-group col-md-6 marginauto">
-                <input class="form-control" type="text" name="username" placeholder="Username">
-            </div>
-            <br>
-            <div class="form-group col-md-6 marginauto">
-                <input class="form-control" type="email" name="email" placeholder="Email Address">
-            </div>
-            <br>
-            <div class="form-group col-md-6 marginauto">
-                <input class="form-control" type="password" name="password" placeholder="Password">
-            </div>
-            <br>
-            <div class="form-group col-md-6 marginauto">
-                <input class="form-control" type="password" name="confirmation" placeholder="Confirm Password">
-            </div>
-            <br>
-            <div class="center"><input class="btn btn-primary" type="submit" value="Register"></div>
-        </form>
-    
-        <div class="center navbarcolor">Already have an account? <a id="suggestion" href="{% url 'login' %}">Log In here.</a></div> 
-    
+        <div class="registerGif margin10"><img src="{% static 'frontend/images/icons/Register.gif' %}" alt="Register" style="width: 100%; border-radius: 20%;"></div>
+
     </div>
-    
-    <div class="navbarcolor">Register now and receive an amazing Jurassicrysis starter deck !</div>
 
 </section>
 

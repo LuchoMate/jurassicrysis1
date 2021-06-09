@@ -1752,20 +1752,6 @@ box-shadow: 3px 3px antiquewhite
     animation-iteration-count: infinite;
 }
 
-.balloon1 {
-    @extend .animballoon;
-    left: 3%;
-    top: 20%;
-    animation-delay: 2s;
-}
-
-.balloon2 {
-   @extend .animballoon;
-   right: 5%;
-   bottom: 6%;
-   animation-delay: 3s;
-}
-
 .confetti1 {
     @extend .animballoon;
     right: 5%;
@@ -2352,6 +2338,18 @@ box-shadow: 3px 3px antiquewhite
     flex-direction: column;
     align-items: center;
 }
+
+.registerDiv{
+    @extend .flexcontainer;
+    justify-content: space-around;
+    width: 100%;
+}
+
+.registerGif{
+    width: 50vw;
+}
+
+/* Responsiveness*/
 
 @media screen and (orientation:portrait) {
     .testHome{
