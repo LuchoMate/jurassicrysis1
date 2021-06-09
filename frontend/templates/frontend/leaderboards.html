@@ -1,8 +1,21 @@
 {% extends "frontend/layout.html" %}
 
 {% block body %}
-    <h1 style="color: antiquewhite;">Leaderboards</h1> 
+<section data-barba="container" data-barba-namespace="leaderboards">
+    <div class="caesarfont navbarcolor font5vh flexcontainer aligncenter glow margin10">Leaderboards</div>
+    <div class="flexcontainer">
+        <select id="lbSelect" class="form-select form-select-sm margin10" aria-label="Select Category">
+        <option value="v" selected>Victories</option>
+        <option value="x">Xp</option>
+        <option value="c">Cards collected</option>
+        </select>
+    </div>
 
-    
-  
+    <div class="flexcontainer">
+        <div id="showLeaderboards" class="blackTransparent" style="width: 50%;"></div>
+
+    </div>
+
+</section>
+
 {% endblock %}

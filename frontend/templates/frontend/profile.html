@@ -1,0 +1,28 @@
+{% extends "frontend/layout.html" %}
+{% load static %}
+
+{% block body %}
+<section data-barba="container" data-barba-namespace="profile">
+    {% if message %}
+        <div class="flexcontainer">
+            <div style="width: 50%;"> <img style="width: 100%;" src="{% static 'frontend/images/icons/error.png' %}" alt="error"></div>
+        </div>
+        <div class="navbarcolor font5vh textalign margin10 pangolinfont">{{ message }}</div>
+    {% else%}
+        <div class="center">
+            <img src="https://picsum.photos/id/{{thisUserId}}/200" alt="" class="profilepic">
+            
+            <div class="navbarcolor pangolinfont font5vh">{{thisUser}}</div>
+            <h6 style="color: lightblue">Joined: {{thisUserMemberSince}}</h6>
+            <div class="profileDiv">
+                <div><span class="pangolinfont font5vh" style="color: goldenrod;">Victories: </span> <span class="navbarcolor font5vh">{{thisUserVictories}}</span></div>
+                <div><span class="pangolinfont font5vh" style="color: darkblue">Losses: </span> <span class="navbarcolor font5vh">{{thisUserLosses}}</span></div>
+                <div><span class="pangolinfont font5vh" style="color: lightseagreen">Experience Points: </span> <span class="navbarcolor font5vh">{{thisUserXp}}</span></div>
+            </div>
+            
+        </div>
+       
+    {% endif %} 
+
+</section> 
+{% endblock %}

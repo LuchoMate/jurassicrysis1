@@ -13,6 +13,7 @@ urlpatterns = [
     path("trader", views.trader, name="trader"),
     path("leaderboards", views.leaderboards, name="leaderboards"),
     path("database", views.database, name="database"),
+    path("profile/<str:player>", views.profile, name="profile"),
     path("devbox", views.devbox, name="devbox"),
     path("test", views.test, name="test"),
 ]

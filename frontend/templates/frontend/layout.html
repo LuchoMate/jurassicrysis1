@@ -21,7 +21,7 @@
           {% if user.is_authenticated %}
           
             <div>
-              <a href="#" class="chewyfont">
+              <a href="profile/{{user.username}}" class="chewyfont">
                 <img src="https://picsum.photos/200" alt="" class="profileimg">
                 {{user.username}}
               </a>

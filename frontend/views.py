@@ -13,6 +13,29 @@ def test(request):
 def index(request):
     return render(request, "frontend/index.html")
 
+def profile(request, player):
+    try:
+        thisUser = Player.objects.get(username=player)
+    except Player.DoesNotExist:
+            return render(request, "frontend/profile.html", {
+                "message": "Oops! This user doesn't exist."
+            })
+    
+    thisUserMemberSince = thisUser.member_since
+    thisUserId = thisUser.id
+    thisUserVictories = thisUser.victories
+    thisUserLosses = thisUser.losses
+    thisUserXp = thisUser.xp
+    
+    return render(request, "frontend/profile.html", {
+        "thisUser": thisUser,
+        "thisUserMemberSince": thisUserMemberSince,
+        "thisUserId": thisUserId,
+        "thisUserVictories": thisUserVictories,
+        "thisUserLosses": thisUserLosses,
+        "thisUserXp": thisUserXp
+    })
+
 @login_required
 def play(request):
     return render(request, "frontend/play.html")

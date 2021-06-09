@@ -2335,6 +2335,34 @@ box-shadow: 3px 3px antiquewhite
     align-items: center;
 }
 
+.profilepic{
+    margin: 20px;
+    border-radius: 50%;
+    border: 2px solid wheat;
+}
+
+.testHome {
+    width: 30vw;
+    height: 10vh;
+    background-color: red; 
+}
+
+.profileDiv{
+    @extend .flexcontainer;
+    flex-direction: column;
+    align-items: center;
+}
+
+@media screen and (orientation:portrait) {
+    .testHome{
+        width: 100vw;
+        height: 5vh;
+        background-color: blue;
+    }
+}
+
+
+
 
 
 

@@ -196,6 +196,34 @@ def api_collection_total(request):
     Completion = {"Completion": len(query), "CardId": cardid, "Quantity": quantity}
     return Response(Completion, status=status.HTTP_200_OK)
 
+#get all players stats for leaderboard
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def api_leaderboard(request):
+    query = Player.objects.all().order_by('-victories')
+    victories_qnt = []
+    victories_ply = []
+    for player in query:
+        victories_ply.append(player.username)
+        victories_qnt.append(player.victories)
+    query2 = Player.objects.all().order_by('-xp')
+    xp_ply = []
+    xp_qnt = []
+    for player in query2:
+        xp_ply.append(player.username)
+        xp_qnt.append(player.xp)
+
+    allplayers = {}
+    query3= Player.objects.all()
+    for player in query3:
+        playertocheck = player.username
+        playerCollected = len(player.player_cards.all())
+        allplayers[playertocheck] = playerCollected
+
+    coll_sorted = {k: v for k, v in sorted(allplayers.items(), key=lambda x: x[1], reverse=True)}
+    
+    Statistics = {"victories_ply": victories_ply, "victories": victories_qnt, "xp_ply": xp_ply, "xp": xp_qnt, "PlayersCollection": coll_sorted}
+    return Response(Statistics, status=status.HTTP_200_OK)
 
 #get opponents shuffled deck
 @api_view(['GET'])

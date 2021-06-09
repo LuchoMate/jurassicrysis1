@@ -1,44 +1,3 @@
-/*
-barba.init({
-    prevent: data => data.el.classList.contains('stopBarba'),
-    transitions: [{
-      name: 'opacity-transition',
-      leave(data) {
-        return gsap.to(data.current.container, {
-          opacity: 0
-        });
-      },
-      enter(data) {
-        return gsap.from(data.next.container, {
-          opacity: 0
-        });
-      }
-    }]
-  });
-  */
-
-  /* 
-
-  function pageTransition() {
-    var tl = gsap.timeline();
-
-    tl.to(".transition2 div", {
-        duration: 0.2,
-        scaleY: 1,
-        transformOrigin: "bottom left",
-        stagger: 0.1,
-    });
-
-    tl.to(".transition2 div", {
-        duration: 0.8,
-        scaleY: 0,
-        transformOrigin: "bottom left",
-        stagger: 0.1,
-        delay: 0.1,
-    });
-}
-
-*/
 
 /* Author: Luis Balladares
     For CS50's Web development with Python and Javascript
@@ -119,8 +78,7 @@ function pageIn(){
 
 var myIndex = 0;  
 function carousel() {
-  console.log("hello index!");
-    
+  
     var i;
     var x = document.getElementsByClassName("mySlides");
     for (i = 0; i < x.length; i++) {
@@ -136,7 +94,6 @@ function carousel() {
   
   
 function shopPage(){
-    console.log("hello shopPage!");
     document.getElementById("cancelBuy").addEventListener('click', cancelBuy)
     let packs = document.getElementsByClassName("boosterpack");
     for(let i =0; i < packs.length; i++){
@@ -205,14 +162,13 @@ function buyPack(pack){
       document.getElementById("closePurchase").addEventListener('click', closeNewCards)
 
       newCards.cardsAdded.forEach(element => {
-        console.log(element)
-
+       
         let mainflip = document.createElement("div");
         mainflip.classList.add("flip-card-main");
         document.getElementById("newCardsDisplay").appendChild(mainflip);
 
         mainflip.addEventListener('click',function() {
-          console.log("clicked!");
+          
           this.classList.toggle("turnBack");
           this.style.pointerEvents = 'none';
           const drawsound = new Audio('/static/frontend/sounds/drawcard.mp3');
@@ -461,7 +417,7 @@ async function loadIncoming() {
     const incoming_div = document.getElementById("incoming_requests")
     incoming_div.innerHTML = ""
     let incoming_requests = await response.json();
-    console.log(incoming_requests);
+    
 
     let tablediv = document.createElement("table");
     tablediv.classList.add("table");
@@ -639,8 +595,9 @@ class RenderIncomingCell extends React.Component{
 
   render(){
     return(
+      
       <React.Fragment>
-          <td className="textalign">{this.props.Sender}</td>
+          <td className="textalign"><a href={'profile/'+ this.props.Sender}>{this.props.Sender}</a></td>
           <td className="textalign">{this.props.SenderCard}</td>
           <td className="textalign">{this.props.RecipientCard}</td>
           <td className="textalign"><button onClick={this.acceptTrade} type="button" className="btn btn-success">Accept</button></td>
@@ -684,7 +641,7 @@ async function loadOutgoing() {
     const outgoing_div = document.getElementById("outgoing_requests")
     outgoing_div.innerHTML = ""
     let outgoing_requests = await out_response.json();
-    console.log(outgoing_requests);
+    
 
     
     let tablediv = document.createElement("table");
@@ -811,7 +768,7 @@ class RenderOutgoingCell extends React.Component{
     return(
       <React.Fragment>
           <td className="textalign">{this.props.SenderCard}</td>
-          <td className="textalign">{this.props.Recipient}</td>
+          <td className="textalign"><a href={'profile/'+ this.props.Recipient}>{this.props.Recipient}</a></td>
           <td className="textalign">{this.props.RecipientCard}</td>
           <td className="textalign"><button onClick={this.cancelTrade} type="button" className="btn btn-danger">Cancel</button></td>
       </React.Fragment>
@@ -830,14 +787,13 @@ function openTrade(){
 }
 
 async function showCategory(category){
-  console.log("Show category")
+  
   const button = new Audio('/static/frontend/sounds/button2.mp3');
   button.loop = false;
   button.play();
  
   const catString = String(category)
   const catDisplay = catString.slice(8);
-  console.log(`catDisplay=${catDisplay}`);
   let catArray = []
 
   switch (catDisplay) {
@@ -857,7 +813,6 @@ async function showCategory(category){
       catArray=[63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82]
 
     default:
-      console.log("nothing happened")
       break;
   }
 
@@ -869,8 +824,6 @@ async function showCategory(category){
 
     createadiv.addEventListener('click', function(event){
       showCardAvailable(event.currentTarget.dataset.cardid);
-      
-      console.log("clicked createadiv!")
     }, true);
     
     document.getElementById("categoryContainer").appendChild(createadiv)
@@ -913,7 +866,6 @@ function closeCategory(){
 
 /* Shows if selected card is available for trade*/
 async function showCardAvailable(card){
-  console.log(`showcardAv ${card}`);
   const createadiv = document.createElement("div")
   createadiv.classList.add("singlecardwrapper");
   document.getElementById("displayCardAvailable").appendChild(createadiv);
@@ -926,7 +878,6 @@ async function showCardAvailable(card){
     const available_div = document.getElementById("cardUserAvailables")
     available_div.innerHTML = ""
     let available_users = await check_card.json();
-    console.log(available_users);
 
     let tablediv = document.createElement("table");
     tablediv.classList.add("table");
@@ -1064,7 +1015,6 @@ class RenderPlayerAvlb extends React.Component{
         createadiv.dataset.cardtoOffer = element;
         
         createadiv.addEventListener('click', function(event){
-          console.log("clicked card to offer!")
           finishTrade(event.currentTarget.dataset.playerToSend,
             event.currentTarget.dataset.cardtoTrade,
             event.currentTarget.dataset.cardtoOffer);
@@ -1087,7 +1037,6 @@ class RenderPlayerAvlb extends React.Component{
     button.loop = false;
     button.play();
 
-    console.log(`${this.props.Player} has ${this.props.Quantity} of idcard ${this.props.cardtoTrade}`)
     var tl = gsap.timeline();
     tl.to("#cardUserAvailables", {opacity: 0, duration: 0.3})
     tl.call(this.hideTradesList)
@@ -1160,9 +1109,7 @@ function tradePage(){
 
 /* On page load*/
 function deckmanagerPage(){
-  console.log("Check your deck!");
   let dl = getDeckLength();
-  console.log(dl);
   loadDeck();
   load_avl_collection();
   loadComposition();
@@ -1185,7 +1132,6 @@ async function loadDeck() {
     createadiv.dataset.cardid = element;
     createadiv.addEventListener('click', function(event){
       removeFromDeck(event.currentTarget.dataset.cardid);
-      console.log("clicked createadiv!")
     }, true);
 
     /* Añadir event listener removeFromDeck*/
@@ -1227,7 +1173,6 @@ async function load_avl_collection(){
       createadiv.dataset.cardid = element;
       createadiv.addEventListener('click', function(event){
         addToDeck(event.currentTarget.dataset.cardid);
-        console.log("clicked createadiv!")
       }, true);
 
       document.getElementById("collContainer").appendChild(createadiv)
@@ -1279,9 +1224,8 @@ function addToDeck(cardid){
   }).then(response => {
     console.log(response.status); 
     if(response.status == 204){
-      console.log("Adding to deck!")
+      
       let dl = getDeckLength();
-      console.log(dl);
       document.getElementById("deckContainer").innerHTML="";
       loadDeck();
       document.getElementById("collContainer").innerHTML="";
@@ -1336,9 +1280,7 @@ function removeFromDeck(cardid){
   }).then(response => {
     if(response.status == 204){
 
-      console.log("Removing from deck!")
       let dl = getDeckLength();
-      console.log(dl);
       document.getElementById("deckContainer").innerHTML="";
       loadDeck();
       document.getElementById("collContainer").innerHTML="";
@@ -1632,7 +1574,6 @@ async function dbShowCategory(category){
 
 /* Opens card detailed info*/
 async function dbCardDetails(cardid){
-  console.log(`clicked cardid: ${cardid}`);
   let response = await fetch(`/api/get_card/${cardid}`);
   let cardinfo = await response.json();
 
@@ -1836,8 +1777,148 @@ async function getPlayerCollection(){
   }
 }
 
+/* ----Leaderboards Page----*/
+let victories_player = []
+let victories_quantity = []
+let xp_player = []
+let xp_quantity = []
+let leaderboard_collection = {}
 
- 
+
+function leaderboardsPage(){
+  getLeaderboardsData();
+  document.getElementById("lbSelect").addEventListener('change', function(){leaderboardsCategory(this.value)}, false)
+  setTimeout(function(){ leaderboardsCategory("v") }, 500);
+
+}
+
+async function getLeaderboardsData(){
+  let response = await fetch(`/api/leaderboard`);
+  let data = await response.json();
+
+  victories_player = data.victories_ply;
+  victories_quantity = data.victories;
+  xp_player = data.xp_ply;
+  xp_quantity = data.xp;
+  leaderboard_collection = data.PlayersCollection;
+
+}
+
+function leaderboardsCategory(lbCategory){
+  const leaderboard_div = document.getElementById("showLeaderboards")
+  leaderboard_div.innerHTML = ""
+
+  let tablediv = document.createElement("table");
+  tablediv.classList.add("table");
+  tablediv.classList.add("table-hover");
+  tablediv.classList.add("table-dark");
+  tablediv.classList.add("table-striped");
+  tablediv.classList.add("align-middle");
+  leaderboard_div.appendChild(tablediv); 
+
+  let thead = document.createElement("thead");
+  tablediv.appendChild(thead);
+  let tr = document.createElement("tr");
+  thead.appendChild(tr);
+
+  let usershow = document.createElement("th");
+  usershow.scope="col";
+  usershow.innerHTML = "#Rank"
+  tr.appendChild(usershow);
+
+  let Quantity = document.createElement("th");
+  Quantity.scope="col";
+  Quantity.innerHTML="Player";
+  tr.appendChild(Quantity);
+
+  let tbody = document.createElement("tbody");
+  tablediv.appendChild(tbody);
+
+
+  switch (lbCategory) {
+    case "v":
+      let l_victories = document.createElement("th");
+      l_victories.scope="col";
+      l_victories.innerHTML="Victories";
+      tr.appendChild(l_victories);
+
+      for(let i=0; i<victories_player.length; i++){
+        let trow = document.createElement("tr");
+        tbody.appendChild(trow);
+
+        ReactDOM.render(<RenderLeaderboard
+          Rank={i+1}
+          Player={victories_player[i]}
+          showQuantity={victories_quantity[i]}
+          />, trow)
+
+      }
+      break;
+
+    case "x":
+      let x_victories = document.createElement("th");
+      x_victories.scope="col";
+      x_victories.innerHTML="Experience";
+      tr.appendChild(x_victories);
+      for(let i=0; i<xp_player.length; i++){
+        let trow = document.createElement("tr");
+        tbody.appendChild(trow);
+
+        ReactDOM.render(<RenderLeaderboard
+          Rank={i+1}
+          Player={xp_player[i]}
+          showQuantity={xp_quantity[i]}
+          />, trow)
+
+      }
+
+      break;
+
+    case "c":
+      let c_collected = document.createElement("th");
+      c_collected.scope="col";
+      c_collected.innerHTML="Experience";
+      tr.appendChild(c_collected);
+      let i = 1;
+      for (var key in leaderboard_collection){
+        let trow = document.createElement("tr");
+        tbody.appendChild(trow);
+        ReactDOM.render(<RenderLeaderboard
+          Rank={i}
+          Player={key}
+          showQuantity={leaderboard_collection[key]}
+          />, trow)
+        i++;
+
+      }
+
+      break;
+  
+    default:
+      break;
+  }
+  
+
+}
+
+class RenderLeaderboard extends React.Component{
+  constructor(props){
+    super(props);
+   
+  }
+
+  render(){
+    return(
+      <React.Fragment>
+          <td>{this.props.Rank}</td>
+          <td><a href={'profile/'+ this.props.Player}>{this.props.Player}</a></td>
+          <td>{this.props.showQuantity}</td>
+      </React.Fragment>
+    )
+  }
+
+}
+
 /* Small delay to transition*/
 
 function delay(n) {
@@ -1997,6 +2078,41 @@ barba.init({
           pageIn();
           collectionPage();
          
+        },
+
+      },
+
+      {
+        name: 'leaderboards',
+        to: {namespace: ['leaderboards']},
+        async leave(data) {
+          const done = this.async();
+          pageOut();
+          await delay(1500);
+          done();
+        },
+
+        async enter(data) {
+          pageIn();
+          leaderboardsPage();
+         
+        },
+
+      },
+
+      {
+        name: 'profile',
+        to: {namespace: ['profile']},
+        async leave(data) {
+          const done = this.async();
+          pageOut();
+          await delay(1500);
+          done();
+        },
+
+        async enter(data) {
+          pageIn();
+          
         },
 
       },
