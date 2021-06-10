@@ -1882,7 +1882,7 @@ box-shadow: 3px 3px antiquewhite
 
 .buyPackdiv{
     left: 35%;
-    top: 25%;
+    top: 30%;
     width: 30%;
     padding: 10px;
 }
@@ -2155,7 +2155,7 @@ box-shadow: 3px 3px antiquewhite
 #tradeAccepted {
     visibility: hidden;
     position: absolute; 
-    height: 75vh; 
+    height: fit-content;
     width: 90vw; 
     z-index: 20; 
     top: 21%; 
@@ -2351,12 +2351,163 @@ box-shadow: 3px 3px antiquewhite
 
 /* Responsiveness*/
 
+.streamDiv{
+    @extend .position;
+    width: 15vw; 
+    height: 10vh; 
+    right: 5%; 
+}
+
+#newCardsDisplay {
+    display: flex; 
+    justify-content: space-around; 
+    width: 100%;
+}
+
+#showLeaderboards {
+    width: 50%;
+}
+
+.flexChooseCategory {
+    @extend .flexcontainer;
+}
+
 @media screen and (orientation:portrait) {
-    .testHome{
-        width: 100vw;
-        height: 5vh;
-        background-color: blue;
+    
+    .font10vh {
+        font-size: 10vw;
     }
+    
+    .font5vh {
+        font-size: 5vw;
+    }
+
+    .streamDiv {
+        display: none;
+    }
+
+    #boosterDisplay {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .buyPackdiv{
+        left: 0%;
+        top: 25%;
+        width: 90%;
+        padding: 10px;
+    }
+    #buyButton {
+        width: 13vh;
+        height: 11vw;
+        background-color: green;
+        color: white;
+        border-radius: 10px;
+        box-shadow: 3px 3px red;
+        cursor: pointer;
+    }
+    #newCardsDisplay {
+        display: flex; 
+        justify-content: center;
+        align-items: center;
+        flex-direction: column; 
+        width: 100%;
+    }
+    #showNewCards {
+        height: fit-content; 
+        width: 95vw;
+        left: 0%;
+        top: 25%;
+    }
+    .flip-card-main {
+        background-color: transparent;
+        height: 36vw;
+        min-height: 36vw;
+        max-height: 36vw; 
+        width: 12vh;
+        min-width: 12vh;
+        max-width: 12vh; 
+        border: none;
+        perspective: 1000px;
+        cursor: pointer;
+    }
+    .containerwrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+        height: 36vw;
+        min-height: 36vw;
+        max-height: 36vw; 
+        width: 12vh;
+        min-width: 12vh;
+        max-width: 12vh; 
+        transform: rotateY(180deg);
+        -webkit-backface-visibility: hidden; /* Safari */
+        backface-visibility: hidden;
+    }
+
+    .collectionWrapper{
+        height: 42vw;
+        min-height: 42vw;
+        max-height: 42vw; 
+        width: 13vh;
+        min-width: 13vh;
+        max-width: 13vh; 
+        
+    }
+
+    .singlecardwrapper {
+        height: 36vw;
+        min-height: 36vw;
+        max-height: 36vw; 
+        width: 12vh;
+        min-width: 12vh;
+        max-width: 12vh; 
+        
+    }
+
+    .displayCardContainer {
+        height: 35vw;
+        min-height: 35vw;
+        max-height: 35vw; 
+        width: 12vh;
+        min-width: 12vh;
+        max-width: 12vh; 
+    }
+    #showLeaderboards {
+        width: 100%;
+        align-self: flex-start;
+    }
+    #incoming_requests{
+        width: 100%;
+        align-self: flex-start;
+    }
+    #outgoing_requests{
+        width: 100%;
+        align-self: flex-start; 
+    }
+    .flexChooseCategory {
+        flex-wrap: wrap;
+
+    }
+    #tradeCategory{
+        position: absolute;
+        left: 0%;
+        width: 99%;
+    }
+    .categoryPic {
+        min-height: 20vw;
+        max-height: 20vw;
+    }
+    #successfulNewTrade {
+        left: 1%;
+        
+    }
+    #cdGetImage{
+        height: 50vh;
+    }
+    
 }
 
 

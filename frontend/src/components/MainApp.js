@@ -1615,10 +1615,17 @@ async function dbCardDetails(cardid){
       break;
   
     case "me":
-      document.getElementById("cdSize").innerHTML="Medium"
+      if(cardinfo.card_type != "ev"){
+        document.getElementById("cdSize").innerHTML="Medium"
+      }
+      else{
+        document.getElementById("cdSize").innerHTML="-"
+      }
+      
       break;
 
     case "la":
+      
       document.getElementById("cdSize").innerHTML="Large"
       break;
 
@@ -1650,7 +1657,7 @@ async function dbCardDetails(cardid){
     switch (cardinfo.condition_text) {
       case "":
         document.getElementById("cdAbility").innerHTML="None";
-        document.getElementById("cdEffect").innerHTML="";
+        document.getElementById("cdEffect").innerHTML="-";
         break;
       case "Agile.":
         document.getElementById("cdAbility").innerHTML="Agile";

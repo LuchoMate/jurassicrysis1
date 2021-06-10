@@ -198,7 +198,6 @@ def api_collection_total(request):
 
 #get all players stats for leaderboard
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
 def api_leaderboard(request):
     query = Player.objects.all().order_by('-victories')
     victories_qnt = []

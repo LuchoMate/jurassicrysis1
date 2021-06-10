@@ -7,15 +7,15 @@
     <div class="caesarfont navbarcolor font10vh flexcontainer aligncenter glow margin10">Trades</div>
     <div class="caesarfont navbarcolor font5vh flexcontainer aligncenter margin10 tradesbg padding10 fl_column" style="position: relative; height: auto;">
         Incoming Trade Requests
-        <div id="incoming_requests" class="blackTransparent"></div>
+        <div id="incoming_requests" class="blackTransparent table-responsive"></div>
         Outgoing Trade Requests
-        <div id="outgoing_requests" class="blackTransparent"></div>
+        <div id="outgoing_requests" class="blackTransparent table-responsive"></div>
     </div> 
 
     <div id="tradeCategory" class="flexcontainer margin10 tradesbg padding10 navbarcolor fl_column" style="visibility: hidden; height: fit-content;">
         <div id="cancelTrade" class="font5vh" style="align-self: flex-end; cursor: pointer;">&#10060;</div>
         <div class="font5vh navbarcolor caesarfont margin10 textalign glow">Which card type are you looking for?</div>
-        <div class="flexcontainer">
+        <div class="flexChooseCategory">
             <div class="largehover">
                 <img id="categoryca" src="{% static 'frontend/images/cards/Tyrannosaurus.PNG' %}" alt="" class="categoryPic">
                 <div class="pangolinfont font5vh flexcontainer" style="color: red;">Carnivorous</div>
@@ -51,7 +51,7 @@
         <div id="cardAvTitle" class="font5vh navbarcolor caesarfont textalign">Card availability</div>
         <div id="displayCardAvailable" class="flexcontainer"></div>
         <div id="yourAvCards" class="font5vh navbarcolor caesarfont textalign" style="display: none;">Your available cards</div>
-        <div id="cardUserAvailables" class="blackTransparent pangolinfont navbarcolor font5vh flexcontainer"></div>
+        <div id="cardUserAvailables" class="blackTransparent pangolinfont navbarcolor font5vh flexcontainer table-responsive"></div>
     </div>
 
     <div id="successfulNewTrade" class="tradesbg ">
