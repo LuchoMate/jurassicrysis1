@@ -55,21 +55,20 @@ Finally, this projects meets the requirements we were asked because:
 # Overview
 A simplified structure of the project is as it follows:
 
-```mermaid
-graph TD
-A[Jurassicrysis] --> B(Frontend)
-A --> C(Backend)
-C --> L(Models, Views, Tests, etc.)
-B --> D(Templates)
-D --> F(HTML Files)
-B --> E(Static)
-E --> H(Images/Audio, styles.scss)
-B --> G(src)
-G --> I(Components)
-I --> J((App.js))
-I --> K((MainApp.js))
+**backend**
 
-```
+ - Models.
+ - Views.
+ - Tests.
+ - Serializers.
+
+**frontend**
+
+ - Templates -> HTML files.
+ - Static -> Images, Audio, styles.scss.
+ - src -> Components -> (App.js and MainApp.js)
+ 
+
 This structure's intention is to separate as best as possible the back and front ends of the project. 
 ## Frontend
 ### barba.js
@@ -244,24 +243,13 @@ An exclusive transition for *play.HTML* . It manages the following logic when th
 
 Controls the entire logic of the game, from drawing both players starting hands to handle whether the user won or lost the game.
 
-A diagram that shows the game flow is shown next:
+The ***game flow*** is as it follows:
 
-```mermaid
-graph LR
-A[RPS game] -- player begins --> B((Player's Turn))
-A -- opponent begins --> C((Opponent's Turn))
-B --> D{Draw a card}
-D --> E{Play cards}
-E --> F{End turn}
-F --> C
-C --> D
-F --> B
-G[Player Eggs = 0] --> I[Player loses]
-H[Opp's Eggs = 0] --> J[Player wins]
-E --> G
-E --> H
-
-```
+***Rock-papers-scissors game***: decides which player begins.
+***Player/opponent's turn starts***: draw a card.
+***Play cards***: and attack dinosaurs or eggs.
+***Check opponent's players eggs***: after an attack. If player still has eggs left, continue. Otherwise, tha game is over (Win/Lose deppending on the situation).
+***End Turn***: when there are still eggs available on both sides.
 
 As previously stated, all data pertaining Attack, LifePoints, receiving damage as well as rendering and destroying cards is handled by React components. In specific the following functions:
 
