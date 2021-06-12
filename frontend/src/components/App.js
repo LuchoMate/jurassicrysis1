@@ -1,5 +1,5 @@
 /* Author: Luis Balladares
-    For CS50's Web development with Python and Javascript
+    For CS50's Web programming with Python and Javascript
 */
 
 import React from 'react';
