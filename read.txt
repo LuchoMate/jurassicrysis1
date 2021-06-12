@@ -1,0 +1,173 @@
+# Jurassicrysis
+#### CS50's Web Programming with Python and JavaScript
+#### Author:
+Luis Balladares
+
+
+## Table of contents:
+
+ 
+
+ 1. ##### About the project
+ 2. ##### Distinctiveness and Complexity
+ 3. ##### Overview
+ 4. ##### Files
+ 5. ##### Running the application
+ 6. ##### ??
+ 7. ##### Final words
+
+
+
+# About the project
+
+**Jurassicrysis** is a Dinosaurs collectible card game where you can buy booster packs with in-game money, build your own deck, trade your cards with other users, and most importantly, play against the computer.
+
+It was made using Javascript, HTML, SCSS in the frontend and Python through Django/Django in the backend.
+
+Additionally, the following libraries/frameworks were utilized:
+
+ - **React**: React was used mainly to render and store information about the cards when playing the game. It was also used to render cards in pages like collection or database, as some minor details.
+ - **GSAP**: For cards animations through the screen, dynamic menus and information screens.
+ - **barba.js**: In order for the site to behave as a Single Page Application, a simple transition was included when navigating through different pages.
+ - **Django REST**: To communicate with the backend in a clean way using json, Django REST was added to the *INSTALLED_APPS* setting.
+ - **Webpack**: This module bundler was used in order to being able to call React  and ReactDOM anywhere in the project.
+
+# Distinctiveness and Complexity
+
+## Distinctiveness
+At its core this project is distinct from any other one on this course. First, the concept of it is not related at all with Social Networks, e-Mail systems or e-Commerce.
+Second, the idea of a collectible card game is far from being related to our previous tasks. 
+
+Lastly, the objective or goal of the game, that being collecting all cards and using them to play, and being able to trade them with other users is a concept that I believe is not related with the direction/purpose of sites we built before.
+
+## Complexity
+Building a dynamic page in which plenty of components can interact with each other and cause effects in the DOM  as well as creating the logic behind a turn-based game is in my opinion one of the strongest points on why this project is more complex than its predecessors.
+
+Fully using the HTML Drag & Drop API (both for desktop and mobile versions) as well as the advantages of storing and managing data that React provides in combination with GSAP makes of this project a fun and complex -but rewarding- experience.
+
+
+I have to mention the backend, in which I learnt how to use Django REST to facilitate the communication between a number of views and JS functions.
+
+Finally, this projects meets the requirements we were asked because:
+
+ - It uses Django with 4 models.
+ - It uses Javascript on the frontend.
+ - It's fully responsive.
+
+# Overview
+A simplified structure of the project is as it follows:
+
+```mermaid
+graph TD
+A[Jurassicrysis] --> B(Frontend)
+A --> C(Backend)
+C --> L(Models, Views, Tests, etc.)
+B --> D(Templates)
+D --> F(HTML Files)
+B --> E(Static)
+E --> H(Images/Sounds, styles.scss)
+B --> G(src)
+G --> I(Components)
+I --> J((App.js))
+I --> K((MainApp.js))
+
+```
+This structure's intention is to separate as best as possible the back and front ends of the project. 
+## Frontend
+### barba.js
+From barba's docs:
+>**Barba.js** is a small _(7kb minified and compressed)_ and easy-to-use library that helps you create fluid and smooth transitions between your website’s pages. It makes your website run like a **SPA**  _(Single Page Application)_ and help reduce the delay between your pages, minimize browser HTTP requests and enhance your user’s web experience.
+
+This was achieved by manipulating the *divs* elements with classes *transition1* and *transition2* from *layout.HTML* through the file **MainApp.js**
+
+Barba.js was included in this project using CDN with a generic script markup;
+
+> src="https://cdn.jsdelivr.net/npm/@barba/core">
+
+The movement of the "jaws" effect was done by transitioning its ScaleY properties with **GSAP**.
+
+### GSAP
+
+According to GreenSock:
+> The GreenSock Animation Platform (GSAP) animates anything JavaScript can touch (CSS properties, SVG, React, canvas, generic objects, whatever) and solves countless browser inconsistencies (...) animation ultimately boils down to changing property values many times per second, making something appear to move, fade, spin, etc. GSAP snags a starting value, an ending value and then interpolates between them 60 times per second.
+
+The following was animated using GSAP:
+
+ - Moving cards across the board.
+ - Drawing cards from deck.
+ - All kinds of menus appearing and dissapearing.
+ - Pages transitions.
+
+This library was called using CDN:
+> src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.6.1/gsap.min.js"
+
+### React
+> "React is a JavaScript library for building user interfaces"
+
+React plays a big role on this project for it stores and handles data regarding cards information like LifePoints, Attack or Dinosaurs types as well as rendering and destroying said cards when playing. It was also utilized to display cards and tables on Collection, Database, Trade Cards and Leaderboards.
+
+Since a React App consists of a single HTML file and this project was multi-page, and as well as the need of using React on different files, I decided to incorporate it by compiling .js files via **Webpack**.
+
+### Webpack
+> "At its core,  **webpack**  is a  _static module bundler_  for modern JavaScript applications. When webpack processes your application, it internally builds a  [dependency graph](https://webpack.js.org/concepts/dependency-graph/)  which maps every module your project needs and generates one or more  _bundles_.
+
+For the previous stated reasons is why Webpack was used to convert *App.js* and *MainApp.js* into files which could import React and ReactDOM into them.
+
+## Backend
+### Models
+The following models were created to store data:
+#### Player
+Extends the *AbstractUser* class and stores user's data like Victories, Losses, Experience and Dinocoins.
+#### Card
+This model stores each individual card related information:
+
+ - Name
+ - Attack
+ - LifePoints
+ - Cost
+ - Type (Carnivorous, herviborous, aquatic, flying or event)
+ - Weakness
+ - Rarity
+ - Size
+ - Condition (ability)
+ - Event effect (for event type cards)
+
+#### Collection
+Stores each individual card collected by players on the database:
+
+ - Owner: *Foreign Key* of Player
+ - Card_collected: *Foreign Key* of Card
+ - quantity: Number of cards collected for that specific card
+ - on_deck: Number of cards added to the player's deck with a maximum of 2
+#### Trade
+This model handles incoming and outgoing trades requests:
+ - Sender: *Foreign Key* of Player
+ - Recipient: *Foreign Key* of Player
+ - Sender_card: Card offered by Sender, *Foreign Key* of Card
+ - Recipient_card: Card requested by Sender, *Foreign Key* of Card
+
+### Views
+
+ - **api_get_card**: [GET]Gets a card given its ID.
+ - **api_return_card_id**: [GET]Gets a card  ID given its name.
+ - **api_player_collection**: [GET]Returns the logged user's collection.
+ - **api_player_deck**: [GET]Returns the logged user's deck.
+ - **api_shuffled_deck**: [GET]Same as player_deck but shuffled in order to play.
+ - **api_update_deck**: [PUT, DELETE]Adds or removes a card from player's deck.
+ - **api_deck_composition**: [GET]Returns logged user's deck composition as an array of integers (Carnivorous, herviborous, etc.) 
+ - **api_collection_total**: [GET] Gets logged user's number of collected cards as well of quantity of each one.
+ - **api_leaderboard**: [GET]Gets all players stats to display on leaderboard.
+ - **api_opp_deck** :[GET]Returns a shuffled array of the computer's deck.
+ - **api_player_wins** :[PUT] Adds Experience, Wins and Dinocoins to the logged user depending on the difficulty received.
+ - **api_player_loses**: [PUT] Adds +1 to logged user's losses count.
+ - **api_buy_pack**:[PUT] Adds and returns 3 cards of the requested category, provided logged user has >= 5000 Dinocoins.
+ - **api_incoming_requests**: [GET] Gets logged user's incoming trade requests.
+ - **api_outgoing_requests**: [GET] Gets logged user's outgoinf trade requests.
+ - **api_check_available**: [GET] Checks if a given card is available for trade, returning a status code of 200 along with a list of players that posess that card.
+ - **api_my_avl_cards**: [GET] Returns an array of logged user's available cards to offer for trade (quantity > on_deck).
+ - **api_all_avl_cards**: [GET] Gets all available cards of logged user (used in Deck Manager)
+ - **api_new_trade**: [POST] Creates a new trade request.
+ - **api_cancel_trade**[DELETE] Cancels a trade given its ID.
+ - **api_accept_trade**[POST] Accepts a trade given its ID.
+
+# Files

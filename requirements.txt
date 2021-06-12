@@ -1,0 +1,5 @@
+#Additionally to Django, Django REST is required.
+
+#Type the following in your command line:
+
+pip install djangorestframework

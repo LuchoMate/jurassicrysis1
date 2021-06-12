@@ -7,6 +7,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 function pageOut(){
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth'
+  });
 
   gsap.to(".transition1 div", {
     opacity: 1,
@@ -32,7 +36,7 @@ function pageOut(){
 }
   
 function pageIn(){
-
+  
   gsap.to(".transition1 div", {
     opacity: 0,
     duration: 1,
@@ -1924,29 +1928,6 @@ barba.init({
   sync: true,
   prevent: data => data.el.classList.contains('stopBarba'),
   preventRunning: true,
-
-  views: [{
-    /* 
-    namespace: 'index',
-    beforeEnter(){
-      console.log("before enter index")
-      carousel();
-    },*/
-
-    /* 
-    namespace: 'shop',
-    beforeEnter(){
-      console.log("before enter shop")
-      shopPage();
-    },
-    namespace: 'collection',
-    beforeEnter(){
-      console.log("before collection")
-      
-    },*/
-
-    
-  }],
 
   transitions: [
       {

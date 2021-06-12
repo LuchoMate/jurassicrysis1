@@ -100,7 +100,7 @@ def api_update_deck(request):
         try:
             cardCollected = Collection.objects.filter(Owner = player).get(Card_collected = cardToAdd)
         except Collection.DoesNotExist:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+            return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
         #Attempts to add to deck
         if cardCollected.quantity > cardCollected.on_deck:
             if cardCollected.on_deck < 2:
@@ -126,7 +126,7 @@ def api_update_deck(request):
         try:
             cardCollected = Collection.objects.filter(Owner = player).get(Card_collected = cardToRemove)
         except Collection.DoesNotExist:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+            return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
 
         #Attemps to remove from deck
         if cardCollected.on_deck > 0:
@@ -234,7 +234,7 @@ def api_opp_deck(request, difficulty):
         random.shuffle(deck)
         shuffled = {"shuffled": deck}
     elif difficulty == "medium":
-        deck = [6,8,8,12,14,24,24,27,27,39,39,46,54,54,59,59,66,66,72,69]
+        deck = [6,8,8,12,14,24,24,27,27,39,39,46,54,54,59,66,66,72,69,78]
         random.shuffle(deck)
         shuffled = {"shuffled": deck}
     elif difficulty == "hard":
@@ -600,25 +600,30 @@ def api_new_trade(request):
 
         #double checks if cards are in players collections
         targetColl = targetPlayer.player_cards.all()
-        checkTargetCard = targetColl.get(Card_collected = targetCard)
+        try:
+            checkTargetCard = targetColl.get(Card_collected = targetCard)
+        except Collection.DoesNotExist:
+            body= {"Content": f"{targetPlayer} does not own card {targetCard.name}."}
+            return Response(body, status=status.HTTP_404_NOT_FOUND)
+         
         if checkTargetCard:
             if checkTargetCard.quantity <= checkTargetCard.on_deck:
                 body= {"Content": f"{targetPlayer} does not have card {targetCard.name} available for trade."}
                 return Response(body, status=status.HTTP_404_NOT_FOUND)  
-        else:
-            body= {"Content": f"{targetPlayer} does not own card {targetCard.name}."}
-            return Response(body, status=status.HTTP_404_NOT_FOUND) 
+        
 
         userColl = requestPlayer.player_cards.all()
-        checkPlayerCard = userColl.get(Card_collected = offeredCard)
+        try:
+            checkPlayerCard = userColl.get(Card_collected = offeredCard)
+        except Collection.DoesNotExist:
+            body= {"Content": f"You do not own {offeredCard.name}."}
+            return Response(body, status=status.HTTP_404_NOT_FOUND) 
+
         if checkPlayerCard:
             if checkPlayerCard.quantity <= checkPlayerCard.on_deck:
                 body= {"Content": f"You do not have {offeredCard.name} available for trade."}
                 return Response(body, status=status.HTTP_404_NOT_FOUND)
-        else:
-            body= {"Content": f"You do not own {offeredCard.name}."}
-            return Response(body, status=status.HTTP_404_NOT_FOUND) 
-
+        
         try:
             newTrade = Trade(Sender = requestPlayer, Recipient = targetPlayer,
             Sender_card = offeredCard, Recipient_card = targetCard)
@@ -696,25 +701,28 @@ def api_accept_trade(request):
 
         #double checks if cards are in players collections
         targetColl = recipientPlayer.player_cards.all()
-        checkTargetCard = targetColl.get(Card_collected = recipientCard)
+        try:
+            checkTargetCard = targetColl.get(Card_collected = recipientCard)
+        except Collection.DoesNotExist:
+            body= {"Content": "You do not own this card"}
+            return Response(body, status=status.HTTP_404_NOT_FOUND) 
         if checkTargetCard:
             if checkTargetCard.quantity <= checkTargetCard.on_deck:
                 body= {"Content": "Your card is not available for trade."}
                 return Response(body, status=status.HTTP_404_NOT_FOUND)  
-        else:
-            body= {"Content": "You do not own this card"}
-            return Response(body, status=status.HTTP_404_NOT_FOUND) 
-
+        
+            
         senderColl = senderPlayer.player_cards.all()
-        checkPlayerCard = senderColl.get(Card_collected = senderCard)
+        try:
+            checkPlayerCard = senderColl.get(Card_collected = senderCard)
+        except Collection.DoesNotExist:
+            body= {"Content": "Sender does not own his/her offered card"}
+            return Response(body, status=status.HTTP_404_NOT_FOUND)
         if checkPlayerCard:
             if checkPlayerCard.quantity <= checkPlayerCard.on_deck:
                 body= {"Content": "Sender does not have this card available for trade"}
                 return Response(body, status=status.HTTP_404_NOT_FOUND)
-        else:
-            body= {"Content": "Sender does not own his/her offered card"}
-            return Response(body, status=status.HTTP_404_NOT_FOUND)
-
+        
         #Adds Sender card to Recipient's collection
         receivingCard = []
         try:
