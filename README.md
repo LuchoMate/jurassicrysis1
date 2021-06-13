@@ -245,11 +245,11 @@ Controls the entire logic of the game, from drawing both players starting hands 
 
 The ***game flow*** is as it follows:
 
-***Rock-papers-scissors game***: decides which player begins.
-***Player/opponent's turn starts***: draw a card.
-***Play cards***: and attack dinosaurs or eggs.
-***Check opponent's players eggs***: after an attack. If player still has eggs left, continue. Otherwise, tha game is over (Win/Lose deppending on the situation).
-***End Turn***: when there are still eggs available on both sides.
+-***Rock-papers-scissors game***: decides which player begins.
+-***Player/opponent's turn starts***: draw a card.
+-***Play cards***: and attack dinosaurs or eggs.
+-***Check opponent's players eggs***: after an attack. If player still has eggs left, continue. Otherwise, tha game is over (Win/Lose deppending on the situation).
+-***End Turn***: when there are still eggs available on both sides.
 
 As previously stated, all data pertaining Attack, LifePoints, receiving damage as well as rendering and destroying cards is handled by React components. In specific the following functions:
 
