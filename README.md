@@ -1,7 +1,10 @@
 # Jurassicrysis
-#### CS50's Web Programming with Python and JavaScript.
-**Author:** Luis Balladares.
-
+**Jurassicrysis** es un juego de cartas coleccionables de dinosaurios en el que los usuarios que se registren pueden comprar cartas, intercambiar cartas con otros usuarios, armar un mazo y jugar contra la computadora.
+Construido usando:
+- JavaScript/React
+- GSAP/barba.js
+- Python/Django/Django-Rest
+- CSS/Sass
 
 ## Table of contents:
 
