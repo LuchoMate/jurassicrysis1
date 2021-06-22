@@ -6,6 +6,14 @@ Construido usando:
 - Python/Django/Django-Rest
 - CSS/Sass
 
+Ingresar con usuario: foo
+pass: user1328
+
+En la consola de comandos ejecutar:
+> python manage.py runserver
+
+El sitio se iniciará en http://127.0.0.1:8000/jurassicrysis/home
+
 ## Table of contents:
 
  
